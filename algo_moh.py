@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import random
 import pygad
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 
 # Function to load and preprocess the courses data
 def load_and_preprocess(file_path, semester):
@@ -16,20 +18,18 @@ def load_and_preprocess(file_path, semester):
     else:
         raise ValueError("Semester must be either 'spring' or 'fall'")
     
-    # Mark rows where only the 'Course Name' column is filled and others are missing (department headers)
-    courses['IsHeader'] = courses.apply(lambda row: pd.notna(row['Course Name']) and row[['Subject', 'Cat#', 'Sect#', 'Instructor', 'Days', 'Time Start', 'Time End', 'Room #']].isnull().all(), axis=1)
-    
-    courses = courses.reset_index(drop=True)
-    return courses
+    courses = courses.dropna(subset=['Course Name']).reset_index(drop=True)
+    return courses_df, courses
+
+# Load and preprocess the spring and fall course data
+spring_courses_df, spring_courses = load_and_preprocess('Spring_2023_Filtered_Corrected.csv', 'spring')
+fall_courses_df, fall_courses = load_and_preprocess('Fall_2022_Filtered_Corrected.csv', 'fall')
 
 # Function to decode a chromosome into a schedule
 def decode_chromosome(chromosome, courses_cleaned, possible_days, possible_time_slots, possible_lab_days):
     schedule = []
     num_courses = len(courses_cleaned)
     for i in range(num_courses):
-        if courses_cleaned.iloc[i]['IsHeader']:
-            schedule.append(courses_cleaned.iloc[i].drop('IsHeader').to_dict())
-            continue
         days_index = int(chromosome[2*i] % 2)
         time_slot_index = int(chromosome[2*i + 1] % len(possible_time_slots))
         days = possible_days[days_index]
@@ -56,8 +56,6 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
     schedule = decode_chromosome(solution, courses_cleaned, possible_days, possible_time_slots, possible_lab_days)
     fitness = 0
     for course in schedule:
-        if 'IsHeader' in course and course['IsHeader']:
-            continue
         # Add fitness points for valid day and time slots
         if course['Days'] in possible_days or course['Days'] in ['M', 'T', 'W', 'R', 'F']:
             fitness += 1
@@ -76,11 +74,11 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
     return fitness
 
 # Function to generate the schedule using genetic algorithm
-def generate_schedule(courses_cleaned, semester):
+def generate_schedule(courses_df, courses_cleaned, semester):
     # Define possible days and time slots
     possible_days = ['MWF', 'TR']
     possible_lab_days = {'MWF': ['M', 'W', 'F'], 'TR': ['T', 'R']}
-    possible_time_slots = [(f"{hour:02d}:00", f"{hour+1:02d}:00") for hour in range(8, 18)]  # 8 AM to 5 PM slots
+    possible_time_slots = [(f"{hour:02d}:00", f"{hour+1:02d}:00") for hour in range(8, 18)]  # 8 AM to 6 PM slots
     num_courses = len(courses_cleaned)
     
     # Define the genetic algorithm parameters
@@ -89,7 +87,7 @@ def generate_schedule(courses_cleaned, semester):
     def fitness_wrapper(ga_instance, solution, solution_idx):
         return fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_days, possible_time_slots, possible_lab_days)
     
-    ga_instance = pygad.GA(num_generations=100,
+    ga_instance = pygad.GA(num_generations=10,
                            num_parents_mating=10,
                            fitness_func=fitness_wrapper,
                            sol_per_pop=50,
@@ -109,18 +107,65 @@ def generate_schedule(courses_cleaned, semester):
     best_schedule = decode_chromosome(solution, courses_cleaned, possible_days, possible_time_slots, possible_lab_days)
     best_schedule_df = pd.DataFrame(best_schedule)
     
-    # Save the best schedule to a CSV file
-    output_path = f'Best_Schedule_{semester.capitalize()}.csv'
-    best_schedule_df.to_csv(output_path, index=False)
+    # Merge with original dataframe to keep department headers
+    final_schedule_df = pd.concat([best_schedule_df], ignore_index=True)
     
-    return output_path
+    # Save the best schedule to a CSV file
+    output_path = f'./Best_Schedule_{semester.capitalize()}.csv'
+    final_schedule_df.to_csv(output_path, index=False)
+    
+    print(f"The best schedule for {semester} has been saved to {output_path}")
+    
+    # Generate visual timetable
+    generate_visual_timetable(final_schedule_df, semester)
 
-# Load and preprocess the data
-spring_courses = load_and_preprocess('Spring_2023_Filtered_Corrected.csv', 'spring')
-fall_courses = load_and_preprocess('Fall_2022_Filtered_Corrected.csv', 'fall')
+def generate_visual_timetable(schedule_df, semester):
+    days = ['M', 'T', 'W', 'R', 'F']
+    times = [f"{hour:02d}:00" for hour in range(8, 19)]  # 8 AM to 6 PM slots
+
+    # Extract unique classrooms
+    classrooms = schedule_df['Room #'].unique()
+    classroom_height = 6  # Adjust this value to give more height to each classroom
+    box_height = 5  # Adjust this value to make the colored boxes bigger
+
+    fig, ax = plt.subplots(figsize=(14, 10))  # Increased figure size for better readability
+    ax.set_title(f'{semester.capitalize()} Timetable')
+    ax.set_xlim(0, len(times))
+    ax.set_ylim(0, len(classrooms) * len(days) * classroom_height)
+    ax.set_xticks(np.arange(len(times)))
+    ax.set_xticklabels(times)
+
+    y_labels = []
+    y_ticks = []
+
+    for i, room in enumerate(classrooms):
+        for j, day in enumerate(days):
+            y_labels.append(f'{room} ({day})')
+            y_ticks.append((i * len(days) + j) * classroom_height + classroom_height / 2)
+
+    ax.set_yticks(y_ticks)
+    ax.set_yticklabels(y_labels)
+
+    room_day_offset = {f'{room}_{day}': (i * len(days) + j) * classroom_height for i, room in enumerate(classrooms) for j, day in enumerate(days)}
+
+    for idx, course in schedule_df.iterrows():
+        day_indices = [days.index(day) for day in course['Days']]
+        start_time_index = times.index(course['Time Start'])
+        end_time_index = times.index(course['Time End'])
+        width = end_time_index - start_time_index
+        color = np.random.rand(3,)
+        for day_index in day_indices:
+            room_day_key = f'{course["Room #"]}_{days[day_index]}'
+            y_pos = room_day_offset[room_day_key]
+            rect = mpatches.Rectangle((start_time_index, y_pos), width, box_height, color=color, ec='black')
+            ax.add_patch(rect)
+            rx, ry = rect.get_xy()
+            cx = rx + rect.get_width() / 2.0
+            cy = ry + rect.get_height() / 2.0
+            ax.annotate(f"{course['Course Name']}\n{course['Instructor']}", (cx, cy), color='black', weight='bold', fontsize=8, ha='center', va='center')
+
+    plt.show()
 
 # Generate schedules for spring and fall
-spring_schedule_path = generate_schedule(spring_courses, 'spring')
-fall_schedule_path = generate_schedule(fall_courses, 'fall')
-
-spring_schedule_path, fall_schedule_path
+generate_schedule(spring_courses_df, spring_courses, 'spring')
+generate_schedule(fall_courses_df, fall_courses, 'fall')

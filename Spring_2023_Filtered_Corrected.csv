@@ -1,0 +1,130 @@
+Year Level/ Requirement,Class #,Sbjct,Crs #,Sect#,Course Name,Cr.,Hrs, Instructor,Enr Cap,Days,Start Time.1,End Time.1,Classroom Type,Room #
+,,,,,COMPUTING,,,,,,,,,
+CSec/CIT I,56501.0,GCIS,123,600,Software Devel and Problem Solving I,4,6.0,TBD,30,MWF,,,,E218
+,56548.0,GCIS,123,601,Software Devel and Problem Solving I,4,6.0,TBD,30,TR,,,,C106
+CSec/CIT I,56502.0,GCIS,124,600,Software Devel and Problem Solving II,4,6.0,TBD,30,MWF,,,,D112
+CSec/CIT I,56503.0,GCIS,124,601,Software Devel and Problem Solving II,4,6.0,TBD,30,MWF,,,,C107
+CSec/CIT I,56504.0,GCIS,124,602,Software Devel and Problem Solving II,4,6.0,Abdlul-latif,30,MW,,,,D112
+CSec/CIT I,56505.0,GCIS,124,603,Software Devel and Problem Solving II,4,6.0,Abdlul-latif,30,TR,,,,E218
+CSec/CIT I,57266.0,GCIS,124,604,Software Devel and Problem Solving II,4,6.0,TBD,30,TR,,,,E218
+CSec/CIT I,57267.0,GCIS,124,605,Software Devel and Problem Solving II,4,6.0,TBD,30,TR,,,,E103
+CSEC 3/CIT 2,56338.0,ISTE,230,,Intro to Database,,3.0,TBD,,TR,,,,E103
+CSEC 3/CIT 2,57257.0,ISTE,230,,Intro to Database,,3.0,TBD,,MW,,,,E217
+Csec/CIT 2,56483.0,NSSA,221,,Systems Administration I,,2.0,Raza,,M,,,,D313
+,56484.0,NSSA,221,600L,Systems Administration I Lab,,2.0,Osama,,W,,,,D313
+Csec/CIT 2,57270.0,NSSA,221,,Systems Administration I,,2.0,Raza,,T,,,,C210
+,57271.0,NSSA,221,601L,Systems Administration I Lab,,2.0,Osama,,R,,,,D313
+Csec/CIT 2,57272.0,NSSA,221,,Systems Administration I,,2.0,Raza,,R,,,,C109
+,57273.0,NSSA,221,602L,Systems Administration I Lab,,2.0,Osama,,T,,,,D316
+,56261.0,NSSA,241,,Intro to Routing and Switching,,2.0,TBD,,R,,,,C210
+,56262.0,NSSA,241,600L,Intro to Routing and Switching Lab,,2.0,Osama,,T,,,,D313
+,56452.0,NSSA,241,,Intro to Routing and Switching,,2.0,Saadeh,,M,,,,D107
+,56453.0,NSSA,241,601L,Intro to Routing and Switching Lab,,2.0,Osama,,W,,,,D313
+CSEC 1/CIT 2,57253.0,NSSA,241,,Intro to Routing and Switching,,2.0,TBD,,T,,,,D313
+,57255.0,NSSA,241,602L,Intro to Routing and Switching Lab,,2.0,Osama,,R,,,,D313
+CSEC 1/CIT 2,57254.0,NSSA,241,,Intro to Routing and Switching,,2.0,TBD,,W,,,,D316
+,57256.0,NSSA,241,603L,Intro to Routing and Switching Lab,,2.0,Osama,,M,,,,D313
+CSec 2/CIT Conc,56340.0,NSSA,245,,Network Services,,2.0,Raza,,T,,,,E113
+,56341.0,NSSA,245,600L,Network Services Lab,,2.0,Osama,,R,,,,D316
+CSec 2/CIT Conc,57274.0,NSSA,245,,Network Services,,2.0,Raza,,W,,,,D316
+,57275.0,NSSA,245,601L,Network Services Lab,,2.0,Osama,,F,,,,D316
+,57056.0,SWEN,262,,Engineering of Software Subsystems,,3.0,TBD,,TR,,,,D006
+,,,,,BS COMPUTING SECURITY,,,,,,,,,
+2,56253.0,CSEC,99,,Coop Education Seminar,,1.0,Hariri,,M,,,,B004
+,56513.0,CSEC,99,,Coop Education Seminar,,1.0,TBD,,W,,,,
+,57485.0,CSEC,99,,Coop Education Seminar,,1.0,TBD,,W,,,,B004
+1,56444.0,CSEC,140,,Introduction to Cybersecurity,,3.0,TBD,30,TR,,,,D113
+,56437.0,CSEC,202,600,Reverse Engineering Fundamentals,,,TBD,,TR,,,,D112
+,57180.0,CSEC,202,601,Reverse Engineering Fundamentals,,,Almobaideen,,MW,,,,D316
+3,56337.0,CSEC,380,,Prin Web Application Security,,3.0,Almobaideen,,MW,,,,D207
+Adv Opt,56382.0,CSEC,462,,Network Security and Forensics,,2.0,Kevser,,T,,,,D316
+,56392.0,CSEC,462,600L,NW Security and Forensics Lab,,2.0,Kevser,,R,,,,D316
+Adv Opt,56487.0,CSEC,464,,Computer Systems Forensics,,3.0,Al Hussaini,,MW,,,,D113
+,,CSEC,470,,Covert Communications,,3.0,Saadeh,,T,,,,
+,57186.0,CSEC,471,,Penetration Testing Frameworks & Methodologies,,3.0,Kevser,TBD,MW,,,,E114
+3,56488.0,CSEC,472,,Authent. & Security Models,,3.0,Almobaideen,,MW,,,,D207
+4,56255.0,CSEC,490,,Capstone in Csec,,3.0,Osama Abdulrahman,,MW,,,,E113
+,56359.0,CSEC,499,,Coop Ed in CSEC,,0.0,TBD,,,,,,
+CSEC 1/CIT 2,,NSSA,241,,Intro to Routing and Switching,,2.0,Raza,,,,,,
+,,NSSA,241,600L,Intro to Routing and Switching Lab,,2.0,Raza,,,,,,
+CSEC 1/CIT 2,,NSSA,241,,Intro to Routing and Switching,,2.0,Raza,,,,,,
+,,NSSA,241,601L,Intro to Routing and Switching Lab,,2.0,Raza,,,,,,
+,,,,,BS CIT,,,,,,,,,
+1,56473.0,CSEC,102,,Information Assurance and Security,,,Abdlul-latif,,MW,,,,C107
+1,56474.0,CSEC,102,,Information Assurance and Security,,,Abdlul-latif,,TR,,,,D113
+,57259.0,CSEC,102,,Information Assurance and Security,,,Abdlul-latif,,TR,,,,D113
+2,56254.0,ISTE,99,,IST 2nd Year Seminar,,1.0,Aboughazale,,M,,,,E114
+,57299.0,ISTE,99,,IST 2nd Year Seminar,,1.0,TBD,,T,,,,
+2,56339.0,ISTE,240,,Web & Mobile II,,3.0,Saadeh,28,TR,,,,D114
+,57197.0,ISTE,240,,Web & Mobile II,,3.0,TBD,28,MW,,,,D114
+,57198.0,ISTE,330,,Database Connectivity and Access,,3.0,Al Hussaini,TBD,TR,,,,D207
+,57268.0,ISTE,430,,Information Requirements Modeling,,3.0,TBD,28,TR,,,,
+,56360.0,ISTE,499,,Undergrad Coop,,0.0,TBD,30,,,,,
+4,56257.0,ISTE,,,CIT Senior Devel Project II,,3.0,Osama,30,MW,,,,D107
+1,56259.0,NSSA,102,,Comp System Concepts,,2.0,TBD,,T,,,,E217
+,56260.0,NSSA,102,60L1,Comp System Concepts Lab,,,TBD,,R,,,,D112
+,57276.0,NSSA,441,,Advanced Routing and Switching,,3.0,Raza,30,MW,,,,E218
+,,,,,MATH/SCIENCE,,,,,,,,,
+Pre-U,56403.0,ACSC,80,600,Core Physics Concepts,0,3.0,TBA,30,MW,,,,E005
+,57207.0,BIOG,240,,Cell & Molecular Biology for Engnrs II,3,2.0,Amawi,24,MW,,,,E217
+,57208.0,"""","""",60L1,Cell & Molecular Biology for Engnrs II Lab,0,,Hussaina,24,F,,,Biology Lab (B107),B107
+,56246.0,BIOL,101,,General Biology I,,3.0,Amawi,,MW,,,,C005
+,56362.0,BIOL,101,601,General Biology I,3,3.0,TBD,30,TR,,,,D114
+,,BIOL,101,602,General Biology I,3,3.0,Amawi,30,TR,,,,B004
+"SciPrin (ME), LabSci(CSec)",56464.0,BIOL,102,,Gen Biology II,3,,Amawi,30,MW,,,,D207
+"SciPrin, LabSci (CSec)",56465.0,BIOL,104,,Gen Biology II Lab,1,,Hussaina,15,T,,,Biology Lab (B107),NO 8
+"EE, IE, SciPrin (Bus,ME), LabSci(CSec)",56407.0,CHMG,141,,General and Analytical Chemistry I,,3.0,Amawi,30,TR,,,,D207
+"EE, IE, SciPrin (Bus,ME), LabSci(CSec)",56408.0,CHMG,141,,General and Analytical Chemistry I,,3.0,Ashmawy,30,TR,,,,D113
+,57209.0,CHMG,141,,General and Analytical Chemistry I,3,3.0,Ashmawy,30,TR,,,,B106
+"SciPrin (ME), LabSci(CSec)",56475.0,CHMG,142,,General and Analytical Chemistry II,3,3.0,Amawi,30,TR,,,,D107
+,57210.0,CHMG,146,,General and Analytical Chemistry II Lab,1,3.0,Ashmawy,30,R,,,Chemistry Lab (B106),B106
+1,56227.0,MATH,90,,Algebra,0,3.0,Nagshineh,30,OL,OL,OL,,
+1,56228.0,MATH,101,,College Algebra,3,3.0,TBD,30,MWF,,,Regular Classroom (46 Cap),C209
+,57204.0,MATH,101,,College Algebra,3,3.0,Nagshineh,30,MW,,,Regular Classroom (46 Cap),E217
+"1 EE, ME, CSec",56229.0,MATH,111,,Precalculus,3,3.0,TBA,30,MWF,,,Regular Classroom (46 Cap),C210
+,56396.0,MATH,111,60R1,Precalculus Recitation,,,TBA,,W,,,Regular Classroom (46 Cap),E103
+,56554.0,MATH,111,,Precalculus,3,3.0,TBA,,TR,,,Regular Classroom (46 Cap),C108
+,56555.0,MATH,111,60R2,Precalculus Recitation,,,TBA,,T,,,Regular Classroom (46 Cap),C005
+,57205.0,MATH,111,,Precalculus,3,3.0,TBD,30,TR,,,Regular Classroom (46 Cap),E113
+,57206.0,MATH,"""",60R3,Precalculus Recitation,,,TBD,30,R,,,Regular Classroom (46 Cap),C210
+CIT,56230.0,MATH,131,,Discrete Math,4,4.0,Al-Khamaiseh,,MW,,,Regular Classroom (46 Cap),C108
+,57203.0,MATH,131,,Discrete Math,4,4.0,Al-Khamaiseh,30,MW,,,Regular Classroom (46 Cap),C005
+"1 Bus, CIT",56372.0,MATH,161,,Applied Calculus,4,4.0,Nagshineh,,MW,,,Regular Classroom (46 Cap),C005
+,56528.0,MATH,161,,Applied Calculus,4,4.0,Maki,,MW,,,Regular Classroom (46 Cap),C209
+,57202.0,MATH,161,,Applied Calculus,4,4.0,Nagshineh,30,TR,,,Regular Classroom (46 Cap),C005
+"EE,ME,IE, Csec",56373.0,MATH,181,,Calculus I,4,6.0,Abdulwahed,,MW,,,Regular Classroom (46 Cap),C209
+,56373.0,"""","""","""",Recitation,,,Abdulwahed,,F,,,Regular Classroom (46 Cap),C209
+"EE,ME,IE, Csec",56231.0,MATH,181,,Calculus I,4,6.0,Sayyad,,MW,,,Regular Classroom (46 Cap),C210
+,56231.0,"""","""","""",Recitation,,,Ferman,,MW,,,Regular Classroom (46 Cap),C210
+"EE,ME,IE, Csec",56232.0,MATH,181,,Calculus I,,6.0,Sayyad,,TR,,,Regular Classroom (46 Cap),E113
+,56232.0,"""","""","""",Recitation,,,TBD,,TR,,,Regular Classroom (46 Cap),E113
+"EE,ME,IE, Csec",56233.0,MATH,182,,Calculus II,4,6.0,Borghol,,MW,,,Regular Classroom (46 Cap),C210
+,56233.0,"""","""","""",Recitation,,,Ferman,,F,,,Regular Classroom (46 Cap),C210
+"EE,ME,IE, Csec",56234.0,MATH,182,,Calculus II,4,6.0,Maki,,TR,,,Regular Classroom (46 Cap),C005
+,56234.0,"""","""","""",Recitation,,,Ferman,,TR,,,Regular Classroom (46 Cap),C005
+,56529.0,MATH,182,,Calculus II,4,6.0,Borghol,30,MW,,,Regular Classroom (46 Cap),C108
+,56529.0,"""","""","""",Recitation,,,Ferman,,MW,,,Regular Classroom (46 Cap),C108
+,57200.0,MATH,182,,Calculus II,4,6.0,Nagshineh,30,TR,,,Regular Classroom (46 Cap),C210
+,57200.0,"""","""","""",Recitation,,,Ferman,,TR,,,Regular Classroom (46 Cap),C210
+,57201.0,MATH,182,,Calculus II,4,6.0,Maki,30,TR,,,Regular Classroom (46 Cap),
+,57201.0,"""","""","""",Recitation,,,Ferman,,TR,,,Regular Classroom (46 Cap),
+,57486.0,MATH,190,,Discrete Mathematics for Computing,3,3.0,TBD,,TBD,TBD,TBD,,
+,57491.0,"""","""","""",Recitation,0,1.0,TBD,,TBD,TBD,TBD,,
+"ME, EE,IE",56235.0,MATH,219,,Multivariable Calculus,3,3.0,Sayyad,,TR,,,,C103
+,56442.0,MATH,220,600,Vector Calculus,1,1.0,Ahmad,,W,,,,C109
+"ME,EE",56236.0,MATH,231,,Differential Equations,3,3.0,Borghol,,TR,,,,C209
+"ME,EE",56472.0,MATH,231,,Differential Equations,3,3.0,Borghol,,TR,,,,C005
+IE,56237.0,MATH,233,,Linear Systems and Diff Eq,4,4.0,Sayyad,,MW,,,,E217
+"ME, EE, Csec",56238.0,MATH,241,,Linear Algebra,,3.0,Al-Khamaiseh,,TR,,,,E103
+"ME, EE, Csec",56374.0,MATH,241,,Linear Algebra,,3.0,Al-Khamaiseh,,TR,,,,D113
+NatSci,56242.0,PHYS,111,,College Physics I,,4.0,Ahmad,,TR,,,,NO/Tutoring center
+,56243.0,PHYS,111,60L1,College Physics I Workshop,,2.0,TBD,,W,,,Physics Lab (B108),B108
+"EE, IE, LabSci(CSec)",56244.0,PHYS,211,,Univ Physics I,4,6.0,Ahmad,,TR,,,Regular Classroom (46 Cap),E114
+"EE, IE, ME, LabSci(CSec)",56245.0,PHYS,212,,Univ Physics II,4,6.0,Ahmad,,MWF,,,Regular Classroom (46 Cap),C108
+"Bus, CIT",56239.0,STAT,,,Introduction to Statistics I,3,3.0,TBD,,MW,,,,D114
+"Bus, CIT",56531.0,STAT,,,Introduction to Statistics I,3,3.0,Abdelwahed,,TR,,,,E103
+"Bus, CIT",57182.0,STAT,145,,Introduction to Statistics I,3,3.0,Abdelwahed,30,MWF,,,,B210
+Bus,56240.0,STAT,146,,Introduction to Statistics II,4,4.0,Abdelwahed,,MW,,,,C209
+Bus,56336.0,STAT,146,,Introduction to Statistics II,4,4.0,Maki,,TR,,,,D114
+Bus,57183.0,STAT,146,,Introduction to Statistics II,4,4.0,TBD,30,MW,,,,B004
+ME,56241.0,STAT,205,,Applied Statistics,3,3.0,TBD,,TR,,,,C109
