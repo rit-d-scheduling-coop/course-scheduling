@@ -1,130 +1,130 @@
 Subject,Cat#,Sect#,Course Name,Instructor,Days,Time Start,Time End,Room #
-,,,COMPUTING,,TR,13:00,14:00,
-GCIS,123,600,Software Devel and Problem Solving I,TBD,TR,10:00,11:00,E218
-GCIS,123,601,Software Devel and Problem Solving I,TBD,MWF,12:00,13:00,C106
-GCIS,124,600,Software Devel and Problem Solving II,TBD,MWF,15:00,16:00,D112
-GCIS,124,601,Software Devel and Problem Solving II,TBD,MWF,16:00,17:00,C107
-GCIS,124,602,Software Devel and Problem Solving II,Abdlul-latif,MWF,09:00,10:00,D112
-GCIS,124,603,Software Devel and Problem Solving II,Abdlul-latif,MWF,11:00,12:00,E218
-GCIS,124,604,Software Devel and Problem Solving II,TBD,MWF,08:00,09:00,E218
-GCIS,124,605,Software Devel and Problem Solving II,TBD,MWF,12:00,13:00,E103
-ISTE,230,,Intro to Database,TBD,MWF,13:00,14:00,E103
-ISTE,230,,Intro to Database,TBD,MWF,10:00,11:00,E217
-NSSA,221,,Systems Administration I,Raza,MWF,17:00,18:00,D313
-NSSA,221,600L,Systems Administration I Lab,Osama,F,15:00,16:00,D313
-NSSA,221,,Systems Administration I,Raza,MWF,09:00,10:00,C210
-NSSA,221,601L,Systems Administration I Lab,Osama,M,08:00,09:00,D313
-NSSA,221,,Systems Administration I,Raza,MWF,10:00,11:00,C109
-NSSA,221,602L,Systems Administration I Lab,Osama,F,09:00,10:00,D316
+,,,COMPUTING,,TR,09:00,10:00,
+GCIS,123,600,Software Devel and Problem Solving I,TBD,MWF,11:00,12:00,E218
+GCIS,123,601,Software Devel and Problem Solving I,TBD,TR,09:00,10:00,C106
+GCIS,124,600,Software Devel and Problem Solving II,TBD,MWF,11:00,12:00,D112
+GCIS,124,601,Software Devel and Problem Solving II,TBD,TR,12:00,13:00,C107
+GCIS,124,602,Software Devel and Problem Solving II,Abdlul-latif,MWF,16:00,17:00,D112
+GCIS,124,603,Software Devel and Problem Solving II,Abdlul-latif,TR,16:00,17:00,E218
+GCIS,124,604,Software Devel and Problem Solving II,TBD,MWF,15:00,16:00,E218
+GCIS,124,605,Software Devel and Problem Solving II,TBD,MWF,14:00,15:00,E103
+ISTE,230,,Intro to Database,TBD,MWF,16:00,17:00,E103
+ISTE,230,,Intro to Database,TBD,TR,13:00,14:00,E217
+NSSA,221,,Systems Administration I,Raza,MWF,08:00,09:00,D313
+NSSA,221,600L,Systems Administration I Lab,Osama,W,10:00,11:00,D313
+NSSA,221,,Systems Administration I,Raza,MWF,11:00,12:00,C210
+NSSA,221,601L,Systems Administration I Lab,Osama,M,17:00,18:00,D313
+NSSA,221,,Systems Administration I,Raza,MWF,17:00,18:00,C109
+NSSA,221,602L,Systems Administration I Lab,Osama,W,11:00,12:00,D316
 NSSA,241,,Intro to Routing and Switching,TBD,MWF,11:00,12:00,C210
-NSSA,241,600L,Intro to Routing and Switching Lab,Osama,F,15:00,16:00,D313
-NSSA,241,,Intro to Routing and Switching,Saadeh,MWF,12:00,13:00,D107
-NSSA,241,601L,Intro to Routing and Switching Lab,Osama,W,12:00,13:00,D313
-NSSA,241,,Intro to Routing and Switching,TBD,TR,15:00,16:00,D313
-NSSA,241,602L,Intro to Routing and Switching Lab,Osama,F,15:00,16:00,D313
-NSSA,241,,Intro to Routing and Switching,TBD,TR,15:00,16:00,D316
-NSSA,241,603L,Intro to Routing and Switching Lab,Osama,M,12:00,13:00,D313
-NSSA,245,,Network Services,Raza,MWF,08:00,09:00,E113
-NSSA,245,600L,Network Services Lab,Osama,W,13:00,14:00,D316
-NSSA,245,,Network Services,Raza,TR,08:00,09:00,D316
+NSSA,241,600L,Intro to Routing and Switching Lab,Osama,F,12:00,13:00,D313
+NSSA,241,,Intro to Routing and Switching,Saadeh,TR,14:00,15:00,D107
+NSSA,241,601L,Intro to Routing and Switching Lab,Osama,F,12:00,13:00,D313
+NSSA,241,,Intro to Routing and Switching,TBD,TR,11:00,12:00,D313
+NSSA,241,602L,Intro to Routing and Switching Lab,Osama,W,09:00,10:00,D313
+NSSA,241,,Intro to Routing and Switching,TBD,MWF,09:00,10:00,D316
+NSSA,241,603L,Intro to Routing and Switching Lab,Osama,W,15:00,16:00,D313
+NSSA,245,,Network Services,Raza,MWF,13:00,14:00,E113
+NSSA,245,600L,Network Services Lab,Osama,M,13:00,14:00,D316
+NSSA,245,,Network Services,Raza,TR,16:00,17:00,D316
 NSSA,245,601L,Network Services Lab,Osama,W,16:00,17:00,D316
-SWEN,262,,Engineering of Software Subsystems,TBD,MWF,17:00,18:00,D006
-,,,BS COMPUTING SECURITY,,TR,08:00,09:00,
-CSEC,99,,Coop Education Seminar,Hariri,MWF,13:00,14:00,B004
-CSEC,99,,Coop Education Seminar,TBD,MWF,10:00,11:00,
-CSEC,99,,Coop Education Seminar,TBD,MWF,10:00,11:00,B004
-CSEC,140,,Introduction to Cybersecurity,TBD,MWF,10:00,11:00,D113
-CSEC,202,600,Reverse Engineering Fundamentals,TBD,MWF,15:00,16:00,D112
-CSEC,202,601,Reverse Engineering Fundamentals,Almobaideen,MWF,13:00,14:00,D316
-CSEC,380,,Prin Web Application Security,Almobaideen,TR,08:00,09:00,D207
-CSEC,462,,Network Security and Forensics,Kevser,MWF,15:00,16:00,D316
-CSEC,462,600L,NW Security and Forensics Lab,Kevser,W,14:00,15:00,D316
-CSEC,464,,Computer Systems Forensics,Al Hussaini,MWF,16:00,17:00,D113
-CSEC,470,,Covert Communications,Saadeh,MWF,17:00,18:00,
-CSEC,471,,Penetration Testing Frameworks & Methodologies,Kevser,TR,09:00,10:00,E114
+SWEN,262,,Engineering of Software Subsystems,TBD,MWF,14:00,15:00,D006
+,,,BS COMPUTING SECURITY,,MWF,08:00,09:00,
+CSEC,99,,Coop Education Seminar,Hariri,MWF,12:00,13:00,B004
+CSEC,99,,Coop Education Seminar,TBD,MWF,15:00,16:00,
+CSEC,99,,Coop Education Seminar,TBD,TR,10:00,11:00,B004
+CSEC,140,,Introduction to Cybersecurity,TBD,MWF,14:00,15:00,D113
+CSEC,202,600,Reverse Engineering Fundamentals,TBD,TR,14:00,15:00,D112
+CSEC,202,601,Reverse Engineering Fundamentals,Almobaideen,TR,13:00,14:00,D316
+CSEC,380,,Prin Web Application Security,Almobaideen,TR,16:00,17:00,D207
+CSEC,462,,Network Security and Forensics,Kevser,TR,11:00,12:00,D316
+CSEC,462,600L,NW Security and Forensics Lab,Kevser,M,15:00,16:00,D316
+CSEC,464,,Computer Systems Forensics,Al Hussaini,MWF,08:00,09:00,D113
+CSEC,470,,Covert Communications,Saadeh,TR,10:00,11:00,
+CSEC,471,,Penetration Testing Frameworks & Methodologies,Kevser,TR,16:00,17:00,E114
 CSEC,472,,Authent. & Security Models,Almobaideen,MWF,12:00,13:00,D207
-CSEC,490,,Capstone in Csec,Osama Abdulrahman,MWF,13:00,14:00,E113
-CSEC,499,,Coop Ed in CSEC,TBD,MWF,16:00,17:00,
-NSSA,241,,Intro to Routing and Switching,Raza,TR,17:00,18:00,
-NSSA,241,600L,Intro to Routing and Switching Lab,Raza,F,10:00,11:00,
-NSSA,241,,Intro to Routing and Switching,Raza,MWF,11:00,12:00,
-NSSA,241,601L,Intro to Routing and Switching Lab,Raza,M,17:00,18:00,
-,,,BS CIT,,MWF,16:00,17:00,
-CSEC,102,,Information Assurance and Security,Abdlul-latif,MWF,08:00,09:00,C107
-CSEC,102,,Information Assurance and Security,Abdlul-latif,MWF,12:00,13:00,D113
-CSEC,102,,Information Assurance and Security,Abdlul-latif,MWF,15:00,16:00,D113
-ISTE,99,,IST 2nd Year Seminar,Aboughazale,MWF,13:00,14:00,E114
-ISTE,99,,IST 2nd Year Seminar,TBD,MWF,12:00,13:00,
-ISTE,240,,Web & Mobile II,Saadeh,TR,08:00,09:00,D114
-ISTE,240,,Web & Mobile II,TBD,MWF,15:00,16:00,D114
-ISTE,330,,Database Connectivity and Access,Al Hussaini,MWF,14:00,15:00,D207
-ISTE,430,,Information Requirements Modeling,TBD,MWF,16:00,17:00,
-ISTE,499,,Undergrad Coop,TBD,MWF,11:00,12:00,
-ISTE,,,CIT Senior Devel Project II,Osama,MWF,08:00,09:00,D107
-NSSA,102,,Comp System Concepts,TBD,MWF,13:00,14:00,E217
-NSSA,102,60L1,Comp System Concepts Lab,TBD,M,13:00,14:00,D112
-NSSA,441,,Advanced Routing and Switching,Raza,MWF,09:00,10:00,E218
-,,,MATH/SCIENCE,,MWF,09:00,10:00,
-ACSC,80,600,Core Physics Concepts,TBA,MWF,13:00,14:00,E005
-BIOG,240,,Cell & Molecular Biology for Engnrs II,Amawi,TR,09:00,10:00,E217
-"""","""",60L1,Cell & Molecular Biology for Engnrs II Lab,Hussaina,M,13:00,14:00,B107
+CSEC,490,,Capstone in Csec,Osama Abdulrahman,MWF,10:00,11:00,E113
+CSEC,499,,Coop Ed in CSEC,TBD,MWF,11:00,12:00,
+NSSA,241,,Intro to Routing and Switching,Raza,MWF,16:00,17:00,
+NSSA,241,600L,Intro to Routing and Switching Lab,Raza,W,08:00,09:00,
+NSSA,241,,Intro to Routing and Switching,Raza,MWF,10:00,11:00,
+NSSA,241,601L,Intro to Routing and Switching Lab,Raza,M,11:00,12:00,
+,,,BS CIT,,TR,13:00,14:00,
+CSEC,102,,Information Assurance and Security,Abdlul-latif,MWF,14:00,15:00,C107
+CSEC,102,,Information Assurance and Security,Abdlul-latif,MWF,09:00,10:00,D113
+CSEC,102,,Information Assurance and Security,Abdlul-latif,MWF,10:00,11:00,D113
+ISTE,99,,IST 2nd Year Seminar,Aboughazale,MWF,09:00,10:00,E114
+ISTE,99,,IST 2nd Year Seminar,TBD,MWF,14:00,15:00,
+ISTE,240,,Web & Mobile II,Saadeh,MWF,13:00,14:00,D114
+ISTE,240,,Web & Mobile II,TBD,MWF,13:00,14:00,D114
+ISTE,330,,Database Connectivity and Access,Al Hussaini,TR,15:00,16:00,D207
+ISTE,430,,Information Requirements Modeling,TBD,MWF,10:00,11:00,
+ISTE,499,,Undergrad Coop,TBD,MWF,09:00,10:00,
+ISTE,,,CIT Senior Devel Project II,Osama,MWF,14:00,15:00,D107
+NSSA,102,,Comp System Concepts,TBD,MWF,11:00,12:00,E217
+NSSA,102,60L1,Comp System Concepts Lab,TBD,M,08:00,09:00,D112
+NSSA,441,,Advanced Routing and Switching,Raza,MWF,10:00,11:00,E218
+,,,MATH/SCIENCE,,MWF,16:00,17:00,
+ACSC,80,600,Core Physics Concepts,TBA,TR,11:00,12:00,E005
+BIOG,240,,Cell & Molecular Biology for Engnrs II,Amawi,TR,13:00,14:00,E217
+"""","""",60L1,Cell & Molecular Biology for Engnrs II Lab,Hussaina,W,09:00,10:00,B107
 BIOL,101,,General Biology I,Amawi,MWF,14:00,15:00,C005
-BIOL,101,601,General Biology I,TBD,MWF,09:00,10:00,D114
-BIOL,101,602,General Biology I,Amawi,MWF,12:00,13:00,B004
-BIOL,102,,Gen Biology II,Amawi,TR,12:00,13:00,D207
-BIOL,104,,Gen Biology II Lab,Hussaina,F,09:00,10:00,NO 8
-CHMG,141,,General and Analytical Chemistry I,Amawi,MWF,15:00,16:00,D207
-CHMG,141,,General and Analytical Chemistry I,Ashmawy,TR,14:00,15:00,D113
-CHMG,141,,General and Analytical Chemistry I,Ashmawy,TR,08:00,09:00,B106
-CHMG,142,,General and Analytical Chemistry II,Amawi,MWF,12:00,13:00,D107
-CHMG,146,,General and Analytical Chemistry II Lab,Ashmawy,W,15:00,16:00,B106
-MATH,90,,Algebra,Nagshineh,MWF,10:00,11:00,
-MATH,101,,College Algebra,TBD,TR,14:00,15:00,C209
-MATH,101,,College Algebra,Nagshineh,MWF,12:00,13:00,E217
-MATH,111,,Precalculus,TBA,MWF,09:00,10:00,C210
-MATH,111,60R1,Precalculus Recitation,TBA,MWF,15:00,16:00,E103
-MATH,111,,Precalculus,TBA,TR,12:00,13:00,C108
-MATH,111,60R2,Precalculus Recitation,TBA,TR,13:00,14:00,C005
-MATH,111,,Precalculus,TBD,MWF,17:00,18:00,E113
-MATH,"""",60R3,Precalculus Recitation,TBD,MWF,09:00,10:00,C210
-MATH,131,,Discrete Math,Al-Khamaiseh,TR,13:00,14:00,C108
-MATH,131,,Discrete Math,Al-Khamaiseh,TR,16:00,17:00,C005
-MATH,161,,Applied Calculus,Nagshineh,MWF,15:00,16:00,C005
-MATH,161,,Applied Calculus,Maki,MWF,13:00,14:00,C209
-MATH,161,,Applied Calculus,Nagshineh,MWF,14:00,15:00,C005
+BIOL,101,601,General Biology I,TBD,MWF,12:00,13:00,D114
+BIOL,101,602,General Biology I,Amawi,MWF,09:00,10:00,B004
+BIOL,102,,Gen Biology II,Amawi,MWF,17:00,18:00,D207
+BIOL,104,,Gen Biology II Lab,Hussaina,M,11:00,12:00,NO 8
+CHMG,141,,General and Analytical Chemistry I,Amawi,MWF,16:00,17:00,D207
+CHMG,141,,General and Analytical Chemistry I,Ashmawy,MWF,10:00,11:00,D113
+CHMG,141,,General and Analytical Chemistry I,Ashmawy,MWF,08:00,09:00,B106
+CHMG,142,,General and Analytical Chemistry II,Amawi,MWF,16:00,17:00,D107
+CHMG,146,,General and Analytical Chemistry II Lab,Ashmawy,F,17:00,18:00,B106
+MATH,90,,Algebra,Nagshineh,MWF,15:00,16:00,
+MATH,101,,College Algebra,TBD,TR,11:00,12:00,C209
+MATH,101,,College Algebra,Nagshineh,MWF,16:00,17:00,E217
+MATH,111,,Precalculus,TBA,MWF,10:00,11:00,C210
+MATH,111,60R1,Precalculus Recitation,TBA,TR,12:00,13:00,E103
+MATH,111,,Precalculus,TBA,TR,09:00,10:00,C108
+MATH,111,60R2,Precalculus Recitation,TBA,TR,14:00,15:00,C005
+MATH,111,,Precalculus,TBD,MWF,16:00,17:00,E113
+MATH,"""",60R3,Precalculus Recitation,TBD,TR,08:00,09:00,C210
+MATH,131,,Discrete Math,Al-Khamaiseh,MWF,12:00,13:00,C108
+MATH,131,,Discrete Math,Al-Khamaiseh,MWF,09:00,10:00,C005
+MATH,161,,Applied Calculus,Nagshineh,MWF,13:00,14:00,C005
+MATH,161,,Applied Calculus,Maki,TR,08:00,09:00,C209
+MATH,161,,Applied Calculus,Nagshineh,MWF,08:00,09:00,C005
 MATH,181,,Calculus I,Abdulwahed,TR,16:00,17:00,C209
-"""","""","""",Recitation,Abdulwahed,TR,09:00,10:00,C209
-MATH,181,,Calculus I,Sayyad,TR,15:00,16:00,C210
-"""","""","""",Recitation,Ferman,MWF,16:00,17:00,C210
-MATH,181,,Calculus I,Sayyad,MWF,16:00,17:00,E113
-"""","""","""",Recitation,TBD,MWF,11:00,12:00,E113
-MATH,182,,Calculus II,Borghol,MWF,14:00,15:00,C210
-"""","""","""",Recitation,Ferman,TR,16:00,17:00,C210
-MATH,182,,Calculus II,Maki,TR,11:00,12:00,C005
-"""","""","""",Recitation,Ferman,MWF,11:00,12:00,C005
-MATH,182,,Calculus II,Borghol,MWF,14:00,15:00,C108
-"""","""","""",Recitation,Ferman,MWF,09:00,10:00,C108
+"""","""","""",Recitation,Abdulwahed,MWF,14:00,15:00,C209
+MATH,181,,Calculus I,Sayyad,MWF,14:00,15:00,C210
+"""","""","""",Recitation,Ferman,TR,14:00,15:00,C210
+MATH,181,,Calculus I,Sayyad,MWF,12:00,13:00,E113
+"""","""","""",Recitation,TBD,TR,13:00,14:00,E113
+MATH,182,,Calculus II,Borghol,MWF,09:00,10:00,C210
+"""","""","""",Recitation,Ferman,MWF,14:00,15:00,C210
+MATH,182,,Calculus II,Maki,MWF,10:00,11:00,C005
+"""","""","""",Recitation,Ferman,MWF,10:00,11:00,C005
+MATH,182,,Calculus II,Borghol,TR,13:00,14:00,C108
+"""","""","""",Recitation,Ferman,MWF,15:00,16:00,C108
 MATH,182,,Calculus II,Nagshineh,MWF,14:00,15:00,C210
-"""","""","""",Recitation,Ferman,MWF,12:00,13:00,C210
-MATH,182,,Calculus II,Maki,TR,14:00,15:00,
-"""","""","""",Recitation,Ferman,MWF,09:00,10:00,
-MATH,190,,Discrete Mathematics for Computing,TBD,MWF,10:00,11:00,
-"""","""","""",Recitation,TBD,TR,08:00,09:00,
-MATH,219,,Multivariable Calculus,Sayyad,TR,11:00,12:00,C103
-MATH,220,600,Vector Calculus,Ahmad,TR,14:00,15:00,C109
-MATH,231,,Differential Equations,Borghol,MWF,13:00,14:00,C209
-MATH,231,,Differential Equations,Borghol,MWF,11:00,12:00,C005
-MATH,233,,Linear Systems and Diff Eq,Sayyad,MWF,10:00,11:00,E217
-MATH,241,,Linear Algebra,Al-Khamaiseh,MWF,08:00,09:00,E103
-MATH,241,,Linear Algebra,Al-Khamaiseh,MWF,17:00,18:00,D113
-PHYS,111,,College Physics I,Ahmad,MWF,12:00,13:00,NO/Tutoring center
+"""","""","""",Recitation,Ferman,MWF,09:00,10:00,C210
+MATH,182,,Calculus II,Maki,MWF,10:00,11:00,
+"""","""","""",Recitation,Ferman,MWF,13:00,14:00,
+MATH,190,,Discrete Mathematics for Computing,TBD,MWF,11:00,12:00,
+"""","""","""",Recitation,TBD,MWF,15:00,16:00,
+MATH,219,,Multivariable Calculus,Sayyad,TR,09:00,10:00,C103
+MATH,220,600,Vector Calculus,Ahmad,MWF,16:00,17:00,C109
+MATH,231,,Differential Equations,Borghol,TR,17:00,18:00,C209
+MATH,231,,Differential Equations,Borghol,MWF,08:00,09:00,C005
+MATH,233,,Linear Systems and Diff Eq,Sayyad,TR,17:00,18:00,E217
+MATH,241,,Linear Algebra,Al-Khamaiseh,MWF,10:00,11:00,E103
+MATH,241,,Linear Algebra,Al-Khamaiseh,TR,11:00,12:00,D113
+PHYS,111,,College Physics I,Ahmad,MWF,14:00,15:00,NO/Tutoring center
 PHYS,111,60L1,College Physics I Workshop,TBD,MWF,10:00,11:00,B108
-PHYS,211,,Univ Physics I,Ahmad,TR,16:00,17:00,E114
-PHYS,212,,Univ Physics II,Ahmad,TR,15:00,16:00,C108
-STAT,,,Introduction to Statistics I,TBD,MWF,14:00,15:00,D114
-STAT,,,Introduction to Statistics I,Abdelwahed,MWF,17:00,18:00,E103
-STAT,145,,Introduction to Statistics I,Abdelwahed,MWF,11:00,12:00,B210
+PHYS,211,,Univ Physics I,Ahmad,TR,17:00,18:00,E114
+PHYS,212,,Univ Physics II,Ahmad,MWF,17:00,18:00,C108
+STAT,,,Introduction to Statistics I,TBD,TR,15:00,16:00,D114
+STAT,,,Introduction to Statistics I,Abdelwahed,MWF,12:00,13:00,E103
+STAT,145,,Introduction to Statistics I,Abdelwahed,MWF,13:00,14:00,B210
 STAT,146,,Introduction to Statistics II,Abdelwahed,MWF,13:00,14:00,C209
-STAT,146,,Introduction to Statistics II,Maki,TR,13:00,14:00,D114
-STAT,146,,Introduction to Statistics II,TBD,MWF,13:00,14:00,B004
-STAT,205,,Applied Statistics,TBD,MWF,09:00,10:00,C109
+STAT,146,,Introduction to Statistics II,Maki,TR,14:00,15:00,D114
+STAT,146,,Introduction to Statistics II,TBD,TR,17:00,18:00,B004
+STAT,205,,Applied Statistics,TBD,MWF,16:00,17:00,C109
