@@ -31,9 +31,9 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, possible_time_
     schedule = []
     num_courses = len(courses_cleaned)
     for i in range(num_courses):
-        if courses_cleaned.iloc[i]['IsHeader']:
-            schedule.append(courses_cleaned.iloc[i].drop('IsHeader').to_dict())
-            continue
+        # if courses_cleaned.iloc[i]['IsHeader']:
+        #     schedule.append(courses_cleaned.iloc[i].drop('IsHeader').to_dict())
+        #     continue
         days_index = int(chromosome[3*i] % 2)
         time_slot_index = int(chromosome[3*i + 1] % len(possible_time_slots))
         classroom_index = int(chromosome[3*i + 2] % len(classrooms))
