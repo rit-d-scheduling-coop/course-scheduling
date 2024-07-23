@@ -49,11 +49,11 @@ def get_all_prerequisites(course, prerequisites, all_prereqs=None):
     return all_prereqs
 
 # Load and preprocess the spring and fall course data
-spring_courses_df, spring_courses = load_and_preprocess('Spring_2023_Filtered_Corrected.csv', 'spring')
-fall_courses_df, fall_courses = load_and_preprocess('Fall_2022_Filtered_Corrected.csv', 'fall')
+spring_courses_df, spring_courses = load_and_preprocess('Excel/Spring_2023_Filtered_Corrected.csv', 'spring')
+fall_courses_df, fall_courses = load_and_preprocess('Excel/Fall_2022_Filtered_Corrected.csv', 'fall')
 
 # Load prerequisites data
-prerequisites = load_prerequisites('prerequisites.csv')
+prerequisites = load_prerequisites('Excel/prerequisites.csv')
 
 # Function to decode a chromosome into a schedule
 def decode_chromosome(chromosome, courses_cleaned, possible_days, possible_time_slots, possible_lab_days, classrooms):
@@ -197,7 +197,7 @@ def generate_schedule(courses_cleaned, semester):
     best_schedule = decode_chromosome(solution, courses_cleaned, possible_days, possible_time_slots, possible_lab_days, classrooms)
     best_schedule_df = pd.DataFrame(best_schedule)
     
-    output_path = f'Best_Schedule_{semester.capitalize()}.csv'
+    output_path = f'Excel/Best_Schedule_{semester.capitalize()}.csv'
     best_schedule_df.to_csv(output_path, index=False)
     
     return output_path
