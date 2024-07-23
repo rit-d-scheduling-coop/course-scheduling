@@ -49,11 +49,11 @@ def get_all_prerequisites(course, prerequisites, all_prereqs=None):
     return all_prereqs
 
 # Load and preprocess the spring and fall course data
-spring_courses_df, spring_courses = load_and_preprocess('/mnt/data/Spring_2023_Filtered_Corrected.csv', 'spring')
-fall_courses_df, fall_courses = load_and_preprocess('/mnt/data/Fall_2022_Filtered_Corrected.csv', 'fall')
+spring_courses_df, spring_courses = load_and_preprocess('Spring_2023_Filtered_Corrected.csv', 'spring')
+fall_courses_df, fall_courses = load_and_preprocess('Fall_2022_Filtered_Corrected.csv', 'fall')
 
 # Load prerequisites data
-prerequisites = load_prerequisites('/mnt/data/prerequisites.csv')
+prerequisites = load_prerequisites('prerequisites.csv')
 
 # Function to decode a chromosome into a schedule
 def decode_chromosome(chromosome, courses_cleaned, possible_days, possible_time_slots, possible_lab_days, classrooms):
