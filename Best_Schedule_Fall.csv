@@ -1,103 +1,103 @@
 Subject,Cat#,Sect#,Course Name,Instructor,Days,Time Start,Time End,Room #
 ,,,COMPUTING,,,,,
-GCIS,123,,Software Dev & ProbSolv_I,TBD,MWF,12:00,13:00,D-313
-GCIS,123,,Software Dev & ProbSolv_I,Ovaz,TR,11:00,12:00,E-218
-GCIS,123,,Software Dev & ProbSolv_I,Saadeh,TR,15:00,16:00,E-103
-GCIS,123,,Software Dev & ProbSolv_I,TBD,TR,08:00,09:00,E-114
-GCIS,123,,Software Dev & ProbSolv_I,TBD,TR,08:00,09:00,E-218
-NSSA,221,,Systems Administration I,Raza,MWF,14:00,15:00,D-313 + D316
-"""","""",600L,Systems Administration I Lab,Raza,F,16:00,17:00,D-212
-NSSA,221,,Systems Administration I,Raza,TR,12:00,13:00,E-103
-"""","""",601L,Systems Administration I Lab,Raza,T,09:00,10:00,C-108
-NSSA,241,,Intro Routing & Switching,Raza,MWF,09:00,10:00,C209
-"""",241,600L,Intro Routing & Switching Lab,Raza,R,16:00,17:00,D-313 + D316
-NSSA,241,,Intro Routing & Switching,Raza,MWF,16:00,17:00,E-218
-"""",241,601L,Intro Routing & Switching Lab,Raza,R,12:00,13:00,C-210
-SWEN,261,,Intro to Software Engineering,TBD,MWF,14:00,15:00,C-109
+GCIS,123,,Software Dev & ProbSolv_I,TBD,MWF,08:00,09:00,B-211
+GCIS,123,,Software Dev & ProbSolv_I,Ovaz,MWF,16:00,17:00,D-114
+GCIS,123,,Software Dev & ProbSolv_I,Saadeh,MWF,09:00,10:00,B-107
+GCIS,123,,Software Dev & ProbSolv_I,TBD,MWF,17:00,18:00,Online
+GCIS,123,,Software Dev & ProbSolv_I,TBD,MWF,16:00,17:00,C209
+NSSA,221,,Systems Administration I,Raza,TR,11:00,12:00,TBD
+"""","""",600L,Systems Administration I Lab,Raza,T,13:00,14:00,D-313 + D316
+NSSA,221,,Systems Administration I,Raza,TR,12:00,13:00,D-112
+"""","""",601L,Systems Administration I Lab,Raza,T,15:00,16:00,D-313
+NSSA,241,,Intro Routing & Switching,Raza,MWF,17:00,18:00,D-112
+"""",241,600L,Intro Routing & Switching Lab,Raza,R,17:00,18:00,C-109
+NSSA,241,,Intro Routing & Switching,Raza,TR,15:00,16:00,TBD
+"""",241,601L,Intro Routing & Switching Lab,Raza,T,11:00,12:00,C-109
+SWEN,261,,Intro to Software Engineering,TBD,MWF,12:00,13:00,Online
 ,,,BS COMPUTING SECURITY,,,,,
-CSEC,99,,Coop Education Seminar,TBD,TR,11:00,12:00,B-211
-CSEC,99,,Coop Education Seminar,Al Hussaeni,MWF,10:00,11:00,C-109
-CSEC,140,,Introduction to Cybersecurity,Ovaz,TR,08:00,09:00,D-114
-CSEC,140,,Introduction to Cybersecurity,Ovaz,MWF,16:00,17:00,TBD
-CSEC,461,,Computer System Security,Almobaideen,MWF,13:00,14:00,B-211
-CSEC,461,60L1,Computer System Security Lab,Almobaideen,T,17:00,18:00,E-103
-CSEC,201,,Programming for Information Security,Saadeh,MWF,17:00,18:00,E-217
-CSEC,201,,Programming for Information Security,Saadeh,MWF,16:00,17:00,B-004
-CSCI,462,,Introduction to cryptograhpy,Almobaideen,TR,10:00,11:00,D-313
-CSCI,532,,Introduction to Intelligent Security Systems,TBD,MWF,11:00,12:00,D-313
-CSEC,471,,Penetration Testing,Ovaz,MWF,10:00,11:00,D-316
-PUBL,363,,Cyber Policy and Law,Almobaideen,TR,13:00,14:00,D-207
-CSEC,468,,Risk Management for Information Security,Al Hussaeni,TR,11:00,12:00,B-107
-CSEC,490,,Capstone in Csec,Ovaz,TR,13:00,14:00,D-114
-CSEC,499,,Csec Coop,Almobaideen,TR,15:00,16:00,B-107
-CSEC,499,,Csec Coop,Al Hussaeni,MWF,11:00,12:00,D-107
+CSEC,99,,Coop Education Seminar,TBD,MWF,16:00,17:00,C-109
+CSEC,99,,Coop Education Seminar,Al Hussaeni,TR,12:00,13:00,C-108
+CSEC,140,,Introduction to Cybersecurity,Ovaz,MWF,11:00,12:00,B-210
+CSEC,140,,Introduction to Cybersecurity,Ovaz,MWF,14:00,15:00,C-109
+CSEC,461,,Computer System Security,Almobaideen,MWF,17:00,18:00,B-107
+CSEC,461,60L1,Computer System Security Lab,Almobaideen,R,13:00,14:00,C209
+CSEC,201,,Programming for Information Security,Saadeh,TR,13:00,14:00,D-114
+CSEC,201,,Programming for Information Security,Saadeh,TR,09:00,10:00,C-108
+CSCI,462,,Introduction to cryptograhpy,Almobaideen,TR,16:00,17:00,B-211
+CSCI,532,,Introduction to Intelligent Security Systems,TBD,TR,16:00,17:00,E-218
+CSEC,471,,Penetration Testing,Ovaz,MWF,08:00,09:00,C-108
+PUBL,363,,Cyber Policy and Law,Almobaideen,MWF,13:00,14:00,D-112
+CSEC,468,,Risk Management for Information Security,Al Hussaeni,MWF,09:00,10:00,D-113
+CSEC,490,,Capstone in Csec,Ovaz,TR,13:00,14:00,Online
+CSEC,499,,Csec Coop,Almobaideen,TR,14:00,15:00,Online
+CSEC,499,,Csec Coop,Al Hussaeni,TR,16:00,17:00,E-217
 ,,,BS CIT,,,,,
-ISTE,99,,IST 2nd Year Seminar,TBD,MWF,12:00,13:00,E-114
-ISTE,99,,IST 2nd Year Seminar,Almobaideen,MWF,12:00,13:00,E-103
-ISTE,140,,Web & Mobile I,Abdul-Latif,TR,12:00,13:00,C-109
-ISTE,140,,Web & Mobile I,Abdul-Latif,MWF,10:00,11:00,E-114
-ISTE,260,,Designing the User Experience,Al Hussaeni,MWF,12:00,13:00,C-210
-ISTE,430,,Information Requirement Modeling,Al Hussaeni,MWF,14:00,15:00,D-113
-ISTE,499,,ISTE Coop,Almobaideen,TR,16:00,17:00,B-004
-ISTE,500,,CIT Senior Devel Project I,Raza,MWF,10:00,11:00,C209
-NSSA,102,,Comp System Concepts,Al Dalaien,TR,08:00,09:00,C-109
-NSSA,102,60L1,Comp System Concepts Lab,Al Dalaien,M,10:00,11:00,TBD
-NSSA,102,,Comp System Concepts,Al Dalaien,MWF,08:00,09:00,D-112
-NSSA,102,60L2,Comp System Concepts Lab,Al Dalaien,W,16:00,17:00,Online
-NSSA,242,,Wireless Networking,TBD,TR,09:00,10:00,C-210
-NSSA,242,600L,Wireless Networking Lab,TBD,W,14:00,15:00,E-217
-NSSA,102,60L1,Comp System Concepts Lab,Al Dalaien,M,09:00,10:00,B-210
-NSSA,370,,Project Management,Zilora,MWF,09:00,10:00,E-217
-NSSA,220,,Task Automation,Almobaideen,MWF,09:00,10:00,D-107
-NSSA,244,,Virtualization,Raza,TR,16:00,17:00,C-107
-NSSA,443,,Network Design and Performance,TBD,TR,15:00,16:00,D-313 + D316
+ISTE,99,,IST 2nd Year Seminar,TBD,TR,08:00,09:00,D-313
+ISTE,99,,IST 2nd Year Seminar,Almobaideen,MWF,11:00,12:00,C-109
+ISTE,140,,Web & Mobile I,Abdul-Latif,TR,16:00,17:00,D-107
+ISTE,140,,Web & Mobile I,Abdul-Latif,TR,10:00,11:00,D-207
+ISTE,260,,Designing the User Experience,Al Hussaeni,MWF,11:00,12:00,D-112
+ISTE,430,,Information Requirement Modeling,Al Hussaeni,TR,11:00,12:00,D-313 + D316
+ISTE,499,,ISTE Coop,Almobaideen,TR,12:00,13:00,B-004
+ISTE,500,,CIT Senior Devel Project I,Raza,TR,14:00,15:00,E-218
+NSSA,102,,Comp System Concepts,Al Dalaien,MWF,09:00,10:00,E-217
+NSSA,102,60L1,Comp System Concepts Lab,Al Dalaien,M,15:00,16:00,D-313 + D316
+NSSA,102,,Comp System Concepts,Al Dalaien,MWF,13:00,14:00,D-212
+NSSA,102,60L2,Comp System Concepts Lab,Al Dalaien,R,13:00,14:00,C-209
+NSSA,242,,Wireless Networking,TBD,TR,14:00,15:00,E-217
+NSSA,242,600L,Wireless Networking Lab,TBD,R,16:00,17:00,C-210
+NSSA,102,60L1,Comp System Concepts Lab,Al Dalaien,F,16:00,17:00,D-313 + D316
+NSSA,370,,Project Management,Zilora,TR,13:00,14:00,B-211
+NSSA,220,,Task Automation,Almobaideen,TR,08:00,09:00,B-210
+NSSA,244,,Virtualization,Raza,TR,17:00,18:00,B-004
+NSSA,443,,Network Design and Performance,TBD,MWF,14:00,15:00,C-210
 ,,,MATH/SCIENCE,,,,,
-ACSC,80,600,Core Physics Concepts,Ahmad,TR,16:00,17:00,D-113
-BIOG,140,600,Cell & Molecular Biology for Engnrs I,Amawi,MWF,10:00,11:00,D-212
-"""","""",60L1,Cell & Molecular Biology for Engnrs I Lab,Mohsin,R,10:00,11:00,E-217
-BIOL,101,600,Gen Biology I,Mohsen,TR,17:00,18:00,TBD
-BIOL,101,,Gen Biology I,Mohsen,MWF,17:00,18:00,C209
-BIOL,102,,Gen Biology II,TBD,TR,13:00,14:00,TBD
-BIOL,103,,Gen Biology I Lab,Mohsen,R,14:00,15:00,E-114
-CHMG,141,,General and Analytical Chemistry I,Amawi,MWF,17:00,18:00,TBD
-CHMG,141,60R1,General and Analytical Chemistry I recitation,Amawi,MWF,15:00,16:00,D-107
-CHMG,141,,General and Analytical Chemistry I,Ashmawy,TR,12:00,13:00,C-107
-CHMG,141,60R2,General and Analytical Chemistry I recitation,Ashmawy,TR,11:00,12:00,D-207
-CHMG,142,,General and Analytical Chemistry II,Amawi,TR,08:00,09:00,D-207
-CHMG,145,600,General and Analytical Chemistry I Lab,,W,09:00,10:00,C-109
-MATH,90,600,Algebra,Naghshineh,MWF,11:00,12:00,C-109
-MATH,101,,College Algbera,Naghshineh,MWF,12:00,13:00,E-217
-MATH,101,,College Algbera,Naghshineh,MWF,17:00,18:00,C-108
-MATH,111,,Precalculus,Sayyad,TR,10:00,11:00,B-211
-"""","""",60R1,Precalculus Recitation,Sayyad,TR,12:00,13:00,D-313
-MATH,111,,Precalculus,Sayyad,MWF,10:00,11:00,E-103
-"""","""",60R2,Precalculus Recitation,Sayyad,MWF,14:00,15:00,C-210
-MATH,111,,Precalculus,Hasib,TR,15:00,16:00,D-313
-"""","""",60R3,Precalculus Recitation,Hasib,MWF,11:00,12:00,C-107
-MATH,161,,Applied Calculus,Naghshineh,TR,09:00,10:00,B-210
-MATH,161,,Applied Calculus,Naghshineh,TR,08:00,09:00,C-209
-MATH,161,,Applied Calculus (begin Week of Sept 5th),Savara,MWF,17:00,18:00,D-113
-MATH,181,,Calculus I,Sayyad,MWF,11:00,12:00,D-113
-"""","""","""",Recitation,,TR,14:00,15:00,B-107
-MATH,181,,Calculus I,Salam,MWF,15:00,16:00,B-210
-"""","""","""",Recitation,,MWF,13:00,14:00,E-114
-MATH,181,602,Calculus I (begin Week of Sept 5th),Salam,TR,09:00,10:00,E-218
-"""","""","""",Recitation,,TR,17:00,18:00,C-209
-MATH,182,600,Calculus II (begin Week of Sept 5th),Borghol,MWF,17:00,18:00,C-210
-"""","""","""",Recitation,,TR,12:00,13:00,B-211
-MATH,182,601,Calculus II,Borghol,MWF,10:00,11:00,D-313
-"""","""","""",Recitation,,MWF,17:00,18:00,B-107
-MATH,190,,Discrete Math for Computing,Salam,TR,08:00,09:00,D-212
-MATH,219,,Multivariable Calculus,Maki,TR,13:00,14:00,D-107
-MATH,219,,Multivariable Calculus,Maki,MWF,08:00,09:00,D-113
-MATH,220,,Vector Calculus,Maki,MWF,14:00,15:00,C209
-MATH,231,,Differential Equations,Borghol,TR,15:00,16:00,C-107
-MATH,241,,Linear Algebra,Sayyad,TR,14:00,15:00,C-209
-MATH,241,,Linear Algebra,Sayyad,MWF,13:00,14:00,C-107
-MATH,251,,Probability & Stats I,Hasib,MWF,12:00,13:00,D-113
-MATH,251,,Probability & Stats I,Hasib,MWF,16:00,17:00,Online
-MATH,326,,BVPs,Maki,TR,10:00,11:00,D-113
-MATH,381,,Complex Variables,Maki,TR,16:00,17:00,Online
-PHYS,207,,Univ Phys I: AP-C Waves,Salameh,MWF,12:00,13:00,D-313 + D316
-PHYS,211,,Univ Physics I,Salameh,TR,15:00,16:00,D-113
-PHYS,212,,Univ Physics II,Salameh,MWF,12:00,13:00,Online
+ACSC,80,600,Core Physics Concepts,Ahmad,TR,,,D-207
+BIOG,140,600,Cell & Molecular Biology for Engnrs I,Amawi,MW,11:10 AM,,
+"""","""",60L1,Cell & Molecular Biology for Engnrs I Lab,Mohsin,W,10:00,11:00,B-004
+BIOL,101,600,Gen Biology I,Mohsen,TR,17:00,18:00,B-210
+BIOL,101,,Gen Biology I,Mohsen,MWF,11:00,12:00,B-004
+BIOL,102,,Gen Biology II,TBD,MWF,08:00,09:00,E-114
+BIOL,103,,Gen Biology I Lab,Mohsen,M,10:00,11:00,D-112
+CHMG,141,,General and Analytical Chemistry I,Amawi,TR,,,C-209
+CHMG,141,60R1,General and Analytical Chemistry I recitation,Amawi,W,,,C-109
+CHMG,141,,General and Analytical Chemistry I,Ashmawy,TR,,,C-209
+CHMG,141,60R2,General and Analytical Chemistry I recitation,Ashmawy,T,,,C-109
+CHMG,142,,General and Analytical Chemistry II,Amawi,TR,,,
+CHMG,145,600,General and Analytical Chemistry I Lab,,R,,,
+MATH,90,600,Algebra,Naghshineh,OL,OL,OL,Online
+MATH,101,,College Algbera,Naghshineh,TR,,,E-217
+MATH,101,,College Algbera,Naghshineh,TR,,,E-217
+MATH,111,,Precalculus,Sayyad,TR,9:00 AM,,E-114
+"""","""",60R1,Precalculus Recitation,Sayyad,MWF,13:00,14:00,C-210
+MATH,111,,Precalculus,Sayyad,TR,10:30 AM,,E-114
+"""","""",60R2,Precalculus Recitation,Sayyad,MWF,09:00,10:00,D-112
+MATH,111,,Precalculus,Hasib,MW,,,E-103
+"""","""",60R3,Precalculus Recitation,Hasib,TR,16:00,17:00,C-210
+MATH,161,,Applied Calculus,Naghshineh,MW,9:00 AM,,C-108
+MATH,161,,Applied Calculus,Naghshineh,MW,1:05 PM,,B-210
+MATH,161,,Applied Calculus (begin Week of Sept 5th),Savara,TR,,,D-207
+MATH,181,,Calculus I,Sayyad,MW,10:05 AM,,C-210
+"""","""","""",Recitation,,MWF,14:00,15:00,D-114
+MATH,181,,Calculus I,Salam,MW,1:05 PM,,B-004
+"""","""","""",Recitation,,MWF,13:00,14:00,D-313
+MATH,181,602,Calculus I (begin Week of Sept 5th),Salam,MW,,,C-210
+"""","""","""",Recitation,,TR,17:00,18:00,D-207
+MATH,182,600,Calculus II (begin Week of Sept 5th),Borghol,MW,1:05 PM,,B-211
+"""","""","""",Recitation,,MWF,11:00,12:00,C-209
+MATH,182,601,Calculus II,Borghol,MW,3:15 PM,,E-103
+"""","""","""",Recitation,,TR,11:00,12:00,B-107
+MATH,190,,Discrete Math for Computing,Salam,TR,1:30 PM,,E-113
+MATH,219,,Multivariable Calculus,Maki,TR,12:00 AM,,C-109
+MATH,219,,Multivariable Calculus,Maki,TR,1:30 PM,,C-107
+MATH,220,,Vector Calculus,Maki,W,11:10 AM,,B-004
+MATH,231,,Differential Equations,Borghol,TR,9:00 AM,,E-114
+MATH,241,,Linear Algebra,Sayyad,TR,9:00 AM,,C-209
+MATH,241,,Linear Algebra,Sayyad,TR,10:30 AM,,E-114
+MATH,251,,Probability & Stats I,Hasib,TR,1:30 PM,,C-107
+MATH,251,,Probability & Stats I,Hasib,TR,3:00 PM,,C-107
+MATH,326,,BVPs,Maki,MW,1:05 PM,,C-107
+MATH,381,,Complex Variables,Maki,MW,2:35 PM,,E-114
+PHYS,207,,Univ Phys I: AP-C Waves,Salameh,TBD,TBD,TBD,TBD
+PHYS,211,,Univ Physics I,Salameh,MWF,,,D-207
+PHYS,212,,Univ Physics II,Salameh,MW,,,B-211

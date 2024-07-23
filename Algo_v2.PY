@@ -59,12 +59,18 @@ prerequisites = load_prerequisites('prerequisites.csv')
 def decode_chromosome(chromosome, courses_cleaned, possible_days, possible_time_slots, possible_lab_days, classrooms):
     schedule = []
     num_courses = len(courses_cleaned)
+    fixed_subjects = {'ACSC', 'BIOG', 'BIOL', 'CHMG', 'MATH', 'PHYS'}
+
     for i in range(num_courses):
         course = courses_cleaned.iloc[i]
         if course['IsHeader']:
             schedule.append(course.drop('IsHeader').to_dict())
             continue
-        
+
+        if course['Subject'] in fixed_subjects:
+            schedule.append(course.drop('IsHeader').to_dict())
+            continue
+
         days_index = int(chromosome[3*i] % 2)
         time_slot_index = int(chromosome[3*i + 1] % len(possible_time_slots))
         classroom_index = int(chromosome[3*i + 2] % len(classrooms))
