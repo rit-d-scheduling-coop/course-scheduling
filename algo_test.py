@@ -196,3 +196,6 @@ def generate_visual_timetable(schedule_df, semester):
 spring_schedule_path, fall_schedule_path = generate_schedule(spring_courses, 'spring'), generate_schedule(fall_courses, 'fall')
 
 spring_schedule_path, fall_schedule_path
+
+#(for example) TR might have 1:20hr and then 2/3 hr classes. need to find way to have flexible timing. smaller courses might be "inside" the 2 hour block
+# 3 dimensional array time,day,and blocks
