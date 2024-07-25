@@ -3,16 +3,16 @@
 <br/>
 <br/>
 <h3> File Directory </h3>
-<b>Excel:</b> </h4>
- | 2023-2024 Plan for Dept Heads.xlsx<br/>
- | classrooms.csv<br/>
- | labs.xlsx<br/>
- | prerequisites.csv<br/>
- | timeslots.csv<br/>
- 2023-2024 Plan for Dept Heads.xlsx<br/>
- algo_test.py<br/>
- Algo_v2.PY<br/>
- cleaning_MOH.py<br/>
- rough_notes.ipynb<br/>
- visualizer.py<br/>
- README.md
+<b>Excel:</b> <br/>
+ | 2023-2024 Plan for Dept Heads.xlsx <br/>
+ | classrooms.csv <br/>
+ | labs.xlsx <br/>
+ | prerequisites.csv <br/>
+ | timeslots.csv <br/>
+ 2023-2024 Plan for Dept Heads.xlsx <br/>
+ algo_test.py <br/>
+ Algo_v2.PY <br/>
+ cleaning_MOH.py <br/>
+ rough_notes.ipynb <br/>
+ visualizer.py <br/>
+ README.md <br/>
