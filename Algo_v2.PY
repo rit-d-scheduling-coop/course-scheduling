@@ -18,29 +18,59 @@ def load_and_preprocess(file_path, semester):
     else:
         raise ValueError("Semester must be either 'spring' or 'fall'")
     
-    courses = courses.dropna(subset=['Course Name']).reset_index(drop=True)
+    # Mark rows where only the 'Course Name' column is filled and others are missing (department headers)
+    courses['IsHeader'] = courses.apply(lambda row: pd.notna(row['Course Name']) and row[['Subject', 'Cat#', 'Sect#', 'Instructor', 'Days', 'Time Start', 'Time End', 'Room #']].isnull().all(), axis=1)
     
-    # Ensure Time Start and Time End are strings and handle any invalid entries
-    courses['Time Start'] = courses['Time Start'].astype(str).str.strip()
-    courses['Time End'] = courses['Time End'].astype(str).str.strip()
-    
+    courses = courses.reset_index(drop=True)
     return courses_df, courses
 
+# Function to load prerequisites data
+def load_prerequisites(file_path):
+    prerequisites_df = pd.read_csv(file_path)
+    prerequisites = {}
+    for _, row in prerequisites_df.iterrows():
+        course = row['Course']
+        prerequisite = row['Prerequisite']
+        if course not in prerequisites:
+            prerequisites[course] = []
+        if pd.notna(prerequisite):
+            prerequisites[course].append(prerequisite)
+    return prerequisites
+
+# Function to get all prerequisites (direct and transitive) for a course
+def get_all_prerequisites(course, prerequisites, all_prereqs=None):
+    if all_prereqs is None:
+        all_prereqs = set()
+    if course in prerequisites:
+        for prereq in prerequisites[course]:
+            if prereq not in all_prereqs:
+                all_prereqs.add(prereq)
+                get_all_prerequisites(prereq, prerequisites, all_prereqs)
+    return all_prereqs
+
 # Load and preprocess the spring and fall course data
-spring_courses_df, spring_courses = load_and_preprocess('Spring_2023_Filtered_Corrected.csv', 'spring')
-fall_courses_df, fall_courses = load_and_preprocess('Fall_2022_Filtered_Corrected.csv', 'fall')
+spring_courses_df, spring_courses = load_and_preprocess('Excel/Spring_2023_Filtered_Corrected.csv', 'spring')
+fall_courses_df, fall_courses = load_and_preprocess('Excel/Fall_2022_Filtered_Corrected.csv', 'fall')
+
+# Load prerequisites data
+prerequisites = load_prerequisites('Excel/prerequisites.csv')
 
 # Function to decode a chromosome into a schedule
 def decode_chromosome(chromosome, courses_cleaned, possible_days, possible_time_slots, possible_lab_days, classrooms):
-    fixed_subjects = ['ACSC', 'BIOG', 'CHMG', 'MATH', 'PHYS']
     schedule = []
     num_courses = len(courses_cleaned)
+    fixed_subjects = {'ACSC', 'BIOG', 'BIOL', 'CHMG', 'MATH', 'PHYS'}
+
     for i in range(num_courses):
         course = courses_cleaned.iloc[i]
-        if course['Subject'] in fixed_subjects:
-            schedule.append(course.drop('IsHeader', errors='ignore').to_dict())
+        if course['IsHeader']:
+            schedule.append(course.drop('IsHeader').to_dict())
             continue
-        
+
+        if course['Subject'] in fixed_subjects:
+            schedule.append(course.drop('IsHeader').to_dict())
+            continue
+
         days_index = int(chromosome[3*i] % 2)
         time_slot_index = int(chromosome[3*i + 1] % len(possible_time_slots))
         classroom_index = int(chromosome[3*i + 2] % len(classrooms))
@@ -62,6 +92,7 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, possible_time_
             'Time End': time_slot[1],
             'Room #': classroom
         })
+
     return schedule
 
 # Fitness function to evaluate schedules
@@ -69,6 +100,7 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
     schedule = decode_chromosome(solution, courses_cleaned, possible_days, possible_time_slots, possible_lab_days, classrooms)
     fitness = 0
     classroom_schedule = {room: {} for room in classrooms}
+    instructor_schedule = {}
 
     for course in schedule:
         if 'IsHeader' in course and course['IsHeader']:
@@ -85,7 +117,7 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
             fitness -= 5  # Penalty for missing room
             continue
 
-        # Check for conflicts and update classroom schedule
+        # Check for classroom conflicts and update classroom schedule
         days = course['Days'] if isinstance(course['Days'], list) else [course['Days']]
         for day in days:
             if day not in classroom_schedule[course['Room #']]:
@@ -101,11 +133,27 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
             
             classroom_schedule[course['Room #']][day].append(current_slot)
 
-        # Check for instructor conflicts
-        for other_course in schedule:
-            if course != other_course and course['Instructor'] == other_course['Instructor']:
-                if any(day in other_course['Days'] for day in days) and course['Time Start'] == other_course['Time Start']:
+        # Check for instructor conflicts and update instructor schedule
+        instructor = course['Instructor']
+        if instructor == 'TBD':
+            continue
+
+        if instructor not in instructor_schedule:
+            instructor_schedule[instructor] = {}
+
+        for day in days:
+            if day not in instructor_schedule[instructor]:
+                instructor_schedule[instructor][day] = []
+
+            current_slot = (course['Time Start'], course['Time End'])
+            if any(not isinstance(t, str) for t in current_slot):
+                continue  # Skip invalid time entries
+
+            for existing_slot in instructor_schedule[instructor][day]:
+                if (current_slot[0] < existing_slot[1] and current_slot[1] > existing_slot[0]):
                     fitness -= 5  # Penalty for instructor conflict
+            
+            instructor_schedule[instructor][day].append(current_slot)
 
         # Ensure labs are on a different day within the same block (MWF or TR)
         if 'Lab' in course['Course Name']:
@@ -131,7 +179,7 @@ def generate_schedule(courses_cleaned, semester):
     def fitness_wrapper(ga_instance, solution, solution_idx):
         return fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_days, possible_time_slots, possible_lab_days, classrooms)
     
-    ga_instance = pygad.GA(num_generations=100,
+    ga_instance = pygad.GA(num_generations=10,
                            num_parents_mating=10,
                            fitness_func=fitness_wrapper,
                            sol_per_pop=100,
@@ -149,7 +197,7 @@ def generate_schedule(courses_cleaned, semester):
     best_schedule = decode_chromosome(solution, courses_cleaned, possible_days, possible_time_slots, possible_lab_days, classrooms)
     best_schedule_df = pd.DataFrame(best_schedule)
     
-    output_path = f'Best_Schedule_{semester.capitalize()}.csv'
+    output_path = f'Excel/Best_Schedule_{semester.capitalize()}.csv'
     best_schedule_df.to_csv(output_path, index=False)
     
     return output_path
@@ -188,6 +236,8 @@ def generate_visual_timetable(schedule_df, semester):
             room_day_offset[room_day_key] = (i * len(days) + j) * classroom_height
 
     for _, course in schedule_df.iterrows():
+        if 'IsHeader' in course and course['IsHeader']:
+            continue
         day_indices = [days.index(d) for d in course['Days']]
         start_time_index = times.index(course['Time Start'])
         end_time_index = times.index(course['Time End'])
@@ -209,4 +259,5 @@ def generate_visual_timetable(schedule_df, semester):
 spring_schedule_path = generate_schedule(spring_courses, 'spring')
 fall_schedule_path = generate_schedule(fall_courses, 'fall')
 
+# Print the paths to the generated schedules
 print(spring_schedule_path, fall_schedule_path)
