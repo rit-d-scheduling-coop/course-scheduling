@@ -87,5 +87,5 @@ def visualize_schedule(file_path):
     plt.show()
 
 # Call the function with the path to your CSV files
-visualize_schedule('Best_Schedule_Fall.csv')
-visualize_schedule('Best_Schedule_Spring.csv')
+visualize_schedule('./Excel/Best_Schedule_Fall.csv')
+visualize_schedule('./Excel/Best_Schedule_Spring.csv')
