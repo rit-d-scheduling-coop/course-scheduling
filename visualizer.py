@@ -8,11 +8,24 @@ def visualize_schedule(file_path):
     df = pd.read_csv(file_path)
     
     # Convert time strings to datetime objects
-    df['Time Start'] = pd.to_datetime(df['Time Start'], format='%H:%M').dt.time
-    df['Time End'] = pd.to_datetime(df['Time End'], format='%H:%M').dt.time
+    def parse_time(time_str):
+        try:
+            return pd.to_datetime(time_str, format='%H:%M').time()
+        except ValueError:
+            try:
+                return pd.to_datetime(time_str, format='%H:%M:%S').time()
+            except ValueError:
+                try:
+                    return pd.to_datetime(time_str, format='%I:%M %p').time()
+                except ValueError:
+                    return pd.to_datetime('19:00', format='%H:%M').time()
+
+    df['Time Start'] = df['Time Start'].apply(parse_time)
+    df['Time End'] = df['Time End'].apply(parse_time)
     
     # Create a unique identifier for each class
-    df['Class'] = df['Subject'] + ' ' + df['Cat#'].astype(str) + ' ' + df['Sect#'].astype(str)
+    df['Class'] = df['Subject'].astype(str) + ' ' + df['Cat#'].astype(str) + ' ' + df['Sect#'].astype(str)
+    
     
     # Handle mixed data types in 'Room #' column
     df['Room #'] = df['Room #'].astype(str)
@@ -47,7 +60,7 @@ def visualize_schedule(file_path):
                 else:
                     overlaps[key] = [row['Class']]
         
-        # Plot the classes, combining overlaps
+       # Plot the classes, combining overlaps
         for (room, start, end), classes in overlaps.items():
             duration = end - start
             rect = ax.barh(room, duration, left=start, height=0.5, align='center', 
@@ -57,7 +70,7 @@ def visualize_schedule(file_path):
             rx, ry = rect[0].get_xy()
             cx = rx + rect[0].get_width()/2.0
             cy = ry + rect[0].get_height()/2.0
-            label = ' / '.join(classes)
+            label = ' / '.join(str(c) for c in classes)  # Convert each class to string
             ax.text(cx, cy, label, ha='center', va='center', rotation=0, 
                     fontsize=8, color='black', fontweight='bold')
         
