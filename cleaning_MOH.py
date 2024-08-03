@@ -107,23 +107,28 @@ def fill_missing_values(df):
 df_fall_2023_filtered_corrected = fill_missing_values(df_fall_2023_filtered_corrected)
 df_spring_2024_filtered_corrected = fill_missing_values(df_spring_2024_filtered_corrected)
 
-# Fill '""""' values with the value from the row above
+# Fill '""""' values with the value from the row above, skipping department headers
 def fill_empty_values_with_above(df):
-    for column in df.columns:
-        df[column] = df[column].replace('"', pd.NA)
-    df = df.fillna(method='ffill')
-    return df
-
-# Apply forward fill to the entire DataFrame
-def forward_fill(df):
-    return df.fillna(method='ffill')
+    # Identify department headers
+    is_header = df.apply(lambda row: pd.isna(row['Class #']) and pd.isna(row['Subject']) and pd.isna(row['Cat#']) and pd.isna(row['Sect#']) and not pd.isna(row['Course Name']), axis=1)
+    
+    # Separate headers and non-headers
+    headers = df[is_header].copy()
+    non_headers = df[~is_header].copy()
+    
+    # Fill non-header rows
+    for column in non_headers.columns:
+        non_headers[column] = non_headers[column].replace('"', pd.NA)
+    non_headers = non_headers.fillna(method='ffill')
+    
+    # Combine headers and filled non-headers
+    df_combined = pd.concat([headers, non_headers]).sort_index().reset_index(drop=True)
+    
+    return df_combined
 
 # Apply fill_empty_values_with_above first, then forward fill
 df_fall_2023_filtered_corrected = fill_empty_values_with_above(df_fall_2023_filtered_corrected)
 df_spring_2024_filtered_corrected = fill_empty_values_with_above(df_spring_2024_filtered_corrected)
-
-df_fall_2023_filtered_corrected = forward_fill(df_fall_2023_filtered_corrected)
-df_spring_2024_filtered_corrected = forward_fill(df_spring_2024_filtered_corrected)
 
 # Remove 'hidden section' values
 def remove_hidden_section(df):
@@ -134,8 +139,8 @@ df_fall_2023_filtered_corrected = remove_hidden_section(df_fall_2023_filtered_co
 df_spring_2024_filtered_corrected = remove_hidden_section(df_spring_2024_filtered_corrected)
 
 # Save the updated filtered data to new CSV files
-csv_fall_2023_filtered_corrected_updated_v2 = 'Fall_2023_Filtered_Corrected_Updated_v2.csv'
-csv_spring_2024_filtered_corrected_updated_v2 = 'Spring_2024_Filtered_Corrected_Updated_v2.csv'
+csv_fall_2023_filtered_corrected_updated_v4 = 'Fall_2023_Filtered_Corrected_Updated_v4.csv'
+csv_spring_2024_filtered_corrected_updated_v4 = 'Spring_2024_Filtered_Corrected_Updated_v4.csv'
 
-df_fall_2023_filtered_corrected.to_csv(csv_fall_2023_filtered_corrected_updated_v2, index=False)
-df_spring_2024_filtered_corrected.to_csv(csv_spring_2024_filtered_corrected_updated_v2, index=False)
+df_fall_2023_filtered_corrected.to_csv(csv_fall_2023_filtered_corrected_updated_v4, index=False)
+df_spring_2024_filtered_corrected.to_csv(csv_spring_2024_filtered_corrected_updated_v4, index=False)
