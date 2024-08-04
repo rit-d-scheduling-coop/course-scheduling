@@ -49,8 +49,8 @@ def get_all_prerequisites(course, prerequisites, all_prereqs=None):
     return all_prereqs
 
 # Load and preprocess the spring and fall course data
-spring_courses_df, spring_courses = load_and_preprocess('Spring_2024_Filtered_Corrected.csv', 'spring')
-fall_courses_df, fall_courses = load_and_preprocess('Fall_2023_Filtered_Corrected.csv', 'fall')
+spring_courses_df, spring_courses = load_and_preprocess('./Excel/Spring_2024_Filtered_Corrected_Updated_v2.csv', 'spring')
+fall_courses_df, fall_courses = load_and_preprocess('./Excel/Fall_2023_Filtered_Corrected_Updated_v2.csv', 'fall')
 
 # Load prerequisites data
 prerequisites = load_prerequisites('Excel/prerequisites.csv')
