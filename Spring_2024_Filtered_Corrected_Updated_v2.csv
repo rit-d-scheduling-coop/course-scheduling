@@ -1,0 +1,179 @@
+Class #,Subject,Cat#,Sect#,Course Name,Hrs,Instructor,Enr Cap,Days,Time Start,Time End,Classroom Type,Room #
+,,,,COMPUTING,,,,,,,,
+50303,GCIS,123,600,Software Devel and Problem Solving I,6.0,Mehtab,30,MWF,09:00:00,10:50:00,Regular Classroom (30 Cap),
+50350,GCIS,123,601,Software Devel and Problem Solving I,6.0,Mehtab,30,TR,09:00:00,11:50:00,Regular Classroom (30 Cap),
+50465,GCIS,123,602,Software Devel and Problem Solving I,6.0,TBD,30,MW,14:35:00,17:25:00,Regular Classroom (30 Cap),
+57295,GCIS,123,603,Software Devel and Problem Solving I,6.0,Ali Assi,30,TR,09:00:00,11:50:00,Regular Classroom (30 Cap),
+57296,GCIS,123,604,Software Devel and Problem Solving I,6.0,Danilo Kovacevic,30,TR,15:00:00,17:50:00,Regular Classroom (30 Cap),
+50304,GCIS,124,600,Software Devel and Problem Solving II,6.0,Danilo Kovacevic,30,MWF,09:00:00,10:50:00,Regular Classroom (30 Cap),
+50305,GCIS,124,601,Software Devel and Problem Solving II,6.0,Mehtab,30,TR,12:00:00,14:50:00,Regular Classroom (30 Cap),
+50306,GCIS,124,602,Software Devel and Problem Solving II,6.0,Mehtab,30,MW,14:35:00,17:25:00,Regular Classroom (30 Cap),
+50307,GCIS,124,603,Software Devel and Problem Solving II,6.0,Akpinar,30,TR,12:00:00,14:50:00,Regular Classroom (30 Cap),
+50426,GCIS,124,604,Software Devel and Problem Solving II,6.0,Danilo Kovacevic,30,TR,09:00:00,11:50:00,Regular Classroom (30 Cap),
+50427,GCIS,124,605,Software Devel and Problem Solving II,6.0,Danilo Kovacevic,30,MW,13:05:00,15:55:00,Regular Classroom (30 Cap),
+50140,ISTE,230,600,Intro to Database,3.0,Al-Tawli,30,TR,09:00:00,10:20:00,Regular Classroom (30 Cap),online
+50417,ISTE,230,601,Intro to Database,3.0,Al-Tawli,30,MWF,09:00:00,09:55:00,Regular Classroom (30 Cap),online
+57305,ISTE,230,602,Intro to Database,3.0,Ali Assi,30,MW,13:05:00,14:25:00,Regular Classroom (30 Cap),online
+57306,ISTE,230,603,Intro to Database,3.0,Ali Assi,30,TR,13:30:00,14:50:00,Regular Classroom (30 Cap),online
+50285,NSSA,221,600,Systems Administration I,2.0,Qatawneh,24,M,13:05:00,14:55:00,Regular Classroom (30 Cap),online
+50286,NSSA,221,60L1,Systems Administration I Lab,2.0,Hassib,24,W,13:05:00,14:55:00,Computing Security Lab (D316),online
+50430,NSSA,221,601,Systems Administration I,2.0,Qatawneh,24,W,13:05:00,14:55:00,Regular Classroom (30 Cap),online
+50431,NSSA,221,60L2,Systems Administration I Lab,2.0,Hassib,24,M,13:05:00,14:55:00,Computing Security Lab (D316),online
+50432,NSSA,221,602,Systems Administration I,2.0,Qatawneh,24,T,09:00:00,10:50:00,Regular Classroom (30 Cap),online
+50433,NSSA,221,60L3,Systems Administration I Lab,2.0,Hassib,24,R,09:00:00,10:50:00,Computing Security Lab (D316),online
+57414,NSSA,221,603,Systems Administration I,2.0,TBD,24,R,09:00:00,10:50:00,Regular Classroom (30 Cap),online
+57415,NSSA,221,60L4,Systems Administration I Lab,2.0,TBD,24,T,09:00:00,10:50:00,Computing Security Lab (D316),online
+50063,NSSA,241,600,Intro to Routing and Switching,2.0,TBD,24,M,13:05:00,14:55:00,Regular Classroom (30 Cap),online
+50064,NSSA,241,60L1,Intro to Routing and Switching Lab,2.0,Hassib,24,W,13:05:00,14:55:00,Computer Networking Lab (D313),online
+50254,NSSA,241,601,Intro to Routing and Switching,2.0,TBD,24,W,13:05:00,14:55:00,Regular Classroom (30 Cap),online
+50255,NSSA,241,60L2,Intro to Routing and Switching Lab,2.0,Hassib,24,M,13:05:00,14:55:00,Computer Networking Lab (D313),online
+50413,NSSA,241,602,Intro to Routing and Switching,2.0,TBD,24,T,11:10:00,13:00:00,Regular Classroom (30 Cap),online
+50415,NSSA,241,60L3,Intro to Routing and Switching Lab,2.0,Hassib,24,R,11:10:00,13:00:00,Computer Networking Lab (D313),online
+50414,NSSA,241,603,Intro to Routing and Switching,2.0,TBD,24,R,11:10:00,13:00:00,Regular Classroom (30 Cap),online
+50416,NSSA,241,60L4,Intro to Routing and Switching Lab,2.0,Hassib,24,T,11:10:00,13:00:00,Computer Networking Lab (D313),online
+57299,NSSA,241,604,Intro to Routing and Switching,2.0,TBD,24,T,13:05:00,14:55:00,Regular Classroom (30 Cap),online
+57300,NSSA,241,60L5,Intro to Routing and Switching Lab,2.0,Hassib,24,R,13:05:00,14:55:00,Computer Networking Lab (D313),online
+50142,NSSA,245,600,Network Services,2.0,Omar Abdul Latif,24,M,10:05:00,11:55:00,Regular Classroom (30 Cap),online
+50143,NSSA,245,60L1,Network Services Lab,2.0,Hassib,24,W,10:05:00,11:55:00,Computer Networking Lab (D313),online
+50434,NSSA,245,601,Network Services,2.0,Omar Abdul Latif,24,W,10:05:00,11:55:00,Regular Classroom (30 Cap),online
+50435,NSSA,245,60L2,Network Services Lab,2.0,Hassib,24,M,10:05:00,11:55:00,Computer Networking Lab (D313),online
+57207,NSSA,245,602,Network Services,2.0,Omar Abdul Latif,24,T,09:00:00,10:50:00,Regular Classroom (30 Cap),online
+57210,NSSA,245,60L3,Network Services Lab,2.0,Hassib,24,R,09:00:00,10:50:00,Computer Networking Lab (D313),online
+57208,NSSA,245,603,Network Services,2.0,TBD,24,R,09:00:00,10:50:00,Regular Classroom (30 Cap),online
+57211,NSSA,245,60L4,Network Services Lab,2.0,Hassib,24,T,09:00:00,10:50:00,Computer Networking Lab (D313),online
+57209,NSSA,245,604,Network Services,2.0,TBD,24,W,09:00:00,10:50:00,Regular Classroom (30 Cap),online
+57212,NSSA,245,60L5,Network Services Lab,2.0,Hassib,24,F,09:00:00,10:50:00,Computing Security Lab (D316),online
+57301,SWEN,256,600,Software Process and Project Management,3.0,Almajali ???,30,MWF,09:00:00,09:55:00,Computing Security Lab (D316),online
+50369,SWEN,262,600,Engineering of Software Subsystems,3.0,Saadeh,30,TR,09:00:00,10:20:00,Open Computer Lab (D112),online
+50369,SWEN,262,600,BS COMPUTING SECURITY,3.0,Saadeh,30,TR,09:00:00,10:20:00,Open Computer Lab (D112),online
+50056,CSEC,99,600,Coop Education Seminar,1.0,TBD,24,TR,09:00:00,10:20:00,Open Computer Lab (D112),online
+50315,CSEC,99,601,Coop Education Seminar,1.0,TBD,24,TR,09:00:00,10:20:00,Open Computer Lab (D112),online
+50246,CSEC,140,600,Introduction to Cybersecurity,3.0,Qusai Hassan,30,TR,13:30:00,14:50:00,Regular Classroom (30 Cap),online
+57546,CSEC,201,600,Programming for Information Security,3.0,Saadeh,30,TR,13:30:00,14:50:00,Regular Classroom (30 Cap),online
+50239,CSEC,202,600,Reverse Engineering Fundamentals,3.0,Abu Khusa ?,30,TR,12:00:00,13:20:00,Regular Classroom (30 Cap),online
+50382,CSEC,202,601,Reverse Engineering Fundamentals,3.0,Abu Khusa ?,30,MW,13:05:00,14:25:00,Regular Classroom (30 Cap),online
+57303,CSEC,202,602,Reverse Engineering Fundamentals,3.0,Abu Khusa ?,30,TR,13:30:00,14:50:00,Regular Classroom (30 Cap),online
+50139,CSEC,380,600,Prin Web Application Security,3.0,Wesam Almobaideen,30,MW,13:05:00,14:25:00,Regular Classroom (30 Cap),D207
+57256,CSEC,380,601,Prin Web Application Security,3.0,TBD,30,TR,10:30:00,11:50:00,Regular Classroom (30 Cap),D207
+50184,CSEC,462,600,Network Security and Forensics,2.0,Akpinar,24,W,09:00:00,10:50:00,Regular Classroom (30 Cap),D207
+50194,CSEC,462,600L,NW Security and Forensics Lab,2.0,Akpinar,24,F,09:00:00,10:50:00,Computing Security Lab (D316),D207
+50289,CSEC,464,600,Computer Systems Forensics,3.0,Khalil AlHussaeni,30,M,18:00:00,21:00:00,Computing Security Lab (D316),D207
+50289,CSEC,470,600,Covert Communications,3.0,Khalil AlHussaeni,30,M,18:00:00,21:00:00,Computing Security Lab (D316),D207
+50388,CSEC,471,600,Penetration Testing Frameworks & Methodologies,3.0,Akpinar,TBD,TR,09:00:00,10:20:00,Regular Classroom (30 Cap),D207
+57310,CSEC,471,601,Penetration Testing Frameworks & Methodologies,3.0,Akpinar,TBD,MW,14:35:00,15:55:00,Open Computer Lab (D112),D207
+50290,CSEC,472,600,Authent. & Security Models,3.0,Wesam Almobaideen,30,TR,12:00:00,13:20:00,Open Computer Lab (D112),D207
+57218,CSEC,472,601,Authent. & Security Models,3.0,Wesam Almobaideen,30,MW,14:35:00,15:55:00,Open Computer Lab (D112),Hidden
+57219,CSEC,490,600,Capstone in CSEC,3.0,Osama Abdulrahman,30,TR,16:30:00,17:50:00,Open Computer Lab (D112),Hidden
+50161,CSEC,499,600,Coop Ed in CSEC,0.0,TBD,30,TR,16:30:00,17:50:00,Open Computer Lab (D112),Hidden
+57220,CSEC,520,600,Cyber Analytics and Machine Learning,3.0,TBD,30,MW,13:05:00,14:25:00,Regular Classroom (30 Cap),Hidden
+57220,CSEC,520,600,BS CIT,3.0,TBD,30,MW,13:05:00,14:25:00,Regular Classroom (30 Cap),Hidden
+50275,CSEC,102,600,Information Assurance and Security,3.0,TBD,30,TR,12:00:00,13:20:00,Regular Classroom (30 Cap),Hidden
+50276,CSEC,102,601,Information Assurance and Security,3.0,TBD,30,MW,15:00:00,16:20:00,Regular Classroom (30 Cap),Hidden
+50419,CSEC,102,602,Information Assurance and Security,3.0,TBD,30,TR,09:00:00,10:20:00,Regular Classroom (30 Cap),Hidden
+57204,CSEC,102,603,Information Assurance and Security,3.0,TBD,30,MWF,09:00:00,09:55:00,Regular Classroom (30 Cap),Hidden
+57302,CSEC,102,604,Information Assurance and Security,3.0,TBD,30,MWF,11:10:00,12:05:00,Regular Classroom (30 Cap),Hidden
+50057,ISTE,99,600,IST 2nd Year Seminar,1.0,TBD,24,MWF,11:10:00,12:05:00,Regular Classroom (30 Cap),Hidden
+50141,ISTE,240,600,Web & Mobile II,3.0,Saadeh,28,TR,10:30:00,11:50:00,Regular Classroom (30 Cap),Hidden
+50399,ISTE,240,601,Web & Mobile II,3.0,Saadeh,28,MW,13:05:00,14:25:00,Regular Classroom (30 Cap),Hidden
+57230,ISTE,240,602,Web & Mobile II,3.0,Saadeh,28,MW,16:05:00,17:25:00,Regular Classroom (30 Cap),Hidden
+50400,ISTE,330,600,Database Connectivity and Access (concentration),3.0,Khalil AlHussaeni,TBD,TR,13:30:00,14:50:00,Regular Classroom (30 Cap),Hidden
+50428,ISTE,430,600,Information Requirement Modeling,3.0,Martin Zager,30,MW,13:05:00,14:25:00,Regular Classroom (30 Cap),Hidden
+50162,ISTE,499,600,Undergrad Coop,0.0,TBD,30,MW,13:05:00,14:25:00,Regular Classroom (30 Cap),Hidden
+50059,ISTE,501,600,CIT Senior Devel Project II,3.0,Osama Abdulrahman,30,TR,16:30:00,17:50:00,Digital Transformation Lab (D018),Hidden
+50061,NSSA,102,600,Comp System Concepts,2.0,Qusai Hassan,30,T,09:00:00,10:50:00,Regular Classroom (30 Cap),Hidden
+50062,NSSA,102,60L1,Comp System Concepts Lab,2.0,Qusai Hassan,30,R,09:00:00,10:50:00,Regular Classroom (30 Cap),lab is preferrable
+57315,NSSA,102,601,Comp System Concepts,2.0,Qusai Hassan,30,M,09:00:00,10:50:00,Regular Classroom (30 Cap),lab is preferrable
+57316,NSSA,102,60L2,Comp System Concepts Lab,2.0,Qusai Hassan,30,W,09:00:00,10:50:00,Regular Classroom (30 Cap),lab is preferrable
+57317,NSSA,102,602,Comp System Concepts,2.0,Qusai Hassan,30,M,13:05:00,14:55:00,Regular Classroom (30 Cap),lab is preferrable
+57318,NSSA,102,60L3,Comp System Concepts Lab,2.0,Qusai Hassan,30,W,13:05:00,14:55:00,Regular Classroom (30 Cap),lab is preferrable
+57416,NSSA,244,600,Virtualization,3.0,Omar Abdul Latif,30,TR,12:00:00,13:20:00,Regular Classroom (30 Cap),lab is preferrable
+57320,NSSA,370,600,Project management,3.0,Almajali,30,TR,09:00:00,10:20:00,Regular Classroom (30 Cap),Online
+50436,NSSA,441,600,Advanced Routing and Switching,3.0,TBD,30,MW,13:05:00,14:25:00,Computer Networking Lab (D313),Online
+50230,NSSA,443,600,Network design and performance,3.0,TBD,30,MW,14:35:00,15:55:00,Computer Networking Lab (D313),Online
+50230,NSSA,443,600,MATH/SCIENCE,3.0,TBD,30,MW,14:35:00,15:55:00,Computer Networking Lab (D313),Online
+50206,BIOG,140,600,Cell & Molecular Biology for Engnrs I,2.0,Abushirdaneh,24,M,09:00:00,10:50:00,Biology Lab (B107),B107
+50207,BIOG,140,60L1,Cell & Molecular Biology for Engnrs I Lab,3.0,Abushirdaneh,24,W,09:00:00,11:50:00,Biology Lab (B107),B107
+57404,BIOG,140,601,Cell & Molecular Biology for Engnrs I,2.0,Abushirdaneh,24,M,13:05:00,14:55:00,Biology Lab (B107),B107
+57405,BIOG,140,60L2,Cell & Molecular Biology for Engnrs I Lab,3.0,Abushirdaneh,24,W,13:05:00,15:55:00,Biology Lab (B107),B107
+57776,BIOG,140,602,Cell & Molecular Biology for Engnrs I,2.0,Abushirdaneh,24,T,09:30:00,11:20:00,Biology Lab (B107),B107
+57777,BIOG,140,60L3,Cell & Molecular Biology for Engnrs I Lab,3.0,Abushirdaneh,24,R,15:00:00,17:50:00,Biology Lab (B107),B107
+50409,BIOG,240,600,Cell & Molecular Biology for Engnrs II,2.0,Abushirdaneh,24,R,15:00:00,17:50:00,Biology Lab (B107),B107
+50410,BIOG,240,60L1,Cell & Molecular Biology for Engnrs II Lab,3.0,Abushirdaneh,24,R,15:00:00,17:50:00,Biology Lab (B107),B107
+50049,BIOL,101,600,General Biology I,3.0,Hassan,30,MW,13:05:00,14:25:00,Biology Lab (B107),B107
+50164,BIOL,101,601,General Biology I,3.0,Hassan,30,MW,14:35:00,15:55:00,Biology Lab (B107),B107
+50463,BIOL,101,602,General Biology I,3.0,Vahora,30,MWF,10:05:00,11:10:00,Biology Lab (B107),B107
+50266,BIOL,102,600,Gen Biology II,3.0,Amawi,30,MW,13:05:00,14:25:00,Regular Classroom (30 Cap),C107
+57200,BIOL,102,601,Gen Biology II,3.0,Amawi,30,MW,14:35:00,15:55:00,Regular Classroom (30 Cap),C107
+57403,BIOL,102,602,Gen Biology II,3.0,Amawi,30,TR,13:30:00,14:50:00,Regular Classroom (30 Cap),C107
+50267,BIOL,104,600,Gen Biology II Lab,3.0,Hassan,24,T,13:30:00,16:20:00,Biology Lab (B107),B107
+57201,BIOL,104,601,Gen Biology II Lab,3.0,Hassan,24,F,09:00:00,11:50:00,Biology Lab (B107),B107
+50209,CHMG,141,600,General and Analytical Chemistry I,3.0,Vahora,30,MWF,09:00:00,09:55:00,Chemistry Lab (B106),B106
+50210,CHMG,141,601,General and Analytical Chemistry I,3.0,Durrani,30,MW,13:05:00,14:25:00,Chemistry Lab (B106),B106
+50411,CHMG,141,602,General and Analytical Chemistry I,3.0,Durrani,30,MW,14:35:00,15:55:00,Chemistry Lab (B106),B106
+57203,CHMG,141,603,General and Analytical Chemistry I,3.0,Durrani,30,TR,10:30:00,11:50:00,Chemistry Lab (B106),B106
+50277,CHMG,142,600,General and Analytical Chemistry II,3.0,Amawi,30,TR,12:00:00,13:20:00,Regular Classroom (30 Cap),C107
+50412,CHMG,146,600,General and Analytical Chemistry II Lab,3.0,Durrani,30,TR,13:30:00,14:50:00,Chemistry Lab (B106),B106
+50030,MATH,90,600,Algebra,3.0,Madiha Farman,30,TR,13:30:00,14:50:00,Chemistry Lab (B106),B106
+50030,MATH,90,601,Algebra,3.0,TBD,30,TR,13:30:00,14:50:00,Chemistry Lab (B106),B106
+50031,MATH,101,600,College Algebra,3.0,Nagshineh,30,TR,09:00:00,10:20:00,Regular Classroom (46 Cap),B106
+50406,MATH,101,601,College Algebra,3.0,Haroon Moidu,30,MWF,10:05:00,11:00:00,Regular Classroom (46 Cap),B106
+57407,MATH,101,602,College Algebra,3.0,Haroon Moidu,30,MW,13:05:00,14:25:00,Regular Classroom (46 Cap),B106
+57408,MATH,101,603,College Algebra,3.0,Madiha Farman,30,TR,16:30:00,17:50:00,Regular Classroom (46 Cap),B106
+50032,MATH,111,600,Precalculus,3.0,Madiha Farman,30,MWF,11:10:00,12:05:00,Regular Classroom (30 Cap),B106
+50198,MATH,111,60R1,Precalculus Recitation,1.0,Madiha Farman,30,MWF,11:10:00,12:05:00,Regular Classroom (30 Cap),B106
+50356,MATH,111,601,Precalculus,3.0,Ali Sayyad,30,TR,13:30:00,14:50:00,Regular Classroom (30 Cap),B106
+50357,MATH,111,60R2,Precalculus Recitation,1.0,Ali Sayyad,30,online,13:30:00,14:50:00,Regular Classroom (30 Cap),B106
+50033,MATH,131,600,Discrete Math,4.0,Al-Khamaiseh,30,MW,09:00:00,10:50:00,Regular Classroom (46 Cap),B106
+50405,MATH,131,601,Discrete Math,4.0,Al-Khamaiseh,30,TR,10:30:00,12:20:00,Regular Classroom (46 Cap),B106
+57232,MATH,131,602,Discrete Math,4.0,Muhammad Jamil,30,MW,13:30:00,15:20:00,Regular Classroom (46 Cap),B106
+57232,MATH,131,603,Discrete Math,4.0,TBD,30,MW,13:30:00,15:20:00,Regular Classroom (46 Cap),B106
+50174,MATH,161,600,Applied Calculus,4.0,Nagshineh,30,MW,10:05:00,11:55:00,Regular Classroom (46 Cap),B106
+50330,MATH,161,601,Applied Calculus,4.0,Nagshineh,30,MW,13:05:00,14:55:00,Regular Classroom (46 Cap),B106
+50404,MATH,161,602,Applied Calculus,4.0,Nagshineh,30,TR,12:00:00,13:50:00,Regular Classroom (46 Cap),B106
+50175,MATH,181,600,Calculus I,5.0,Belal Alkhamaiseh,30,MW,13:05:00,14:55:00,Regular Classroom (46 Cap),B106
+50175,MATH,181,600,Recitation,1.0,Madiha Farman,30,M,15:00:00,15:55:00,Regular Classroom (30 Cap),B106
+50034,MATH,181,601,Calculus I,5.0,Belal Alkhamaiseh,30,TR,13:30:00,15:20:00,Regular Classroom (30 Cap),B106
+57571,MATH,181,601,Recitation,1.0,Madiha Farman,30,T,15:25:00,16:20:00,Regular Classroom (30 Cap),B106
+50035,MATH,181,602,Calculus I,5.0,Muhammad Jamil,30,MW,09:00:00,10:50:00,Regular Classroom (46 Cap),B106
+50035,MATH,181,602,Recitation,1.0,Muhammad Jamil,30,F,10:05:00,11:00:00,Regular Classroom (30 Cap),B106
+57409,MATH,181,603,Calculus I,5.0,TBD,30,F,10:05:00,11:00:00,Regular Classroom (30 Cap),B106
+57409,',',603,Recitation,1.0,TBD,30,F,10:05:00,11:00:00,Regular Classroom (30 Cap),B106
+50036,MATH,182,600,Calculus II,5.0,Jameel Maki,30,MW,10:05:00,11:55:00,Regular Classroom (46 Cap),C-209 or C-210
+50036,MATH,182,600,Recitation,1.0,Madiha Farman,30,F,10:05:00,11:00:00,Regular Classroom (30 Cap),C-209 or C-210
+50037,MATH,182,601,Calculus II,5.0,Jameel Maki,30,F,10:05:00,11:00:00,Regular Classroom (30 Cap),C-209 or C-210
+57567,MATH,182,601,Recitation,1.0,Madiha Farman,30,F,10:05:00,11:00:00,Regular Classroom (30 Cap),C-209 or C-210
+50331,MATH,182,602,Calculus II,5.0,Ali Sayyad,30,TR,10:30:00,12:20:00,Regular Classroom (30 Cap),C-209 or C-210
+57568,MATH,182,602,Recitation,1.0,Madiha Farman,30,R,12:25:00,13:20:00,Regular Classroom (30 Cap),C-209 or C-210
+50402,MATH,182,603,Calculus II,5.0,Ali Sayyad,30,MW,13:05:00,14:55:00,Regular Classroom (46 Cap),C-209 or C-210
+50402,MATH,182,603,Recitation,1.0,Madiha Farman,30,W,15:00:00,15:55:00,Regular Classroom (46 Cap),C-209 or C-210
+50402,MATH,182,604,Calculus II,6.0,TBD,30,W,15:00:00,15:55:00,Regular Classroom (46 Cap),C-209 or C-210
+50402,MATH,182,604,Recitation,2.0,TBD,30,W,15:00:00,15:55:00,Regular Classroom (46 Cap),C-209 or C-210
+50459,MATH,190,600,Discrete Mathematics for Computing,3.0,Jeya Kumar,30,TR,10:30:00,11:50:00,Regular Classroom (30 Cap),C-209 or C-210
+50460,MATH,190,60R1,Recitation,1.0,Jeya Kumar,30,TR,10:30:00,11:50:00,Regular Classroom (30 Cap),C-209 or C-210
+57233,MATH,190,601,Discrete Mathematics for Computing,3.0,Abdul Kareem Yaseen,30,TR,15:00:00,16:20:00,Regular Classroom (46 Cap),C-209 or C-210
+57234,MATH,190,60R2,Recitation,1.0,Abdul Kareem Yaseen,30,TR,15:00:00,16:20:00,Regular Classroom (46 Cap),C-209 or C-210
+57234,MATH,190,602,Discrete Mathematics for Computing,3.0,TBD,30,TR,15:00:00,16:20:00,Regular Classroom (30 Cap),C-209 or C-210
+57234,MATH,190,60R3,Recitation,1.0,TBD,30,TR,15:00:00,16:20:00,Regular Classroom (30 Cap),C-209 or C-210
+50038,MATH,219,600,Multivariable Calculus,3.0,Salameh Ahmad,30,TR,10:30:00,11:50:00,Regular Classroom (30 Cap),C-209 or C-210
+50244,MATH,220,600,Vector Calculus,1.0,Manisha Kankarej,30,F,09:00:00,09:55:00,Regular Classroom (30 Cap),C-209 or C-210
+57235,MATH,221,600,Multivar & Vector Calculus,4.0,Salameh Ahmad,30,MW,10:05:00,11:50:00,Regular Classroom (30 Cap),C-209 or C-210
+50039,MATH,231,600,Differential Equations,3.0,Borghol,30,MW,13:05:00,14:25:00,Regular Classroom (46 Cap),C-209 or C-210
+50039,MATH,231,601,Differential Equations,3.0,Borghol,30,MW,13:05:00,14:25:00,Regular Classroom (46 Cap),C-209 or C-210
+50040,MATH,233,600,Linear Systems and Diff Eq,4.0,Manisha Kankarej,30,MW,13:05:00,14:55:00,Regular Classroom (46 Cap),C-209 or C-210
+50041,MATH,241,600,Linear Algebra,3.0,Borghol,30,TR,09:00:00,10:20:00,Regular Classroom (46 Cap),C-209 or C-210
+50176,MATH,241,601,Linear Algebra,3.0,Borghol,30,TR,12:00:00,13:20:00,Regular Classroom (46 Cap),C-209 or C-210
+57733,MATH,241,602,Linear Algebra,3.0,Borghol,30,MW,16:05:00,17:25:00,Regular Classroom (46 Cap),any class to have 15 to 18 seats if possible.
+50045,PHYS,111,600,College Physics I (will not be offered),4.0,Ahmad,30,MW,16:05:00,17:25:00,Regular Classroom (46 Cap),any class to have 15 to 18 seats if possible.
+50046,PHYS,111,60L1,College Physics I Workshop (will not be offered),2.0,TBD,30,MW,16:05:00,17:25:00,Regular Classroom (46 Cap),any class to have 15 to 18 seats if possible.
+50047,PHYS,211,600,Univ Physics I,6.0,Ahmad,30,TR,13:30:00,16:20:00,Regular Classroom (46 Cap),any class to have 15 to 18 seats if possible.
+50048,PHYS,212,600,Univ Physics II,6.0,Ahmad,30,MW,14:35:00,17:25:00,Regular Classroom (30 Cap),any class to have 15 to 18 seats if possible.
+57417,PHYS,212,601,Univ Physics II,6.0,Ahmad (please cancel this section as per agreed with Ellen,30,TR,09:00:00,11:50:00,Regular Classroom (30 Cap),any class to have 15 to 18 seats if possible.
+50042,STAT,145,600,Introduction to Statistics I,3.0,Manisha Kankarej,30,TR,10:30:00,11:50:00,Regular Classroom (46 Cap),any class to have 15 to 18 seats if possible.
+50333,STAT,145,601,Introduction to Statistics I,3.0,Manisha Kankarej,30,TR,13:30:00,14:50:00,Regular Classroom (46 Cap),any class to have 15 to 18 seats if possible.
+50384,STAT,145,602,Introduction to Statistics I,3.0,Muhammad Jamil,30,MWF,11:10:00,12:05:00,Regular Classroom (46 Cap),any class to have 15 to 18 seats if possible.
+57226,STAT,145,603,Introduction to Statistics I,3.0,Abdul Kareem Yaseen,30,TR,16:30:00,17:50:00,Regular Classroom (30 Cap),any class to have 15 to 18 seats if possible.
+57226,STAT,145,604,Introduction to Statistics I,3.0,TBD,30,TR,16:30:00,17:50:00,Regular Classroom (30 Cap),any class to have 15 to 18 seats if possible.
+50043,STAT,146,600,Introduction to Statistics II,4.0,Jameel Maki,30,MW,14:35:00,16:25:00,Open Computer Lab (E218),one of the computer labs
+50138,STAT,146,601,Introduction to Statistics II,4.0,Muhammad Jamil,30,TR,15:00:00,16:50:00,Open Computer Lab (E218),one of the computer labs
+50385,STAT,146,602,Introduction to Statistics II,4.0,Jameel Maki,30,TR,15:00:00,16:50:00,Open Computer Lab (E218),one of the computer labs
+50044,STAT,205,600,Applied Statistics,3.0,Manisha Kankarej,30,MWF,10:05:00,11:00:00,Regular Classroom (30 Cap),one of the computer labs
