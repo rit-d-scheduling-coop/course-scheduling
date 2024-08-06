@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Load the uploaded Excel file
-file_path = '2023-2024 Plan for Dept Heads.xlsx'
+file_path = 'Excel/2023-2024 Plan for Dept Heads.xlsx'
 xls = pd.ExcelFile(file_path)
 
 # Load the Fall 2023 and Spring 2024 tabs with header at the correct row
@@ -139,8 +139,8 @@ df_fall_2023_filtered_corrected = remove_hidden_section(df_fall_2023_filtered_co
 df_spring_2024_filtered_corrected = remove_hidden_section(df_spring_2024_filtered_corrected)
 
 # Save the updated filtered data to new CSV files
-csv_fall_2023_filtered_corrected_updated_v4 = 'Fall_2023_Filtered_Corrected_Updated_v4.csv'
-csv_spring_2024_filtered_corrected_updated_v4 = 'Spring_2024_Filtered_Corrected_Updated_v4.csv'
+csv_fall_2023_filtered_corrected_updated_v4 = 'Excel/Fall_2023_Filtered_Corrected_Updated_v4.csv'
+csv_spring_2024_filtered_corrected_updated_v4 = 'Excel/Spring_2024_Filtered_Corrected_Updated_v4.csv'
 
 df_fall_2023_filtered_corrected.to_csv(csv_fall_2023_filtered_corrected_updated_v4, index=False)
 df_spring_2024_filtered_corrected.to_csv(csv_spring_2024_filtered_corrected_updated_v4, index=False)
