@@ -107,6 +107,8 @@ def separate_courses(courses):
 def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms):
     schedule = []
     num_courses = len(courses_cleaned)
+    classroom_schedule = {room['classroom']: {day: [] for day in 'MTWRF'} for room in regular_classrooms + lab_classrooms}
+    instructor_schedule = {}
 
     for i in range(num_courses):
         course = courses_cleaned.iloc[i]
@@ -114,82 +116,70 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
             schedule.append(course.drop('IsHeader').to_dict())
             continue
 
-        # Determine if it's a lab course based on Sect# pattern
         is_lab = 'L' in str(course['Sect#']) and str(course['Sect#']).split('L')[1].isdigit()
 
+        # Assign days
         if is_lab:
-            # For lab courses, assign the day removed from the lecture
-            lecture_course = courses_cleaned.iloc[i-1]  # Assuming the lecture is always right before the lab
-            lecture_days = schedule[-1]['Days']  # Get the days assigned to the lecture
-            if lecture_days == 'MW':
-                assigned_day = 'F'
-            elif lecture_days == 'MF':
-                assigned_day = 'W'
-            elif lecture_days == 'WF':
-                assigned_day = 'M'
-            elif lecture_days == 'T':
-                assigned_day = 'R'
-            else:  # lecture_days == 'R'
-                assigned_day = 'T'
+            lecture_days = schedule[-1]['Days']
+            assigned_day = 'F' if lecture_days == 'MW' else ('W' if lecture_days == 'MF' else 'M' if lecture_days == 'WF' else 'R' if lecture_days == 'T' else 'T')
             day_slots = timeslots[assigned_day]
         else:
-            # For non-lab courses, assign MWF or TR, then remove one day if it has a lab
-            days_index = int(chromosome[3*i] % 2)  # 0 for MWF, 1 for TR
-            if days_index == 0:
-                if i+1 < num_courses and 'L' in str(courses_cleaned.iloc[i+1]['Sect#']):
-                    # This lecture has a lab, remove one day
-                    day_remove = int(chromosome[3*i+1] % 3)  # 0 for M, 1 for W, 2 for F
-                    if day_remove == 0:
-                        assigned_days = "WF"
-                    elif day_remove == 1:
-                        assigned_days = "MF"
-                    else:
-                        assigned_days = "MW"
-                else:
-                    assigned_days = "MWF"
-                day_slots = timeslots['M']
-            else:
-                if i+1 < num_courses and 'L' in str(courses_cleaned.iloc[i+1]['Sect#']):
-                    # This lecture has a lab, remove one day
-                    assigned_days = "T" if int(chromosome[3*i+1] % 2) == 0 else "R"
-                else:
-                    assigned_days = "TR"
-                day_slots = timeslots['T']
+            days_index = int(chromosome[3*i] % 2)
+            assigned_days = "MWF" if days_index == 0 else "TR"
+            if i+1 < num_courses and 'L' in str(courses_cleaned.iloc[i+1]['Sect#']):
+                day_remove = int(chromosome[3*i+1] % 3) if assigned_days == "MWF" else int(chromosome[3*i+1] % 2)
+                assigned_days = assigned_days[:day_remove] + assigned_days[day_remove+1:]
+            day_slots = timeslots[assigned_days[0]]
 
-        time_slot_index = int(chromosome[3*i + 1] % len(day_slots))
+        # Assign time slots
+        hrs = course['Hrs'] if pd.notna(course['Hrs']) else 3
+        required_slots = 2 if hrs > 3 else 1
 
-        hrs = course['Hrs']
-        if pd.isna(hrs):
-            hrs = 3  # Default to 3 hours if not specified
-
-        # Assign exactly two consecutive timeslots for courses with 'Hrs' > 3
-        if hrs > 3:
-            if len(day_slots) > 1:
-                slot_index = time_slot_index % (len(day_slots) - 1)
-                start_time, _, _ = day_slots[slot_index]
-                _, end_time, _ = day_slots[slot_index + 1]
-            else:
-                # If there's only one slot available, use it
-                start_time, end_time, _ = day_slots[0]
-        else:
-            slot_index = time_slot_index % len(day_slots)
-            start_time, end_time, _ = day_slots[slot_index]
+        # Find available time slots
+        available_slots = []
+        for slot_index in range(len(day_slots) - required_slots + 1):
+            start_time, _, _ = day_slots[slot_index]
+            _, end_time, _ = day_slots[slot_index + required_slots - 1]
+            available_slots.append((start_time, end_time))
 
         # Choose classroom
         enr_cap = int(course['Enr Cap'])
-        if is_lab:
-            suitable_classrooms = [room for room in lab_classrooms if room['capacity'] >= enr_cap]
-            if not suitable_classrooms:
-                suitable_classrooms = lab_classrooms
-        else:
-            suitable_classrooms = [room for room in regular_classrooms if room['capacity'] >= enr_cap]
-            if not suitable_classrooms:
-                suitable_classrooms = regular_classrooms
+        suitable_classrooms = lab_classrooms if is_lab else regular_classrooms
+        suitable_classrooms = [room for room in suitable_classrooms if room['capacity'] >= enr_cap]
+        if not suitable_classrooms:
+            suitable_classrooms = lab_classrooms if is_lab else regular_classrooms
+
+        # Find available classroom and time slot
+        assigned_classroom = None
+        assigned_time = None
+        for classroom in suitable_classrooms:
+            for day in assigned_days:
+                for start_time, end_time in available_slots:
+                    if all(not (start_time < existing_end and end_time > existing_start)
+                           for existing_start, existing_end in classroom_schedule[classroom['classroom']][day]):
+                        assigned_classroom = classroom['classroom']
+                        assigned_time = (start_time, end_time)
+                        break
+                if assigned_classroom:
+                    break
+            if assigned_classroom:
+                break
+
+        if not assigned_classroom or not assigned_time:
+            # If no slot is available, assign randomly (will be penalized in fitness function)
+            assigned_classroom = random.choice(suitable_classrooms)['classroom']
+            assigned_time = random.choice(available_slots)
+
+        # Update schedules
+        for day in assigned_days:
+            classroom_schedule[assigned_classroom][day].append(assigned_time)
         
-        classroom_index = int(chromosome[3*i + 2] % len(suitable_classrooms))
-        classroom = suitable_classrooms[classroom_index]['classroom']
-        capacity = suitable_classrooms[classroom_index]['capacity']
-        
+        if course['Instructor'] != 'TBD':
+            if course['Instructor'] not in instructor_schedule:
+                instructor_schedule[course['Instructor']] = {day: [] for day in 'MTWRF'}
+            for day in assigned_days:
+                instructor_schedule[course['Instructor']][day].append(assigned_time)
+
         schedule.append({
             'Class #': course['Class #'],
             'Subject': course['Subject'],
@@ -200,140 +190,139 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
             'Instructor': course['Instructor'],
             'Enr Cap': enr_cap,
             'Days': assigned_day if is_lab else assigned_days,
-            'Time Start': start_time,
-            'Time End': end_time,
-            'Room #': classroom,
-            'Room Capacity': capacity
+            'Time Start': assigned_time[0],
+            'Time End': assigned_time[1],
+            'Room #': assigned_classroom,
+            'Room Capacity': next(room['capacity'] for room in suitable_classrooms if room['classroom'] == assigned_classroom)
         })
 
-    return schedule
+    return schedule, classroom_schedule, instructor_schedule
 
 # Modified fitness function
 def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms):
-    schedule = decode_chromosome(solution, courses_cleaned, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms)
+    schedule, classroom_schedule, instructor_schedule = decode_chromosome(solution, courses_cleaned, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms)
 
     fitness = 0
-    classroom_schedule = {room['classroom']: {} for room in regular_classrooms + lab_classrooms}
-    instructor_schedule = {}
     day_distribution = {'M': 0, 'T': 0, 'W': 0, 'R': 0, 'F': 0, 'MWF': 0, 'TR': 0}
+    classroom_usage = {room['classroom']: 0 for room in regular_classrooms + lab_classrooms}
+    total_timeslots = sum(len(slots) for slots in timeslots.values())
+
+    classroom_conflicts = 0
+    instructor_conflicts = 0
+    invalid_day_assignments = 0
+    invalid_time_assignments = 0
+    incorrect_lab_assignments = 0
+    insufficient_capacity = 0
+    incorrect_duration = 0
+    unassigned_rooms = 0
 
     for course in schedule:
         if 'IsHeader' in course and course['IsHeader']:
             continue
-        
-        # Add fitness points for valid day and time slots
-        if course['Days'] in ['M', 'T', 'W', 'R', 'F', 'MWF', 'TR']:
-            fitness += 1
-            day_distribution[course['Days']] += 1
-        if course['Time Start'] and course['Time End']:
-            fitness += 1
 
-        # Check if Room # is valid (not nan)
-        if pd.isna(course['Room #']):
-            fitness -= 5  # Penalty for missing room
-            continue
+        days = course.get('Days', '')
+        if not isinstance(days, str):
+            days = str(days) if pd.notna(days) else ''
 
-        # Penalize courses with > 3 hours that only have one timeslot
-        hrs = course['Hrs']
-        if pd.notna(hrs) and hrs > 3:
-            day_slots = timeslots['M'] if course['Days'] in ['M', 'W', 'F', 'MWF'] else timeslots['T']
-            assigned_slots = sum(1 for slot in day_slots if course['Time Start'] <= slot[0] < course['Time End'])
-            if assigned_slots < 2:
-                fitness -= 10  # Heavy penalty for not assigning two slots to a >3 hour course
-
-        # Check for classroom conflicts and update classroom schedule
-        days = course['Days']
+        # 1. Conflict-free scheduling
         for day in days:
-            if course['Room #'] not in classroom_schedule:
-                classroom_schedule[course['Room #']] = {}
-            if day not in classroom_schedule[course['Room #']]:
-                classroom_schedule[course['Room #']][day] = []
+            if day not in 'MTWRF':
+                invalid_day_assignments += 1
+                continue
             
-            current_slot = (course['Time Start'], course['Time End'])
-            if any(not isinstance(t, str) for t in current_slot):
-                continue  # Skip invalid time entries
+            # Check classroom conflicts
+            overlaps = sum(1 for start, end in classroom_schedule.get(course['Room #'], {}).get(day, [])
+                           if start < course['Time End'] and end > course['Time Start'])
+            if overlaps > 1:
+                classroom_conflicts += 1
 
-            # Check for conflicts across all timeslots the course occupies
-            conflict = False
-            for existing_slot in classroom_schedule[course['Room #']][day]:
-                if (current_slot[0] < existing_slot[1] and current_slot[1] > existing_slot[0]):
-                    conflict = True
-                    break
-            
-            if conflict:
-                fitness -= 10  # Heavy penalty for classroom conflict
-            else:
-                classroom_schedule[course['Room #']][day].append(current_slot)
+            # Check instructor conflicts
+            if course['Instructor'] != 'TBD':
+                overlaps = sum(1 for start, end in instructor_schedule.get(course['Instructor'], {}).get(day, [])
+                               if start < course['Time End'] and end > course['Time Start'])
+                if overlaps > 1:
+                    instructor_conflicts += 1
 
-        # Check for instructor conflicts and update instructor schedule
-        instructor = course['Instructor']
-        if instructor != 'TBD':
-            if instructor not in instructor_schedule:
-                instructor_schedule[instructor] = {}
+        # 2. Valid day and time assignments
+        if days not in ['M', 'T', 'W', 'R', 'F', 'MWF', 'TR']:
+            invalid_day_assignments += 1
+        if not course['Time Start'] or not course['Time End']:
+            invalid_time_assignments += 1
+        else:
+            fitness += 1  # Reward for valid time assignment
 
-            for day in days:
-                if day not in instructor_schedule[instructor]:
-                    instructor_schedule[instructor][day] = []
+        # 3. Balance between MWF and TR courses
+        if days in day_distribution:
+            day_distribution[days] += 1
 
-                current_slot = (course['Time Start'], course['Time End'])
-                if any(not isinstance(t, str) for t in current_slot):
-                    continue  # Skip invalid time entries
+        # 4. Proper assignment of lab sections
+        if 'L' in str(course['Sect#']):
+            lecture_days = schedule[schedule.index(course) - 1]['Days']
+            if days not in possible_lab_days.get(lecture_days, []):
+                incorrect_lab_assignments += 1
 
-                conflict = False
-                for existing_slot in instructor_schedule[instructor][day]:
-                    if (current_slot[0] < existing_slot[1] and current_slot[1] > existing_slot[0]):
-                        conflict = True
-                        break
-                
-                if conflict:
-                    fitness -= 5  # Penalty for instructor conflict
-                else:
-                    instructor_schedule[instructor][day].append(current_slot)
+        # 5. Appropriate classroom capacity
+        room_number = course['Room #']
+        room_capacity = next((classroom['capacity'] for classroom in regular_classrooms + lab_classrooms if classroom['classroom'] == room_number), 0)
+        if course['Enr Cap'] > room_capacity:
+            insufficient_capacity += 1
 
-        # Check if the assigned time slots match the required hours
+        # 6. Correct duration of classes
+        hrs = course['Hrs']
         if pd.notna(hrs):
-            day_slots = timeslots['M'] if course['Days'] == 'MWF' else timeslots['T']
-            assigned_slots = sum(1 for slot in day_slots if course['Time Start'] <= slot[0] < course['Time End'])
-            total_assigned_hours = assigned_slots * 1.5 * (3 if course['Days'] == 'MWF' else 2)
-            
-            if abs(total_assigned_hours - hrs) <= 0.5:  # Allow for small discrepancies
-                fitness += 2
-            else:
-                fitness -= 2  # Penalty for mismatched hours
+            required_slots = 2 if hrs > 3 else 1
+            assigned_slots = sum(1 for slot in timeslots[days[0]] if course['Time Start'] <= slot[0] < course['Time End'])
+            if assigned_slots != required_slots:
+                incorrect_duration += 1
 
-    # Encourage balanced distribution across MWF and TR
+        # 7. Efficient use of classrooms
+        if pd.notna(course['Room #']) and course['Room #'] in classroom_usage:
+            classroom_usage[course['Room #']] += len(days)
+        else:
+            unassigned_rooms += 1
+            fitness -= 10  # Penalty for unassigned room
+
+    # Calculate fitness components
+    conflict_penalty = (classroom_conflicts + instructor_conflicts) * 1000
+    invalid_assignment_penalty = (invalid_day_assignments + invalid_time_assignments) * 100
+    lab_assignment_penalty = incorrect_lab_assignments * 50
+    capacity_penalty = insufficient_capacity * 50
+    duration_penalty = incorrect_duration * 50
+
+    # Balance between MWF and TR courses
     mwf_count = day_distribution['MWF'] + day_distribution['M'] + day_distribution['W'] + day_distribution['F']
     tr_count = day_distribution['TR'] + day_distribution['T'] + day_distribution['R']
     total_courses = mwf_count + tr_count
     if total_courses > 0:
         balance_ratio = min(mwf_count, tr_count) / total_courses
+        balance_score = balance_ratio * 100
     else:
-        balance_ratio = 0
+        balance_score = 0
 
-    balance_score = balance_ratio * 50  # Increased from 10 to 50
+    # Efficient use of classrooms
+    total_usage = sum(classroom_usage.values())
+    max_possible_usage = len(classroom_usage) * total_timeslots
+    efficiency_score = (total_usage / max_possible_usage) * 100
 
-    # Add an additional penalty for large imbalances
-    imbalance = abs(mwf_count - tr_count)
-    if imbalance > total_courses * 0.1:  # If imbalance is more than 10% of total courses
-        balance_score -= (imbalance - total_courses * 0.1) * 2  # Additional penalty
+    # Calculate final fitness
+    fitness += balance_score + efficiency_score
+    fitness -= (conflict_penalty + invalid_assignment_penalty + lab_assignment_penalty + 
+                capacity_penalty + duration_penalty)
 
-    fitness += balance_score
+    # Add penalty for unassigned rooms to the final fitness calculation
+    fitness -= unassigned_rooms * 50
 
     return fitness
 
 # Modified generate_schedule function
 def generate_schedule(courses_cleaned, semester, num_generations):
-    # Load classrooms from the CSV file
     regular_classrooms, lab_classrooms = load_classrooms('excel/classrooms.csv')
-
-    # Separate fixed and non-fixed courses
     fixed_courses, non_fixed_courses = separate_courses(courses_cleaned)
 
     possible_days = ['MWF', 'TR']
     possible_lab_days = {'MWF': ['M', 'W', 'F'], 'TR': ['T', 'R']}
     num_courses = len(non_fixed_courses)
     
-    # Define the genetic algorithm parameters
     gene_space = []
     for _ in range(num_courses):
         gene_space.extend([
@@ -346,28 +335,26 @@ def generate_schedule(courses_cleaned, semester, num_generations):
         return fitness_func(ga_instance, solution, solution_idx, non_fixed_courses, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms)
     
     ga_instance = pygad.GA(num_generations=num_generations,
-                           num_parents_mating=20,  # Increased from 10
+                           num_parents_mating=20,
                            fitness_func=fitness_wrapper,
-                           sol_per_pop=200,  # Increased from 100
                            num_genes=num_courses * 3,
                            gene_space=gene_space,
+                           sol_per_pop=500,  # Increased population size
                            parent_selection_type="tournament",
                            K_tournament=5,
-                           keep_parents=10,  # Increased from 5
+                           keep_parents=2,
                            crossover_type="two_points",
                            mutation_type="random",
-                           mutation_percent_genes=15)  # Increased from 10
+                           mutation_percent_genes=10)
     
     ga_instance.run()
     
     solution, solution_fitness, solution_idx = ga_instance.best_solution()
-    best_schedule = decode_chromosome(solution, non_fixed_courses, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms)
+    best_schedule, _, _ = decode_chromosome(solution, non_fixed_courses, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms)
     
-    # Combine fixed courses with the optimized non-fixed courses
     combined_schedule = fixed_courses.to_dict('records') + best_schedule
     best_schedule_df = pd.DataFrame(combined_schedule)
     
-    # Ensure all columns are present in the output
     columns_order = ['Class #', 'Subject', 'Cat#', 'Sect#', 'Course Name', 'Hrs', 'Instructor', 'Enr Cap', 'Days', 'Time Start', 'Time End', 'Room #']
     best_schedule_df = best_schedule_df.reindex(columns=columns_order)
     
@@ -381,8 +368,8 @@ spring_courses_df, spring_courses = load_and_preprocess('Spring_2024_Filtered_Co
 fall_courses_df, fall_courses = load_and_preprocess('Fall_2023_Filtered_Corrected_Updated_v4.csv')
 
 # Generate schedule
-spring_schedule_path = generate_schedule(spring_courses, 'spring', 200)
-fall_schedule_path = generate_schedule(fall_courses, 'fall', 200)
+spring_schedule_path = generate_schedule(spring_courses, 'spring', 1000)
+fall_schedule_path = generate_schedule(fall_courses, 'fall', 1000)
 
 # Print the paths to the generated schedules
 print(spring_schedule_path, fall_schedule_path)
