@@ -10,10 +10,10 @@ def visualize_schedule(file_path):
     # Convert time strings to datetime objects
     def parse_time(time_str):
         try:
-            return pd.to_datetime(time_str, format='%H:%M').time()
+            return pd.to_datetime(time_str, format='%H:%M:%S').time()
         except ValueError:
             try:
-                return pd.to_datetime(time_str, format='%H:%M:%S').time()
+                return pd.to_datetime(time_str, format='%H:%M').time()
             except ValueError:
                 try:
                     return pd.to_datetime(time_str, format='%I:%M %p').time()
