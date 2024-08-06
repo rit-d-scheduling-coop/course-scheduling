@@ -36,7 +36,7 @@ df_fall_2023 = df_fall_2023.loc[:, ~df_fall_2023.columns.duplicated()]
 df_spring_2024 = df_spring_2024.loc[:, ~df_spring_2024.columns.duplicated()]
 
 # Drop the specified columns
-columns_to_drop = ['Yr Level/ Reqrmt', 'Classroom Type', 'Course Attribute', 'Crdt', 'Estimated NEED', 'Estimated ELIGIBLE', 'Zoom Links (for Hybrid courses and students granted exceptions to attend online ONLY)']
+columns_to_drop = [ 'Classroom Type', 'Course Attribute', 'Crdt', 'Estimated NEED', 'Estimated ELIGIBLE', 'Zoom Links (for Hybrid courses and students granted exceptions to attend online ONLY)']
 df_fall_2023 = df_fall_2023.drop(columns=columns_to_drop, errors='ignore')
 df_spring_2024 = df_spring_2024.drop(columns=columns_to_drop, errors='ignore')
 
