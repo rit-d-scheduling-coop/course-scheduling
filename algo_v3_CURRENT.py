@@ -28,10 +28,9 @@ timeslots = {
 }
 
 # Function to load and preprocess the courses data
-# Function to load and preprocess the courses data
 def load_and_preprocess(file_path):
     courses_df = pd.read_csv(file_path)
-    columns_to_use = ['Class #', 'Subject', 'Cat#', 'Sect#', 'Course Name', 'Hrs', 'Instructor', 'Enr Cap', 'Days', 'Time Start', 'Time End', 'Classroom Type', 'Room #']
+    columns_to_use = ['Class #', 'Subject', 'Cat#', 'Sect#', 'Course Name', 'Hrs', 'Instructor', 'Enr Cap', 'Days', 'Time Start', 'Time End', 'Room #']
     courses = courses_df[columns_to_use].reset_index(drop=True)
     
     # Fill NaN values in 'Course Name' with a placeholder
@@ -42,10 +41,6 @@ def load_and_preprocess(file_path):
     
     courses = courses.reset_index(drop=True)
     return courses_df, courses
-
-# Update the calls to load_and_preprocess
-spring_courses_df, spring_courses = load_and_preprocess('Spring_2024_Filtered_Corrected.csv')
-fall_courses_df, fall_courses = load_and_preprocess('Fall_2023_Filtered_Corrected.csv')
 
 # Function to load prerequisites data
 def load_prerequisites(file_path):
@@ -61,8 +56,11 @@ def load_prerequisites(file_path):
     return prerequisites
 
 def load_classrooms(file_path):
-    classrooms_df = pd.read_csv(file_path)
-    return set(classrooms_df['classroom'].tolist())
+    classrooms_df = pd.read_csv(file_path, skipinitialspace=True)
+    # Separate classrooms into regular and lab types
+    regular_classrooms = classrooms_df[classrooms_df['type'] != 'L']['classroom'].tolist()
+    lab_classrooms = classrooms_df[classrooms_df['type'] == 'L']['classroom'].tolist()
+    return regular_classrooms, lab_classrooms
 
 # Function to get all prerequisites (direct and transitive) for a course
 def get_all_prerequisites(course, prerequisites, all_prereqs=None):
@@ -79,11 +77,8 @@ def get_all_prerequisites(course, prerequisites, all_prereqs=None):
 spring_courses_df, spring_courses = load_and_preprocess('Spring_2024_Filtered_Corrected_Updated_v4.csv')
 fall_courses_df, fall_courses = load_and_preprocess('Fall_2023_Filtered_Corrected_Updated_v4.csv')
 
-# Load prerequisites data
-prerequisites = load_prerequisites('Excel/prerequisites.csv')
-
 # Function to decode a chromosome into a schedule
-def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, possible_lab_days, classrooms):
+def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms):
     schedule = []
     num_courses = len(courses_cleaned)
     fixed_subjects = {'ACSC', 'BIOG', 'BIOL', 'CHMG', 'MATH', 'PHYS'}
@@ -102,11 +97,19 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
         days = possible_days[days_index]
         time_slot_index = int(chromosome[3*i + 1] % len(timeslots[days]))
         time_slot = timeslots[days][time_slot_index]
-        classroom_index = int(chromosome[3*i + 2] % len(classrooms))
-        classroom = classrooms[classroom_index]
         
-        # Check if 'Course Name' is a string before checking for 'Lab'
-        if isinstance(course['Course Name'], str) and 'Lab' in course['Course Name']:
+        # Determine if it's a lab course based on Sect# pattern
+        is_lab = 'L' in str(course['Sect#']) and str(course['Sect#']).split('L')[1].isdigit()
+        
+        # Choose classroom based on whether it's a lab course or not
+        if is_lab:
+            classroom_index = int(chromosome[3*i + 2] % len(lab_classrooms))
+            classroom = lab_classrooms[classroom_index]
+        else:
+            classroom_index = int(chromosome[3*i + 2] % len(regular_classrooms))
+            classroom = regular_classrooms[classroom_index]
+        
+        if is_lab:
             days = random.choice(possible_lab_days[days])
         
         schedule.append({
@@ -121,17 +124,17 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
             'Days': days,
             'Time Start': time_slot[0],
             'Time End': time_slot[1],
-            'Classroom Type': course['Classroom Type'],
             'Room #': classroom
         })
 
     return schedule
+
 # Fitness function to evaluate schedules
-def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_days, timeslots, possible_lab_days, classrooms):
-    schedule = decode_chromosome(solution, courses_cleaned, possible_days, timeslots, possible_lab_days, classrooms)
+def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms):
+    schedule = decode_chromosome(solution, courses_cleaned, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms)
 
     fitness = 0
-    classroom_schedule = {room: {} for room in classrooms}
+    classroom_schedule = {room: {} for room in regular_classrooms + lab_classrooms}
     instructor_schedule = {}
 
     for course in schedule:
@@ -200,10 +203,7 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
 # Function to generate the schedule using genetic algorithm
 def generate_schedule(courses_cleaned, semester):
     # Load classrooms from the CSV file
-    classrooms = load_classrooms('./Excel/classrooms.csv')
-
-    # Convert classrooms to a list
-    classrooms = list(classrooms)
+    regular_classrooms, lab_classrooms = load_classrooms('excel/classrooms.csv')
 
     possible_days = list(timeslots.keys())
     possible_lab_days = {'MWF': ['M', 'W', 'F'], 'TR': ['T', 'R'], 'MW': ['M', 'W']}
@@ -215,11 +215,11 @@ def generate_schedule(courses_cleaned, semester):
         gene_space.extend([
             {'low': 0, 'high': len(possible_days)},
             {'low': 0, 'high': max(len(slots) for slots in timeslots.values())},
-            {'low': 0, 'high': len(classrooms)-1}
+            {'low': 0, 'high': max(len(regular_classrooms), len(lab_classrooms)) - 1}
         ])
     
     def fitness_wrapper(ga_instance, solution, solution_idx):
-        return fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_days, timeslots, possible_lab_days, classrooms)
+        return fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms)
     
     ga_instance = pygad.GA(num_generations=20,
                            num_parents_mating=10,
@@ -236,11 +236,11 @@ def generate_schedule(courses_cleaned, semester):
     ga_instance.run()
     
     solution, solution_fitness, solution_idx = ga_instance.best_solution()
-    best_schedule = decode_chromosome(solution, courses_cleaned, possible_days, timeslots, possible_lab_days, classrooms)
+    best_schedule = decode_chromosome(solution, courses_cleaned, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms)
     best_schedule_df = pd.DataFrame(best_schedule)
     
     # Ensure all columns are present in the output
-    columns_order = ['Class #', 'Subject', 'Cat#', 'Sect#', 'Course Name', 'Hrs', 'Instructor', 'Enr Cap', 'Days', 'Time Start', 'Time End', 'Classroom Type', 'Room #']
+    columns_order = ['Class #', 'Subject', 'Cat#', 'Sect#', 'Course Name', 'Hrs', 'Instructor', 'Enr Cap', 'Days', 'Time Start', 'Time End', 'Room #']
     best_schedule_df = best_schedule_df.reindex(columns=columns_order)
     
     output_path = f'Excel/Best_Schedule_{semester.capitalize()}.csv'
