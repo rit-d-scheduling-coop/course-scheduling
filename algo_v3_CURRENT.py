@@ -364,8 +364,8 @@ def generate_schedule(courses_cleaned, semester, num_generations):
     return output_path
 
 # Load and preprocess the spring and fall course data
-spring_courses_df, spring_courses = load_and_preprocess('Spring_2024_Filtered_Corrected_Updated_v4.csv')
-fall_courses_df, fall_courses = load_and_preprocess('Fall_2023_Filtered_Corrected_Updated_v4.csv')
+spring_courses_df, spring_courses = load_and_preprocess('Excel/Spring_2024_Filtered_Corrected_Updated_v4.csv')
+fall_courses_df, fall_courses = load_and_preprocess('Excel/Fall_2023_Filtered_Corrected_Updated_v4.csv')
 
 # Generate schedule
 spring_schedule_path = generate_schedule(spring_courses, 'spring', 1000)
