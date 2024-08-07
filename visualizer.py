@@ -15,10 +15,7 @@ def visualize_schedule(file_path):
             try:
                 return pd.to_datetime(time_str, format='%H:%M').time()
             except ValueError:
-                try:
-                    return pd.to_datetime(time_str, format='%I:%M %p').time()
-                except ValueError:
-                    return pd.to_datetime('19:00', format='%H:%M').time()
+                return pd.to_datetime('19:00', format='%H:%M').time()
 
     df['Time Start'] = df['Time Start'].apply(parse_time)
     df['Time End'] = df['Time End'].apply(parse_time)
@@ -26,29 +23,24 @@ def visualize_schedule(file_path):
     # Create a unique identifier for each class
     df['Class'] = df['Subject'].astype(str) + ' ' + df['Cat#'].astype(str) + ' ' + df['Sect#'].astype(str)
     
-    
     # Handle mixed data types in 'Room #' column
     df['Room #'] = df['Room #'].astype(str)
     
-    # Create a list of all unique rooms, excluding NaN values
-    rooms = sorted(df['Room #'].dropna().unique())
-       
+    # Create a list of all unique rooms, excluding NaN and empty string values
+    rooms = sorted(df['Room #'].dropna().replace('', pd.NA).dropna().unique())
+    
     # Create a color palette
     color_palette = sns.color_palette("husl", n_colors=len(df['Class'].unique()))
     color_dict = dict(zip(df['Class'].unique(), color_palette))
     
-    # Separate data for MWF and TR
-    df_mwf = df[df['Days'].isin(['M', 'W', 'F', 'MWF'])]
-    df_tr = df[df['Days'].isin(['T', 'R', 'TR'])]
-    
-    # Function to plot for a specific day group
-    def plot_day_group(day_df, ax, title):
+    # Function to plot for a specific day
+    def plot_day(day_df, ax, title):
         # Create a dictionary to store overlapping classes
         overlaps = {}
         
         # Plot each class as a rectangle with labels inside
         for _, row in day_df.iterrows():
-            if pd.notna(row['Room #']) and pd.notna(row['Time Start']) and pd.notna(row['Time End']):
+            if pd.notna(row['Room #']) and row['Room #'] != '' and pd.notna(row['Time Start']) and pd.notna(row['Time End']):
                 start = datetime.combine(datetime.today(), row['Time Start'])
                 end = datetime.combine(datetime.today(), row['Time End'])
                 duration = (end - start).total_seconds() / 3600  # duration in hours
@@ -60,10 +52,11 @@ def visualize_schedule(file_path):
                 else:
                     overlaps[key] = [row['Class']]
         
-       # Plot the classes, combining overlaps
+        # Plot the classes, combining overlaps
         for (room, start, end), classes in overlaps.items():
             duration = end - start
-            rect = ax.barh(room, duration, left=start, height=0.5, align='center', 
+            y_pos = rooms.index(room)
+            rect = ax.barh(y_pos, duration, left=start, height=0.5, align='center', 
                     color=color_dict[classes[0]], alpha=0.8)
             
             # Add text label inside the rectangle
@@ -87,14 +80,19 @@ def visualize_schedule(file_path):
         ax.set_xticks(range(7, 20))
         ax.set_xticklabels([f'{h:02d}:00' for h in range(7, 20)])
     
-    # Create two subplots
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(20, 20))
+    # Create five subplots, one for each day
+    fig, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(5, 1, figsize=(20, 50))
     
-    # Plot MWF schedule
-    plot_day_group(df_mwf, ax1, f'{file_path} - MWF Schedule')
+    # Separate data for each day
+    days = ['M', 'T', 'W', 'R', 'F']
+    day_dfs = []
+    for day in days:
+        day_df = df[df['Days'].str.contains(day, na=False)]
+        day_dfs.append(day_df)
     
-    # Plot TR schedule
-    plot_day_group(df_tr, ax2, f'{file_path} - TR Schedule')
+    # Plot schedule for each day
+    for i, (day, day_df, ax) in enumerate(zip(days, day_dfs, [ax1, ax2, ax3, ax4, ax5])):
+        plot_day(day_df, ax, f'{file_path} - {day} Schedule')
     
     plt.tight_layout()
     plt.show()

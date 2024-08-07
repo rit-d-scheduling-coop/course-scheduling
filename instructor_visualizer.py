@@ -36,30 +36,45 @@ def visualize_instructor_schedule(file_path):
     # Function to plot for a specific instructor
     def plot_instructor_schedule(instructor_df, ax, instructor_name):
         days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+        day_map = {'M': 0, 'T': 1, 'W': 2, 'R': 3, 'F': 4}
         
-        # Plot each class as a rectangle with labels inside
+        # Create a dictionary to store conflicting classes
+        conflicts = {day: {} for day in range(5)}
+        
+        # Identify conflicts and combine them
         for _, row in instructor_df.iterrows():
             if pd.notna(row['Time Start']) and pd.notna(row['Time End']):
                 start = row['Time Start']
                 end = row['Time End']
-                
-                # Calculate duration in hours
                 duration = ((end.hour * 60 + end.minute) - (start.hour * 60 + start.minute)) / 60
+                start_time = start.hour + start.minute/60
                 
-                for day in str(row['Days']):  # Convert 'Days' to string
-                    day_index = {'M': 0, 'T': 1, 'W': 2, 'R': 3, 'F': 4}.get(day)
+                for day in str(row['Days']):
+                    day_index = day_map.get(day)
                     if day_index is None:
                         continue
                     
-                    rect = ax.barh(day_index, duration, left=start.hour + start.minute/60, height=0.5, 
-                                   align='center', color=color_dict[row['Class']], alpha=0.8)
-                    
-                    # Add text label inside the rectangle
-                    rx, ry = rect[0].get_xy()
-                    cx = rx + rect[0].get_width()/2.0
-                    cy = ry + rect[0].get_height()/2.0
-                    ax.text(cx, cy, f"{row['Class']} - {row['Room #']}", ha='center', va='center', 
-                            rotation=0, fontsize=8, color='black', fontweight='bold')
+                    key = (start_time, duration)
+                    if key in conflicts[day_index]:
+                        conflicts[day_index][key].append(f"{row['Class']} - {row['Room #']}")
+                    else:
+                        conflicts[day_index][key] = [f"{row['Class']} - {row['Room #']}"]
+        
+        # Plot combined classes
+        for day_index, day_conflicts in conflicts.items():
+            for (start_time, duration), classes in day_conflicts.items():
+                combined_class = ' / '.join(classes)
+                color = color_dict[classes[0].split(' - ')[0]]  # Use color of first class
+                
+                rect = ax.barh(day_index, duration, left=start_time, height=0.5,
+                               align='center', color=color, alpha=0.8)
+                
+                # Add text label inside the rectangle
+                rx, ry = rect[0].get_xy()
+                cx = rx + rect[0].get_width()/2.0
+                cy = ry + rect[0].get_height()/2.0
+                ax.text(cx, cy, combined_class, ha='center', va='center',
+                        rotation=0, fontsize=8, color='black', fontweight='bold')
         
         # Customize the plot
         ax.set_ylim(-1, len(days))

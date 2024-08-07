@@ -110,6 +110,8 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
     classroom_schedule = {room['classroom']: {day: [] for day in 'MTWRF'} for room in regular_classrooms + lab_classrooms}
     instructor_schedule = {}
 
+    lab_classroom_usage = {room['classroom']: 0 for room in lab_classrooms}
+
     for i in range(num_courses):
         course = courses_cleaned.iloc[i]
         if course['IsHeader']:
@@ -153,36 +155,58 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
         if is_lab:
             suitable_classrooms = [room for room in lab_classrooms if room['capacity'] >= enr_cap]
             if not suitable_classrooms:
-                # If no lab classroom meets the capacity, choose the largest one
-                suitable_classrooms = [max(lab_classrooms, key=lambda x: x['capacity'])]
-        else:
-            suitable_classrooms = [room for room in regular_classrooms if room['capacity'] >= enr_cap]
-            if not suitable_classrooms:
-                suitable_classrooms = regular_classrooms  # Use all regular classrooms if none meet capacity
+                suitable_classrooms = lab_classrooms
 
-        # Shuffle the list of suitable classrooms to promote variety
-        random.shuffle(suitable_classrooms)
+            suitable_classrooms.sort(key=lambda x: (lab_classroom_usage[x['classroom']], -x['capacity']))
 
-        # Find available classroom and time slot
-        assigned_classroom = None
-        assigned_time = None
-        for classroom in suitable_classrooms:
-            for day in assigned_days if not is_lab else [assigned_day]:
+            # Try to find an available time slot in the least used lab classroom
+            assigned_classroom = None
+            assigned_time = None
+            for classroom in suitable_classrooms:
                 for start_time, end_time in available_slots:
                     if all(not (start_time < existing_end and end_time > existing_start)
-                           for existing_start, existing_end in classroom_schedule[classroom['classroom']][day]):
+                           for existing_start, existing_end in classroom_schedule[classroom['classroom']][assigned_day]):
                         assigned_classroom = classroom['classroom']
                         assigned_time = (start_time, end_time)
                         break
                 if assigned_classroom:
                     break
-            if assigned_classroom:
-                break
 
-        if not assigned_classroom or not assigned_time:
-            # If no slot is available, assign randomly (will be penalized in fitness function)
-            assigned_classroom = random.choice(suitable_classrooms)['classroom']
-            assigned_time = random.choice(available_slots)
+            if not assigned_classroom or not assigned_time:
+                # If no slot is available, assign to the least used lab classroom
+                assigned_classroom = suitable_classrooms[0]['classroom']
+                assigned_time = random.choice(available_slots)
+
+            # Update lab classroom usage
+            lab_classroom_usage[assigned_classroom] += 1
+        else:
+            suitable_classrooms = [room for room in regular_classrooms if room['capacity'] >= enr_cap]
+            if not suitable_classrooms:
+                suitable_classrooms = regular_classrooms  # Use all regular classrooms if none meet capacity
+
+            # Shuffle the list of suitable classrooms to promote variety
+            random.shuffle(suitable_classrooms)
+
+            # Find available classroom and time slot
+            assigned_classroom = None
+            assigned_time = None
+            for classroom in suitable_classrooms:
+                for day in assigned_days if not is_lab else [assigned_day]:
+                    for start_time, end_time in available_slots:
+                        if all(not (start_time < existing_end and end_time > existing_start)
+                               for existing_start, existing_end in classroom_schedule[classroom['classroom']][day]):
+                            assigned_classroom = classroom['classroom']
+                            assigned_time = (start_time, end_time)
+                            break
+                    if assigned_classroom:
+                        break
+                if assigned_classroom:
+                    break
+
+            if not assigned_classroom or not assigned_time:
+                # If no slot is available, assign randomly (will be penalized in fitness function)
+                assigned_classroom = random.choice(suitable_classrooms)['classroom']
+                assigned_time = random.choice(available_slots)
 
         # Update schedules
         for day in assigned_days if not is_lab else [assigned_day]:
@@ -232,6 +256,7 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
     lab_room_penalty = 0
     regular_room_penalty = 0
 
+    lab_classroom_conflicts = 0
     lab_classroom_usage = {room['classroom']: 0 for room in lab_classrooms}
 
     for course in schedule:
@@ -307,9 +332,16 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
         elif not is_lab and course['Room #'] in [room['classroom'] for room in lab_classrooms]:
             regular_room_penalty += 1
 
-        # Track usage of lab classrooms
-        if course['Room #'] in lab_classroom_usage:
-            lab_classroom_usage[course['Room #']] += 1
+        # Check for lab classroom conflicts
+        if 'L' in str(course['Sect#']):
+            room = course['Room #']
+            day = course['Days']
+            overlaps = sum(1 for start, end in classroom_schedule.get(room, {}).get(day, [])
+                           if start < course['Time End'] and end > course['Time Start'])
+            if overlaps > 1:
+                lab_classroom_conflicts += 1
+
+            lab_classroom_usage[room] += 1
 
     # Calculate fitness components
     conflict_penalty = (classroom_conflicts + instructor_conflicts) * 1000
@@ -336,12 +368,15 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
     # Penalize uneven usage of lab classrooms
     lab_usage_values = list(lab_classroom_usage.values())
     lab_usage_range = max(lab_usage_values) - min(lab_usage_values)
-    lab_usage_penalty = lab_usage_range * 50  # Adjust the multiplier as needed
+    lab_usage_penalty = lab_usage_range * 100  # Increased penalty for uneven usage
+
+    # Penalize lab classroom conflicts more heavily
+    lab_conflict_penalty = lab_classroom_conflicts * 2000
 
     # Calculate final fitness
     fitness += balance_score + efficiency_score
     fitness -= (conflict_penalty + invalid_assignment_penalty + lab_assignment_penalty + 
-                capacity_penalty + duration_penalty + lab_room_penalty + regular_room_penalty + lab_usage_penalty)
+                capacity_penalty + duration_penalty + lab_room_penalty + regular_room_penalty + lab_usage_penalty + lab_conflict_penalty)
 
     # Add penalty for unassigned rooms to the final fitness calculation
     fitness -= unassigned_rooms * 50
@@ -358,16 +393,6 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
             lab_room_penalty += 1000  # Very high penalty for lab courses not in lab rooms
 
     fitness -= lab_room_penalty
-
-    # Penalize uneven usage of lab classrooms
-    lab_classroom_usage = {room['classroom']: 0 for room in lab_classrooms}
-    for course in schedule:
-        if 'L' in str(course['Sect#']):
-            lab_classroom_usage[course['Room #']] += 1
-    max_lab_usage = max(lab_classroom_usage.values())
-    min_lab_usage = min(lab_classroom_usage.values())
-    lab_usage_penalty = (max_lab_usage - min_lab_usage) * 10
-    fitness -= lab_usage_penalty
 
     return fitness
 
@@ -425,8 +450,8 @@ spring_courses_df, spring_courses = load_and_preprocess('excel/Spring_2024_Filte
 fall_courses_df, fall_courses = load_and_preprocess('excel/Fall_2023_Filtered_Corrected_Updated_v4.csv')
 
 # Generate schedule, less than 20 you still get classroom conflicts
-spring_schedule_path = generate_schedule(spring_courses, 'spring', 25)
-fall_schedule_path = generate_schedule(fall_courses, 'fall', 25)
+spring_schedule_path = generate_schedule(spring_courses, 'spring', 500)
+fall_schedule_path = generate_schedule(fall_courses, 'fall', 500)
 
 # Print the paths to the generated schedules
 print(spring_schedule_path, fall_schedule_path)
