@@ -424,9 +424,9 @@ def generate_schedule(courses_cleaned, semester, num_generations):
 spring_courses_df, spring_courses = load_and_preprocess('Excel/Spring_2024_Filtered_Corrected_Updated_v4.csv')
 fall_courses_df, fall_courses = load_and_preprocess('Excel/Fall_2023_Filtered_Corrected_Updated_v4.csv')
 
-# Generate schedule
-spring_schedule_path = generate_schedule(spring_courses, 'spring', 10)
-fall_schedule_path = generate_schedule(fall_courses, 'fall', 10)
+# Generate schedule, less than 20 you still get classroom conflicts
+spring_schedule_path = generate_schedule(spring_courses, 'spring', 25)
+fall_schedule_path = generate_schedule(fall_courses, 'fall', 25)
 
 # Print the paths to the generated schedules
 print(spring_schedule_path, fall_schedule_path)
