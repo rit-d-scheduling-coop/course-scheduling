@@ -415,14 +415,14 @@ def generate_schedule(courses_cleaned, semester, num_generations):
     columns_order = ['Class #', 'Subject', 'Cat#', 'Sect#', 'Course Name', 'Hrs', 'Instructor', 'Enr Cap', 'Days', 'Time Start', 'Time End', 'Room #']
     best_schedule_df = best_schedule_df.reindex(columns=columns_order)
     
-    output_path = f'Excel/Best_Schedule_{semester.capitalize()}.csv'
+    output_path = f'excel/Best_Schedule_{semester.capitalize()}.csv'
     best_schedule_df.to_csv(output_path, index=False)
     
     return output_path
 
 # Load and preprocess the spring and fall course data
-spring_courses_df, spring_courses = load_and_preprocess('Excel/Spring_2024_Filtered_Corrected_Updated_v4.csv')
-fall_courses_df, fall_courses = load_and_preprocess('Excel/Fall_2023_Filtered_Corrected_Updated_v4.csv')
+spring_courses_df, spring_courses = load_and_preprocess('excel/Spring_2024_Filtered_Corrected_Updated_v4.csv')
+fall_courses_df, fall_courses = load_and_preprocess('excel/Fall_2023_Filtered_Corrected_Updated_v4.csv')
 
 # Generate schedule, less than 20 you still get classroom conflicts
 spring_schedule_path = generate_schedule(spring_courses, 'spring', 25)
