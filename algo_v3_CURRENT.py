@@ -4,6 +4,7 @@ import random
 import pygad
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+import concurrent.futures
 
 # Add the timeslots dictionary
 timeslots = {
@@ -445,13 +446,21 @@ def generate_schedule(courses_cleaned, semester, num_generations):
     
     return output_path
 
-# Load and preprocess the spring and fall course data
-spring_courses_df, spring_courses = load_and_preprocess('excel/Spring_2024_Filtered_Corrected_Updated_v4.csv')
-fall_courses_df, fall_courses = load_and_preprocess('excel/Fall_2023_Filtered_Corrected_Updated_v4.csv')
+# Modify the last part of the script to use multithreading
+if __name__ == "__main__":
+    # Load and preprocess the spring and fall course data
+    spring_courses_df, spring_courses = load_and_preprocess('excel/Spring_2024_Filtered_Corrected_Updated_v4.csv')
+    fall_courses_df, fall_courses = load_and_preprocess('excel/Fall_2023_Filtered_Corrected_Updated_v4.csv')
 
-# Generate schedule, less than 20 you still get classroom conflicts
-spring_schedule_path = generate_schedule(spring_courses, 'spring', 500)
-fall_schedule_path = generate_schedule(fall_courses, 'fall', 500)
+    # Use ThreadPoolExecutor to run the schedule generation concurrently
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+        spring_future = executor.submit(generate_schedule, spring_courses, 'spring', 500)
+        fall_future = executor.submit(generate_schedule, fall_courses, 'fall', 500)
 
-# Print the paths to the generated schedules
-print(spring_schedule_path, fall_schedule_path)
+        # Wait for both tasks to complete and get the results
+        spring_schedule_path = spring_future.result()
+        fall_schedule_path = fall_future.result()
+
+    # Print the paths to the generated schedules
+    print("Spring schedule path:", spring_schedule_path)
+    print("Fall schedule path:", fall_schedule_path)
