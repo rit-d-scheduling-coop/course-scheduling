@@ -50,7 +50,7 @@ timeslots = {
 # Function to load and preprocess the courses data
 def load_and_preprocess(file_path):
     courses_df = pd.read_csv(file_path)
-    columns_to_use = ['Class #', 'Subject', 'Cat#', 'Sect#', 'Course Name', 'Hrs', 'Instructor', 'Enr Cap', 'Days', 'Time Start', 'Time End', 'Room #']
+    columns_to_use = ['Class #', 'Subject', 'Cat#', 'Sect#', 'Course Name', 'Hrs', 'Instructor', 'Enr Cap', 'Days', 'Time Start', 'Time End', 'Room #', 'Yr Level/ Reqrmt']
     courses = courses_df[columns_to_use].reset_index(drop=True)
     
     # Fill NaN values in 'Course Name' with a placeholder
@@ -156,7 +156,7 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
         if is_lab:
             suitable_classrooms = [room for room in lab_classrooms if room['capacity'] >= enr_cap]
             if not suitable_classrooms:
-                suitable_classrooms = lab_classrooms
+                suitable_classrooms = [max(lab_classrooms, key=lambda x: x['capacity'])]
 
             suitable_classrooms.sort(key=lambda x: (lab_classroom_usage[x['classroom']], -x['capacity']))
 
@@ -257,7 +257,6 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
     lab_room_penalty = 0
     regular_room_penalty = 0
 
-    lab_classroom_conflicts = 0
     lab_classroom_usage = {room['classroom']: 0 for room in lab_classrooms}
 
     for course in schedule:
@@ -343,6 +342,15 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
                 lab_classroom_conflicts += 1
 
             lab_classroom_usage[room] += 1
+
+        # 9. CIT Conc and Adv Opt conflict constraints with ISTE 500 and ISTE 501
+        if course.get('Yr Level/ Reqrmt', '') in ['CIT Conc', 'Adv Opt']:  # Handle missing key
+            for other_course in schedule:
+                if other_course['Class #'] == course['Class #']:
+                    continue
+                if other_course['Course Name'] in ['ISTE 500', 'ISTE 501']:
+                    if days == other_course['Days'] and not (course['Time End'] <= other_course['Time Start'] or course['Time Start'] >= other_course['Time End']):
+                        fitness -= 1000  # High penalty for conflict
 
     # Calculate fitness components
     conflict_penalty = (classroom_conflicts + instructor_conflicts) * 1000
@@ -454,8 +462,8 @@ if __name__ == "__main__":
 
     # Use ThreadPoolExecutor to run the schedule generation concurrently
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        spring_future = executor.submit(generate_schedule, spring_courses, 'spring', 500)
-        fall_future = executor.submit(generate_schedule, fall_courses, 'fall', 500)
+        spring_future = executor.submit(generate_schedule, spring_courses, 'spring', 20)
+        fall_future = executor.submit(generate_schedule, fall_courses, 'fall', 20)
 
         # Wait for both tasks to complete and get the results
         spring_schedule_path = spring_future.result()
