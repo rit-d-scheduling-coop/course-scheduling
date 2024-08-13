@@ -110,6 +110,7 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
     num_courses = len(courses_cleaned)
     classroom_schedule = {room['classroom']: {day: [] for day in 'MTWRF'} for room in regular_classrooms + lab_classrooms}
     instructor_schedule = {}
+    timeslot_usage = {room['classroom']: {day: {slot: 0 for slot in range(len(timeslots[day]))} for day in 'MTWRF'} for room in regular_classrooms + lab_classrooms}
 
     lab_classroom_usage = {room['classroom']: 0 for room in lab_classrooms}
 
@@ -138,7 +139,8 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
             if i+1 < num_courses and 'L' in str(courses_cleaned.iloc[i+1]['Sect#']):
                 day_remove = int(chromosome[3*i+1] % 3) if assigned_days == "MWF" else int(chromosome[3*i+1] % 2)
                 assigned_days = assigned_days[:day_remove] + assigned_days[day_remove+1:]
-            day_slots = timeslots[assigned_days[0]]
+            assigned_day = assigned_days[0]  # Select the first day of assigned days
+            day_slots = timeslots[assigned_day]
 
         # Assign time slots
         hrs = course['Hrs'] if pd.notna(course['Hrs']) else 3
@@ -149,68 +151,80 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
         for slot_index in range(len(day_slots) - required_slots + 1):
             start_time, _, _ = day_slots[slot_index]
             _, end_time, _ = day_slots[slot_index + required_slots - 1]
-            available_slots.append((start_time, end_time))
+            available_slots.append((start_time, end_time, slot_index))
+
+        # Prioritize unused timeslots
+        available_slots.sort(key=lambda x: min(timeslot_usage[room['classroom']][assigned_day].get(x[2], float('inf')) for room in regular_classrooms + lab_classrooms))
 
         # Choose classroom
         enr_cap = int(course['Enr Cap']) if pd.notna(course['Enr Cap']) else 30  # Default to 30 if NaN
-        suitable_classrooms = (lab_classrooms if is_lab else regular_classrooms)
-        suitable_classrooms = [room for room in suitable_classrooms if room['capacity'] >= enr_cap]
+        if is_lab:
+            suitable_classrooms = [room for room in lab_classrooms if room['capacity'] >= enr_cap]
+            if not suitable_classrooms:
+                suitable_classrooms = [max(lab_classrooms, key=lambda x: x['capacity'])]
 
-        if not suitable_classrooms:
-            suitable_classrooms = regular_classrooms if not is_lab else lab_classrooms
+            suitable_classrooms.sort(key=lambda x: (lab_classroom_usage[x['classroom']], -x['capacity']))
 
-        # Shuffle the list of suitable classrooms to promote variety
-        random.shuffle(suitable_classrooms)
-
-        # Find available classroom and time slot
-        assigned_classroom = None
-        assigned_time = None
-        overlap_detected = False
-        
-        for classroom in suitable_classrooms:
-            for day in assigned_days if not is_lab else [assigned_day]:
-                for start_time, end_time in available_slots:
-                    # Check if the time slot overlaps with existing schedules for the same room on any day
-                    overlaps = [
-                        (existing_start, existing_end)
-                        for existing_day in classroom_schedule[classroom['classroom']]
-                        if any(d in existing_day for d in day)  # Check for overlaps with multi-day schedules
-                        for existing_start, existing_end in classroom_schedule[classroom['classroom']][existing_day]
-                        if start_time < existing_end and end_time > existing_start
-                    ]
-                    
-                    if not overlaps:
+            # Try to find an available time slot in the least used lab classroom
+            assigned_classroom = None
+            assigned_time = None
+            assigned_slot_index = None
+            for classroom in suitable_classrooms:
+                for start_time, end_time, slot_index in available_slots:
+                    if all(not (start_time < existing_end and end_time > existing_start)
+                           for existing_start, existing_end in classroom_schedule[classroom['classroom']][assigned_day]):
                         assigned_classroom = classroom['classroom']
                         assigned_time = (start_time, end_time)
+                        assigned_slot_index = slot_index
                         break
                 if assigned_classroom:
                     break
-            if assigned_classroom:
-                break
 
-        if not assigned_classroom or not assigned_time:
-            # If no slot is available or overlap was detected, mark as unavailable but still assign time
-            assigned_time = random.choice(available_slots)
-            schedule.append({
-                'Class #': course['Class #'],
-                'Subject': course['Subject'],
-                'Cat#': course['Cat#'],
-                'Sect#': course['Sect#'],
-                'Course Name': course['Course Name'],
-                'Hrs': hrs,
-                'Instructor': course['Instructor'],
-                'Enr Cap': enr_cap,
-                'Days': assigned_day if is_lab else assigned_days,
-                'Time Start': assigned_time[0],
-                'Time End': assigned_time[1],
-                'Room #': 'unavailable',
-                'Room Capacity': 0
-            })
-            continue
+            if not assigned_classroom or not assigned_time:
+                # If no slot is available, assign to the least used lab classroom
+                assigned_classroom = suitable_classrooms[0]['classroom']
+                assigned_time, assigned_slot_index = random.choice(available_slots)[:2], random.choice(available_slots)[2]
+
+            # Update lab classroom usage
+            lab_classroom_usage[assigned_classroom] += 1
+        else:
+            suitable_classrooms = [room for room in regular_classrooms if room['capacity'] >= enr_cap]
+            if not suitable_classrooms:
+                suitable_classrooms = regular_classrooms  # Use all regular classrooms if none meet capacity
+
+            # Shuffle the list of suitable classrooms to promote variety
+            random.shuffle(suitable_classrooms)
+
+            # Find available classroom and time slot
+            assigned_classroom = None
+            assigned_time = None
+            assigned_slot_index = None
+            for classroom in suitable_classrooms:
+                for day in assigned_days if not is_lab else [assigned_day]:
+                    for start_time, end_time, slot_index in available_slots:
+                        if all(not (start_time < existing_end and end_time > existing_start)
+                               for existing_start, existing_end in classroom_schedule[classroom['classroom']][day]):
+                            assigned_classroom = classroom['classroom']
+                            assigned_time = (start_time, end_time)
+                            assigned_slot_index = slot_index
+                            break
+                    if assigned_classroom:
+                        break
+                if assigned_classroom:
+                    break
+
+            if not assigned_classroom or not assigned_time:
+                # If no slot is available, assign randomly (will be penalized in fitness function)
+                assigned_classroom = random.choice(suitable_classrooms)['classroom']
+                assigned_time, assigned_slot_index = random.choice(available_slots)[:2], random.choice(available_slots)[2]
 
         # Update schedules
         for day in assigned_days if not is_lab else [assigned_day]:
             classroom_schedule[assigned_classroom][day].append(assigned_time)
+            if assigned_slot_index in timeslot_usage[assigned_classroom][day]:
+                timeslot_usage[assigned_classroom][day][assigned_slot_index] += 1
+            else:
+                timeslot_usage[assigned_classroom][day][assigned_slot_index] = 1
         
         if course['Instructor'] != 'TBD':
             if course['Instructor'] not in instructor_schedule:
@@ -218,6 +232,7 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
             for day in assigned_days if not is_lab else [assigned_day]:
                 instructor_schedule[course['Instructor']][day].append(assigned_time)
 
+        # Add the course to the schedule
         schedule.append({
             'Class #': course['Class #'],
             'Subject': course['Subject'],
@@ -233,6 +248,20 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
             'Room #': assigned_classroom,
             'Room Capacity': next(room['capacity'] for room in suitable_classrooms if room['classroom'] == assigned_classroom)
         })
+
+    # Detect conflicts and handle them
+    for day in 'MTWRF':
+        for room, time_slots in classroom_schedule.items():
+            for time_slot in time_slots[day]:
+                overlapping_courses = [course for course in schedule if
+                                       course['Room #'] == room and
+                                       day in course['Days'] and
+                                       course['Time Start'] < time_slot[1] and
+                                       course['Time End'] > time_slot[0]]
+                
+                if len(overlapping_courses) > 1:
+                    for overlap_course in overlapping_courses[1:]:  # Keep the first one, mark others as unavailable
+                        overlap_course['Room #'] = "unavailable"
 
     return schedule, classroom_schedule, instructor_schedule
 
@@ -446,20 +475,20 @@ def generate_schedule(courses_cleaned, semester, num_generations):
     return output_path
 
 # Modify the last part of the script to use multithreading
-if __name__ == "__main__":
+
     # Load and preprocess the spring and fall course data
-    spring_courses_df, spring_courses = load_and_preprocess('excel/Spring_2024_Filtered_Corrected_Updated_v4.csv')
-    fall_courses_df, fall_courses = load_and_preprocess('excel/Fall_2023_Filtered_Corrected_Updated_v4.csv')
+spring_courses_df, spring_courses = load_and_preprocess('excel/Spring_2024_Filtered_Corrected_Updated_v4.csv')
+fall_courses_df, fall_courses = load_and_preprocess('excel/Fall_2023_Filtered_Corrected_Updated_v4.csv')
 
     # Use ThreadPoolExecutor to run the schedule generation concurrently
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        spring_future = executor.submit(generate_schedule, spring_courses, 'spring', 20)
-        fall_future = executor.submit(generate_schedule, fall_courses, 'fall', 20)
+with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+    spring_future = executor.submit(generate_schedule, spring_courses, 'spring', 20)
+    fall_future = executor.submit(generate_schedule, fall_courses, 'fall', 20)
 
         # Wait for both tasks to complete and get the results
-        spring_schedule_path = spring_future.result()
-        fall_schedule_path = fall_future.result()
+    spring_schedule_path = spring_future.result()
+    fall_schedule_path = fall_future.result()
 
     # Print the paths to the generated schedules
-    print("Spring schedule path:", spring_schedule_path)
-    print("Fall schedule path:", fall_schedule_path)
+print("Spring schedule path:", spring_schedule_path)
+print("Fall schedule path:", fall_schedule_path)
