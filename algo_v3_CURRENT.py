@@ -153,61 +153,60 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
 
         # Choose classroom
         enr_cap = int(course['Enr Cap']) if pd.notna(course['Enr Cap']) else 30  # Default to 30 if NaN
-        if is_lab:
-            suitable_classrooms = [room for room in lab_classrooms if room['capacity'] >= enr_cap]
-            if not suitable_classrooms:
-                suitable_classrooms = [max(lab_classrooms, key=lambda x: x['capacity'])]
+        suitable_classrooms = (lab_classrooms if is_lab else regular_classrooms)
+        suitable_classrooms = [room for room in suitable_classrooms if room['capacity'] >= enr_cap]
 
-            suitable_classrooms.sort(key=lambda x: (lab_classroom_usage[x['classroom']], -x['capacity']))
+        if not suitable_classrooms:
+            suitable_classrooms = regular_classrooms if not is_lab else lab_classrooms
 
-            # Try to find an available time slot in the least used lab classroom
-            assigned_classroom = None
-            assigned_time = None
-            for classroom in suitable_classrooms:
+        # Shuffle the list of suitable classrooms to promote variety
+        random.shuffle(suitable_classrooms)
+
+        # Find available classroom and time slot
+        assigned_classroom = None
+        assigned_time = None
+        overlap_detected = False
+        
+        for classroom in suitable_classrooms:
+            for day in assigned_days if not is_lab else [assigned_day]:
                 for start_time, end_time in available_slots:
-                    if all(not (start_time < existing_end and end_time > existing_start)
-                           for existing_start, existing_end in classroom_schedule[classroom['classroom']][assigned_day]):
+                    # Check if the time slot overlaps with existing schedules for the same room on any day
+                    overlaps = [
+                        (existing_start, existing_end)
+                        for existing_day in classroom_schedule[classroom['classroom']]
+                        if any(d in existing_day for d in day)  # Check for overlaps with multi-day schedules
+                        for existing_start, existing_end in classroom_schedule[classroom['classroom']][existing_day]
+                        if start_time < existing_end and end_time > existing_start
+                    ]
+                    
+                    if not overlaps:
                         assigned_classroom = classroom['classroom']
                         assigned_time = (start_time, end_time)
                         break
                 if assigned_classroom:
                     break
+            if assigned_classroom:
+                break
 
-            if not assigned_classroom or not assigned_time:
-                # If no slot is available, assign to the least used lab classroom
-                assigned_classroom = suitable_classrooms[0]['classroom']
-                assigned_time = random.choice(available_slots)
-
-            # Update lab classroom usage
-            lab_classroom_usage[assigned_classroom] += 1
-        else:
-            suitable_classrooms = [room for room in regular_classrooms if room['capacity'] >= enr_cap]
-            if not suitable_classrooms:
-                suitable_classrooms = regular_classrooms  # Use all regular classrooms if none meet capacity
-
-            # Shuffle the list of suitable classrooms to promote variety
-            random.shuffle(suitable_classrooms)
-
-            # Find available classroom and time slot
-            assigned_classroom = None
-            assigned_time = None
-            for classroom in suitable_classrooms:
-                for day in assigned_days if not is_lab else [assigned_day]:
-                    for start_time, end_time in available_slots:
-                        if all(not (start_time < existing_end and end_time > existing_start)
-                               for existing_start, existing_end in classroom_schedule[classroom['classroom']][day]):
-                            assigned_classroom = classroom['classroom']
-                            assigned_time = (start_time, end_time)
-                            break
-                    if assigned_classroom:
-                        break
-                if assigned_classroom:
-                    break
-
-            if not assigned_classroom or not assigned_time:
-                # If no slot is available, assign randomly (will be penalized in fitness function)
-                assigned_classroom = random.choice(suitable_classrooms)['classroom']
-                assigned_time = random.choice(available_slots)
+        if not assigned_classroom or not assigned_time:
+            # If no slot is available or overlap was detected, mark as unavailable but still assign time
+            assigned_time = random.choice(available_slots)
+            schedule.append({
+                'Class #': course['Class #'],
+                'Subject': course['Subject'],
+                'Cat#': course['Cat#'],
+                'Sect#': course['Sect#'],
+                'Course Name': course['Course Name'],
+                'Hrs': hrs,
+                'Instructor': course['Instructor'],
+                'Enr Cap': enr_cap,
+                'Days': assigned_day if is_lab else assigned_days,
+                'Time Start': assigned_time[0],
+                'Time End': assigned_time[1],
+                'Room #': 'unavailable',
+                'Room Capacity': 0
+            })
+            continue
 
         # Update schedules
         for day in assigned_days if not is_lab else [assigned_day]:
@@ -237,6 +236,8 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
 
     return schedule, classroom_schedule, instructor_schedule
 
+
+
 # Modified fitness function
 def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms):
     schedule, classroom_schedule, instructor_schedule = decode_chromosome(solution, courses_cleaned, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms)
@@ -245,7 +246,8 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
     day_distribution = {'M': 0, 'T': 0, 'W': 0, 'R': 0, 'F': 0, 'MWF': 0, 'TR': 0}
     classroom_usage = {room['classroom']: 0 for room in regular_classrooms + lab_classrooms}
     total_timeslots = sum(len(slots) for slots in timeslots.values())
-
+    
+    lab_classroom_conflicts = 0
     classroom_conflicts = 0
     instructor_conflicts = 0
     invalid_day_assignments = 0
@@ -266,6 +268,11 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
         days = course.get('Days', '')
         if not isinstance(days, str):
             days = str(days) if pd.notna(days) else ''
+
+        # Skip the room usage calculation if the room is unavailable
+        room_number = course['Room #']
+        if room_number == 'unavailable':
+            continue
 
         # 1. Conflict-free scheduling
         for day in days:
@@ -305,7 +312,6 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
                 incorrect_lab_assignments += 1
 
         # 5. Appropriate classroom capacity
-        room_number = course['Room #']
         room_capacity = next((classroom['capacity'] for classroom in regular_classrooms + lab_classrooms if classroom['classroom'] == room_number), 0)
         if course['Enr Cap'] > room_capacity:
             insufficient_capacity += 1
@@ -327,21 +333,19 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
 
         # 8. Penalize lab courses assigned to regular rooms and vice versa
         is_lab = 'L' in str(course['Sect#'])
-        if is_lab and course['Room #'] not in [room['classroom'] for room in lab_classrooms]:
+        if is_lab and room_number not in [room['classroom'] for room in lab_classrooms]:
             lab_room_penalty += 1
-        elif not is_lab and course['Room #'] in [room['classroom'] for room in lab_classrooms]:
+        elif not is_lab and room_number in [room['classroom'] for room in lab_classrooms]:
             regular_room_penalty += 1
 
         # Check for lab classroom conflicts
         if 'L' in str(course['Sect#']):
-            room = course['Room #']
-            day = course['Days']
-            overlaps = sum(1 for start, end in classroom_schedule.get(room, {}).get(day, [])
+            overlaps = sum(1 for start, end in classroom_schedule.get(room_number, {}).get(day, [])
                            if start < course['Time End'] and end > course['Time Start'])
             if overlaps > 1:
                 lab_classroom_conflicts += 1
 
-            lab_classroom_usage[room] += 1
+            lab_classroom_usage[room_number] += 1
 
         # 9. CIT Conc and Adv Opt conflict constraints with ISTE 500 and ISTE 501
         if course.get('Yr Level/ Reqrmt', '') in ['CIT Conc', 'Adv Opt']:  # Handle missing key
@@ -389,19 +393,6 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
 
     # Add penalty for unassigned rooms to the final fitness calculation
     fitness -= unassigned_rooms * 50
-
-    lab_room_penalty = 0
-    for course in schedule:
-        if 'IsHeader' in course and course['IsHeader']:
-            continue
-        
-        is_lab = 'L' in str(course['Sect#'])
-        room_is_lab = any(room['classroom'] == course['Room #'] for room in lab_classrooms)
-        
-        if is_lab and not room_is_lab:
-            lab_room_penalty += 1000  # Very high penalty for lab courses not in lab rooms
-
-    fitness -= lab_room_penalty
 
     return fitness
 
