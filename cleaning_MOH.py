@@ -31,6 +31,9 @@ df_spring_2024 = df_spring_2024.rename(columns={
     'Time End.1': 'Time End'
 })
 
+# Rename 'Course Attribute' to 'Yr Level/Reqrmt' in the Spring 2024 dataframe
+df_spring_2024 = df_spring_2024.rename(columns={'Course Attribute': 'Yr Level/ Reqrmt'})
+
 # Drop any remaining duplicate columns
 df_fall_2023 = df_fall_2023.loc[:, ~df_fall_2023.columns.duplicated()]
 df_spring_2024 = df_spring_2024.loc[:, ~df_spring_2024.columns.duplicated()]
@@ -139,8 +142,8 @@ df_fall_2023_filtered_corrected = remove_hidden_section(df_fall_2023_filtered_co
 df_spring_2024_filtered_corrected = remove_hidden_section(df_spring_2024_filtered_corrected)
 
 # Save the updated filtered data to new CSV files
-csv_fall_2023_filtered_corrected_updated_v4 = 'Fall_2023_Filtered_Corrected_Updated_v4.csv'
-csv_spring_2024_filtered_corrected_updated_v4 = 'Spring_2024_Filtered_Corrected_Updated_v4.csv'
+csv_fall_2023_filtered_corrected_updated_v4 = 'excel/Fall_2023_Filtered_Corrected_Updated_v4.csv'
+csv_spring_2024_filtered_corrected_updated_v4 = 'excel/Spring_2024_Filtered_Corrected_Updated_v4.csv'
 
 df_fall_2023_filtered_corrected.to_csv(csv_fall_2023_filtered_corrected_updated_v4, index=False)
 df_spring_2024_filtered_corrected.to_csv(csv_spring_2024_filtered_corrected_updated_v4, index=False)
