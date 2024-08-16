@@ -297,7 +297,7 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
     schedule, classroom_schedule, instructor_schedule = decode_chromosome(solution, courses_cleaned, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms)
 
     fitness = 0
-    day_distribution = {'M': 0, 'T': 0, 'W': 0, 'R': 0, 'F': 0, 'MWF': 0, 'TR': 0, 'MW':0, 'MF':0, 'WF':0}
+    day_distribution = {'MWF': 0, 'MW_afternoon': 0, 'TR': 0, 'M': 0, 'T': 0, 'W': 0, 'R': 0, 'F': 0, 'MW':0}
     classroom_usage = {room['classroom']: 0 for room in regular_classrooms + lab_classrooms}
     total_timeslots = sum(len(slots) for slots in timeslots.values())
     
@@ -348,16 +348,28 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
                     instructor_conflicts += 1
 
         # 2. Valid day and time assignments
-        if days not in ['M', 'T', 'W', 'R', 'F', 'MWF', 'TR']:
+        if days not in ['M', 'T', 'W', 'R', 'F', 'MWF', 'TR', 'MW']:
             invalid_day_assignments += 1
         if not course['Time Start'] or not course['Time End']:
             invalid_time_assignments += 1
         else:
             fitness += 1  # Reward for valid time assignment
 
-        # 3. Balance between MWF and TR courses
-        if days in day_distribution:
-            day_distribution[days] += 1
+        # 3. Update day distribution
+        if days == 'MWF':
+            day_distribution['MWF'] += 1
+        elif days == 'TR':
+            day_distribution['TR'] += 1
+        elif days == 'MW':
+            # Check if it's an afternoon slot
+            if course['Time Start'] >= '13:00':
+                day_distribution['MW_afternoon'] += 1
+            else:
+                day_distribution['MW'] += 1
+        else:
+            for day in days:
+                if day in day_distribution:
+                    day_distribution[day] += 1
 
         # 4. Proper assignment of lab sections
         if 'L' in str(course['Sect#']):
@@ -417,15 +429,21 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
     capacity_penalty = insufficient_capacity * 50
     duration_penalty = incorrect_duration * 50
 
-    # Balance between MWF and TR courses
-    mwf_count = day_distribution['MWF']*0.5 + day_distribution['M'] + day_distribution['W'] + day_distribution['F']*0.5 + day_distribution['MW'] + day_distribution['MF'] + day_distribution['WF']
-    tr_count = day_distribution['TR'] + day_distribution['T'] + day_distribution['R']
-    total_courses = mwf_count + tr_count
+    # Calculate balance score for MWF, MW (afternoon), and TR
+    mwf_count = day_distribution['MWF']
+    mw_afternoon_count = day_distribution['MW_afternoon']
+    tr_count = day_distribution['TR']
+    total_courses = mwf_count + mw_afternoon_count + tr_count
+
     if total_courses > 0:
-        balance_ratio = min(mwf_count, tr_count) / total_courses
+        balance_ratio = min(mwf_count, mw_afternoon_count, tr_count) / total_courses
         balance_score = balance_ratio * 100
     else:
         balance_score = 0
+
+    # Promote MW afternoon usage
+    mw_afternoon_ratio = mw_afternoon_count / total_courses if total_courses > 0 else 0
+    mw_afternoon_score = mw_afternoon_ratio * 50  # Adjust the multiplier as needed
 
     # Efficient use of classrooms
     total_usage = sum(classroom_usage.values())
@@ -441,7 +459,7 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
     lab_conflict_penalty = lab_classroom_conflicts * 2000
 
     # Calculate final fitness
-    fitness += balance_score + efficiency_score
+    fitness += balance_score + efficiency_score + mw_afternoon_score
     fitness -= (conflict_penalty + invalid_assignment_penalty + lab_assignment_penalty + 
                 capacity_penalty + duration_penalty + lab_room_penalty + regular_room_penalty + lab_usage_penalty + lab_conflict_penalty)
 
