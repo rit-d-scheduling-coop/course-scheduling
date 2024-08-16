@@ -191,13 +191,23 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
             assigned_slot_index = None
             for classroom in suitable_classrooms:
                 for start_time, end_time, slot_index in available_slots:
-                    if all(not (start_time < existing_end and end_time > existing_start)
-                           for existing_start, existing_end in classroom_schedule[classroom['classroom']][day]
-                           for day in assigned_days):
-                        assigned_classroom = classroom['classroom']
-                        assigned_time = (start_time, end_time)
-                        assigned_slot_index = slot_index
-                        break
+                    if len(assigned_days) == 1:
+                        # Single day assignment
+                        if all(not (start_time < existing_end and end_time > existing_start)
+                               for existing_start, existing_end in classroom_schedule[classroom['classroom']][assigned_days]):
+                            assigned_classroom = classroom['classroom']
+                            assigned_time = (start_time, end_time)
+                            assigned_slot_index = slot_index
+                            break
+                    else:
+                        # Multi-day assignment
+                        if all(not (start_time < existing_end and end_time > existing_start)
+                               for day in assigned_days
+                               for existing_start, existing_end in classroom_schedule[classroom['classroom']][day]):
+                            assigned_classroom = classroom['classroom']
+                            assigned_time = (start_time, end_time)
+                            assigned_slot_index = slot_index
+                            break
                 if assigned_classroom:
                     break
 
@@ -222,13 +232,23 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
             assigned_slot_index = None
             for classroom in suitable_classrooms:
                 for start_time, end_time, slot_index in available_slots:
-                    if all(not (start_time < existing_end and end_time > existing_start)
-                           for existing_start, existing_end in classroom_schedule[classroom['classroom']][day]
-                           for day in assigned_days):
-                        assigned_classroom = classroom['classroom']
-                        assigned_time = (start_time, end_time)
-                        assigned_slot_index = slot_index
-                        break
+                    if len(assigned_days) == 1:
+                        # Single day assignment
+                        if all(not (start_time < existing_end and end_time > existing_start)
+                               for existing_start, existing_end in classroom_schedule[classroom['classroom']][assigned_days]):
+                            assigned_classroom = classroom['classroom']
+                            assigned_time = (start_time, end_time)
+                            assigned_slot_index = slot_index
+                            break
+                    else:
+                        # Multi-day assignment
+                        if all(not (start_time < existing_end and end_time > existing_start)
+                               for day in assigned_days
+                               for existing_start, existing_end in classroom_schedule[classroom['classroom']][day]):
+                            assigned_classroom = classroom['classroom']
+                            assigned_time = (start_time, end_time)
+                            assigned_slot_index = slot_index
+                            break
                 if assigned_classroom:
                     break
 
@@ -476,7 +496,7 @@ def on_generation(ga_instance):
     print(f"Generation {ga_instance.generations_completed}")
 
 # Modified generate_schedule function
-def generate_schedule(courses_cleaned, semester, num_generations):
+def generate_schedule(courses_cleaned, semester, num_generations = 20):
     regular_classrooms, lab_classrooms = load_classrooms('excel/classrooms.csv')
     fixed_courses, non_fixed_courses = separate_courses(courses_cleaned)
 
@@ -538,8 +558,8 @@ if __name__ == "__main__":
 
     # Use ThreadPoolExecutor to run the schedule generation concurrently
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        spring_future = executor.submit(generate_schedule, spring_courses, 'spring', 20)
-        fall_future = executor.submit(generate_schedule, fall_courses, 'fall', 20)
+        spring_future = executor.submit(generate_schedule, spring_courses, 'spring')
+        fall_future = executor.submit(generate_schedule, fall_courses, 'fall')
 
         # Wait for both tasks to complete and get the results
         spring_schedule_path = spring_future.result()
