@@ -253,9 +253,82 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
                     break
 
             if not assigned_classroom or not assigned_time:
-                # If no slot is available, assign randomly (will be penalized in fitness function)
-                assigned_classroom = random.choice(suitable_classrooms)['classroom']
-                assigned_time, assigned_slot_index = random.choice(available_slots)[:2], random.choice(available_slots)[2]
+                assigned_classroom = None
+                assigned_time = None
+                assigned_slot_index = None
+                new_assigned_days = None
+                # Try to find a new set of days if the current assignment doesn't work
+                while True:
+                    if hrs == 1 or hrs == 0:
+                        new_assigned_days = random.choice([day for day in 'MTWRF' if day not in assigned_days])
+                        required_slots = 1
+                    elif hrs == 2:
+                        if len(assigned_days) == 1:
+                            new_assigned_days = random.choice([days for days in ['MW', 'WF', 'MF', 'TR'] if all(day not in assigned_days for day in days)])
+                        else:
+                            new_assigned_days = random.choice([day for day in 'MTWRF' if day not in assigned_days])
+                        required_slots = 1 if len(new_assigned_days) > 1 else 2
+                    elif hrs == 3:
+                        new_assigned_days = random.choice([days for days in ['MW', 'WF', 'MF', 'TR'] if days != assigned_days])
+                        required_slots = 1
+                    elif hrs == 6:
+                        new_assigned_days = 'MWF' if assigned_days == 'TR' else 'TR'
+                        required_slots = 2
+                    else:
+                        new_assigned_days = 'TR' if assigned_days == 'MWF' else 'MWF'
+                        required_slots = 1
+
+                    if new_assigned_days:
+                        assigned_days = new_assigned_days
+                        break
+                # Recalculate available slots for the new assigned days
+                available_slots = []
+                common_slots = set(range(len(timeslots[assigned_days[0]])))
+                for day in assigned_days[1:]:
+                    common_slots &= set(range(len(timeslots[day])))
+                
+                for slot_index in common_slots:
+                    if slot_index + required_slots > min(len(timeslots[day]) for day in assigned_days):
+                        continue
+                    
+                    start_times = [timeslots[day][slot_index][0] for day in assigned_days]
+                    end_times = [timeslots[day][slot_index + required_slots - 1][1] for day in assigned_days]
+                    
+                    if len(set(start_times)) == 1 and len(set(end_times)) == 1:
+                        available_slots.append((start_times[0], end_times[0], slot_index))
+
+                # Prioritize unused timeslots
+                available_slots.sort(key=lambda x: min(timeslot_usage[room['classroom']][day].get(x[2], float('inf')) 
+                                                       for room in suitable_classrooms 
+                                                       for day in assigned_days))
+                
+                # Try to find a new assignment with the new days
+                for classroom in suitable_classrooms:
+                    for start_time, end_time, slot_index in available_slots:
+                        if len(new_assigned_days) == 1:
+                            # Single day assignment
+                            if all(not (start_time < existing_end and end_time > existing_start)
+                                   for existing_start, existing_end in classroom_schedule[classroom['classroom']][assigned_days]):
+                                assigned_classroom = classroom['classroom']
+                                assigned_time = (start_time, end_time)
+                                assigned_slot_index = slot_index
+                                break
+                        else:
+                            # Multi-day assignment
+                            if all(not (start_time < existing_end and end_time > existing_start)
+                                   for day in assigned_days
+                                   for existing_start, existing_end in classroom_schedule[classroom['classroom']][day]):
+                                assigned_classroom = classroom['classroom']
+                                assigned_time = (start_time, end_time)
+                                assigned_slot_index = slot_index
+                                break
+                    if assigned_classroom:
+                        break
+                
+                else:
+                    # If no slot is available, assign randomly (will be penalized in fitness function)
+                    assigned_classroom = random.choice(suitable_classrooms)['classroom']
+                    assigned_time, assigned_slot_index = random.choice(available_slots)[:2], random.choice(available_slots)[2]
 
         # Update schedules
         for day in assigned_days:
@@ -514,7 +587,7 @@ def on_generation(ga_instance):
     print(f"Generation {ga_instance.generations_completed}")
 
 # Modified generate_schedule function
-def generate_schedule(courses_cleaned, semester, num_generations = 20):
+def generate_schedule(courses_cleaned, semester, num_generations = 100):
     regular_classrooms, lab_classrooms = load_classrooms('excel/classrooms.csv')
     fixed_courses, non_fixed_courses = separate_courses(courses_cleaned)
 
