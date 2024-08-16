@@ -297,7 +297,7 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
     schedule, classroom_schedule, instructor_schedule = decode_chromosome(solution, courses_cleaned, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms)
 
     fitness = 0
-    day_distribution = {'M': 0, 'T': 0, 'W': 0, 'R': 0, 'F': 0, 'MWF': 0, 'TR': 0}
+    day_distribution = {'M': 0, 'T': 0, 'W': 0, 'R': 0, 'F': 0, 'MWF': 0, 'TR': 0, 'MW':0, 'MF':0, 'WF':0}
     classroom_usage = {room['classroom']: 0 for room in regular_classrooms + lab_classrooms}
     total_timeslots = sum(len(slots) for slots in timeslots.values())
     
@@ -418,7 +418,7 @@ def fitness_func(ga_instance, solution, solution_idx, courses_cleaned, possible_
     duration_penalty = incorrect_duration * 50
 
     # Balance between MWF and TR courses
-    mwf_count = day_distribution['MWF'] + day_distribution['M'] + day_distribution['W'] + day_distribution['F']
+    mwf_count = day_distribution['MWF']*0.5 + day_distribution['M'] + day_distribution['W'] + day_distribution['F']*0.5 + day_distribution['MW'] + day_distribution['MF'] + day_distribution['WF']
     tr_count = day_distribution['TR'] + day_distribution['T'] + day_distribution['R']
     total_courses = mwf_count + tr_count
     if total_courses > 0:
