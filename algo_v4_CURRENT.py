@@ -699,8 +699,8 @@ def generate_schedule(courses_cleaned, semester, num_generations = 20):
     best_schedule, _, _ = decode_chromosome(solution, non_fixed_courses, possible_days, timeslots, possible_lab_days, regular_classrooms, lab_classrooms)
     
     # Combine fixed and non-fixed courses before resolving conflicts
-    combined_schedule = fixed_courses.to_dict('records') + best_schedule
-    
+    combined_schedule = best_schedule + fixed_courses.to_dict('records')
+
     # Resolve conflicts after the last generation
     resolved_schedule = resolve_conflicts(combined_schedule)
     
@@ -733,9 +733,9 @@ if __name__ == "__main__":
     print("Spring schedule path:", spring_schedule_path)
     print("Fall schedule path:", fall_schedule_path)
 
-def runner(gen_number):
-    spring_courses_df, spring_courses = load_and_preprocess('excel/Spring_2024_Filtered_Corrected_Updated_v4.csv')
-    fall_courses_df, fall_courses = load_and_preprocess('excel/Fall_2023_(2231)_Filtered_Corrected_Updated_v4.csv')
+def runner(gen_number, spring_path, fall_path):
+    spring_courses_df, spring_courses = load_and_preprocess(spring_path)
+    fall_courses_df, fall_courses = load_and_preprocess(fall_path)
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         spring_future = executor.submit(generate_schedule, spring_courses, 'spring', gen_number)
         fall_future = executor.submit(generate_schedule, fall_courses, 'fall', gen_number)
