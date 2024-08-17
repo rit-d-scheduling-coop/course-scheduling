@@ -3,23 +3,23 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime, timedelta
 
-def visualize_instructor_schedule(file_path):
+def parse_time(time_str):
+    try:
+        return pd.to_datetime(time_str, format='%H:%M').time()
+    except ValueError:
+        try:
+            return pd.to_datetime(time_str, format='%H:%M:%S').time()
+        except ValueError:
+            try:
+                return pd.to_datetime(time_str, format='%I:%M %p').time()
+            except ValueError:
+                return pd.to_datetime('19:00', format='%H:%M').time()
+
+def visualize_instructor_schedule(file_path, instructor_name):
     # Read the CSV file
     df = pd.read_csv(file_path)
     
     # Convert time strings to datetime objects
-    def parse_time(time_str):
-        try:
-            return pd.to_datetime(time_str, format='%H:%M').time()
-        except ValueError:
-            try:
-                return pd.to_datetime(time_str, format='%H:%M:%S').time()
-            except ValueError:
-                try:
-                    return pd.to_datetime(time_str, format='%I:%M %p').time()
-                except ValueError:
-                    return pd.to_datetime('19:00', format='%H:%M').time()
-
     df['Time Start'] = df['Time Start'].apply(parse_time)
     df['Time End'] = df['Time End'].apply(parse_time)
     
@@ -29,9 +29,17 @@ def visualize_instructor_schedule(file_path):
     # Handle mixed data types in 'Room #' column
     df['Room #'] = df['Room #'].astype(str)
     
+    # Filter the dataframe for the specified instructor
+    instructor_df = df[df['Instructor'] == instructor_name]
+    
+    # If no data found for the instructor, print a message and return
+    if instructor_df.empty:
+        print(f"No schedule data found for instructor: {instructor_name}")
+        return
+    
     # Create a color palette
-    color_palette = sns.color_palette("husl", n_colors=len(df['Class'].unique()))
-    color_dict = dict(zip(df['Class'].unique(), color_palette))
+    color_palette = sns.color_palette("husl", n_colors=len(instructor_df['Class'].unique()))
+    color_dict = dict(zip(instructor_df['Class'].unique(), color_palette))
     
     # Function to plot for a specific instructor
     def plot_instructor_schedule(instructor_df, ax, instructor_name):
@@ -89,19 +97,13 @@ def visualize_instructor_schedule(file_path):
         ax.set_xticks(range(7, 20))
         ax.set_xticklabels([f'{h:02d}:00' for h in range(7, 20)])
     
-    # Get unique instructors
-    instructors = df['Instructor'].unique()
+    # Create a figure for the specified instructor
+    fig, ax = plt.subplots(figsize=(20, 10))
+    plot_instructor_schedule(instructor_df, ax, instructor_name)
     
-    # Create a separate figure for each instructor
-    for instructor in instructors:
-        instructor_df = df[df['Instructor'] == instructor]
-        
-        fig, ax = plt.subplots(figsize=(20, 10))
-        plot_instructor_schedule(instructor_df, ax, instructor)
-        
-        plt.tight_layout()
-        plt.show()
+    plt.tight_layout()
+    plt.show()
 
-# Call the function with the path to your CSV files
-visualize_instructor_schedule('./Excel/Best_Schedule_Fall.csv')
-visualize_instructor_schedule('./Excel/Best_Schedule_Spring.csv')
+# Example usage:
+# visualize_instructor_schedule('./Excel/Best_Schedule_Fall.csv', 'John Doe')
+# visualize_instructor_schedule('./Excel/Best_Schedule_Spring.csv', 'Jane Smith')

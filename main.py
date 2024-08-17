@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 import os
-# import algo_v4_CURRENT as algo
+import algo_v4_CURRENT as algo
 # import cleaning_MOH as cleaning
-# import visualizer
-# import instructor_visualizer
+import visualizer
+import instructor_visualizer
 import colorama
 from colorama import Fore, Back, Style
 
@@ -68,7 +68,7 @@ def clean_excel_file():
 
 def generate_schedule():
     gen_number = int(colored_input("Enter the generation number: "))
-    spring_schedule, fall_schedule = algo.generate_schedules(gen_number)
+    spring_schedule, fall_schedule = algo.runner(gen_number)
     print(Color.GREEN + f"Spring schedule generated: {spring_schedule}" + Color.END)
     print(Color.GREEN + f"Fall schedule generated: {fall_schedule}" + Color.END)
 

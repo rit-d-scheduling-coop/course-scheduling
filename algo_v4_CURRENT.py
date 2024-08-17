@@ -1,10 +1,12 @@
 import pandas as pd
-import numpy as np
 import random
 import pygad
-import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
 import concurrent.futures
+
+import warnings
+
+# Add this at the beginning of your script, after the imports
+warnings.filterwarnings("ignore", message="The 'delay_after_gen' parameter is deprecated")
 
 # Add the timeslots dictionary
 timeslots = {
@@ -584,7 +586,20 @@ def resolve_conflicts(schedule):
     return schedule
 
 def on_generation(ga_instance):
-    print(f"Generation {ga_instance.generations_completed}")
+    if ga_instance.generations_completed==ga_instance.num_generations:
+        print("\nGeneration Completed!")
+        print(f"Generation {ga_instance.generations_completed}")
+    else:
+        # Calculate the progress percentage
+        progress = (ga_instance.generations_completed / ga_instance.num_generations) * 100
+        
+        # Create the loading bar
+        bar_length = 30
+        filled_length = int(bar_length * progress // 100)
+        bar = '█' * filled_length + '-' * (bar_length - filled_length)
+        
+        # Print the loading bar and progress percentage
+        print(f'\rGeneration {ga_instance.generations_completed}: [{bar}] {progress:.1f}%', end='', flush=True)
 
 # Modified generate_schedule function
 def generate_schedule(courses_cleaned, semester, num_generations = 100):
@@ -611,7 +626,7 @@ def generate_schedule(courses_cleaned, semester, num_generations = 100):
                            fitness_func=fitness_wrapper,
                            num_genes=num_courses * 3,
                            gene_space=gene_space,
-                           sol_per_pop=100,  # Increased population size
+                           sol_per_pop=100,  
                            parent_selection_type="tournament",
                            K_tournament=5,
                            keep_parents=2,
@@ -659,3 +674,16 @@ if __name__ == "__main__":
     # Print the paths to the generated schedules
     print("Spring schedule path:", spring_schedule_path)
     print("Fall schedule path:", fall_schedule_path)
+
+def runner(gen_number):
+    spring_courses_df, spring_courses = load_and_preprocess('excel/Spring_2024_Filtered_Corrected_Updated_v4.csv')
+    fall_courses_df, fall_courses = load_and_preprocess('excel/Fall_2023_Filtered_Corrected_Updated_v4.csv')
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+        spring_future = executor.submit(generate_schedule, spring_courses, 'spring', gen_number)
+        fall_future = executor.submit(generate_schedule, fall_courses, 'fall', gen_number)
+
+        # Wait for both tasks to complete and get the results
+        spring_schedule_path = spring_future.result()
+        fall_schedule_path = fall_future.result()
+
+    return spring_schedule_path, fall_schedule_path
