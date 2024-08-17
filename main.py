@@ -2,7 +2,7 @@
 
 import os
 import algo_v4_CURRENT as algo
-# import cleaning_MOH as cleaning
+import cleaning_v2 as cleaning
 import visualizer
 import instructor_visualizer
 import colorama
@@ -63,12 +63,14 @@ Options:
 def clean_excel_file():
     file_path = colored_input("Enter the path to your Excel file: ")
     sheet_name = colored_input("Enter the name of the sheet: ")
-    cleaning.clean_excel_file(file_path, sheet_name)
+    cleaning.process_and_save_excel_file(file_path, sheet_name)
     print(Color.GREEN + "Excel file cleaned successfully." + Color.END)
 
 def generate_schedule():
     gen_number = int(colored_input("Enter the generation number: "))
-    spring_schedule, fall_schedule = algo.runner(gen_number)
+    spring_path = colored_input("Enter the path to the Spring Excel file: ")
+    fall_path = colored_input("Enter the path to the Fall Excel file: ")
+    spring_schedule, fall_schedule = algo.runner(gen_number, spring_path, fall_path)
     print(Color.GREEN + f"Spring schedule generated: {spring_schedule}" + Color.END)
     print(Color.GREEN + f"Fall schedule generated: {fall_schedule}" + Color.END)
 

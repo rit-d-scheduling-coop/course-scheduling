@@ -107,3 +107,30 @@ def visualize_instructor_schedule(file_path, instructor_name):
 # Example usage:
 # visualize_instructor_schedule('./Excel/Best_Schedule_Fall.csv', 'John Doe')
 # visualize_instructor_schedule('./Excel/Best_Schedule_Spring.csv', 'Jane Smith')
+
+def __main__():
+    instructors = [
+        "Mehtab",
+        "Ali Assi",
+        "Danilo Kovacevic",
+        "Akpinar",
+        "Al-Tawli",
+        "Qatawneh",
+        "Hassib",
+        "Omar Abdul Latif",
+        "Almajali",
+        "Saadeh",
+        "Qusai Hassan",
+        "Abu Khusa",
+        "Wesam Almobaideen",
+        "Khalil AlHussaeni",
+        "Osama Abdulrahman",
+        "Martin Zager"
+    ]
+    
+
+    for instructor in instructors:
+        visualize_instructor_schedule('./Excel/Best_Schedule_Spring.csv', instructor)
+
+if __name__ == '__main__':
+    __main__()

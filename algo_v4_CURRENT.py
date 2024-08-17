@@ -197,19 +197,38 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
                         # Single day assignment
                         if all(not (start_time < existing_end and end_time > existing_start)
                                for existing_start, existing_end in classroom_schedule[classroom['classroom']][assigned_days]):
-                            assigned_classroom = classroom['classroom']
-                            assigned_time = (start_time, end_time)
-                            assigned_slot_index = slot_index
-                            break
+                            # Check for instructor conflicts
+                            instructor_conflict = False
+                            if course['Instructor'] != 'TBD':
+                                for existing_start, existing_end in instructor_schedule.get(course['Instructor'], {}).get(assigned_days, []):
+                                    if start_time < existing_end and end_time > existing_start:
+                                        instructor_conflict = True
+                                        break
+                            if not instructor_conflict:
+                                assigned_classroom = classroom['classroom']
+                                assigned_time = (start_time, end_time)
+                                assigned_slot_index = slot_index
+                                break
                     else:
                         # Multi-day assignment
                         if all(not (start_time < existing_end and end_time > existing_start)
                                for day in assigned_days
                                for existing_start, existing_end in classroom_schedule[classroom['classroom']][day]):
-                            assigned_classroom = classroom['classroom']
-                            assigned_time = (start_time, end_time)
-                            assigned_slot_index = slot_index
-                            break
+                            # Check for instructor conflicts
+                            instructor_conflict = False
+                            if course['Instructor'] != 'TBD':
+                                for day in assigned_days:
+                                    for existing_start, existing_end in instructor_schedule.get(course['Instructor'], {}).get(day, []):
+                                        if start_time < existing_end and end_time > existing_start:
+                                            instructor_conflict = True
+                                            break
+                                    if instructor_conflict:
+                                        break
+                            if not instructor_conflict:
+                                assigned_classroom = classroom['classroom']
+                                assigned_time = (start_time, end_time)
+                                assigned_slot_index = slot_index
+                                break
                 if assigned_classroom:
                     break
 
@@ -238,19 +257,38 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
                         # Single day assignment
                         if all(not (start_time < existing_end and end_time > existing_start)
                                for existing_start, existing_end in classroom_schedule[classroom['classroom']][assigned_days]):
-                            assigned_classroom = classroom['classroom']
-                            assigned_time = (start_time, end_time)
-                            assigned_slot_index = slot_index
-                            break
+                            # Check for instructor conflicts
+                            instructor_conflict = False
+                            if course['Instructor'] != 'TBD':
+                                for existing_start, existing_end in instructor_schedule.get(course['Instructor'], {}).get(assigned_days, []):
+                                    if start_time < existing_end and end_time > existing_start:
+                                        instructor_conflict = True
+                                        break
+                            if not instructor_conflict:
+                                assigned_classroom = classroom['classroom']
+                                assigned_time = (start_time, end_time)
+                                assigned_slot_index = slot_index
+                                break
                     else:
                         # Multi-day assignment
                         if all(not (start_time < existing_end and end_time > existing_start)
                                for day in assigned_days
                                for existing_start, existing_end in classroom_schedule[classroom['classroom']][day]):
-                            assigned_classroom = classroom['classroom']
-                            assigned_time = (start_time, end_time)
-                            assigned_slot_index = slot_index
-                            break
+                            # Check for instructor conflicts
+                            instructor_conflict = False
+                            if course['Instructor'] != 'TBD':
+                                for day in assigned_days:
+                                    for existing_start, existing_end in instructor_schedule.get(course['Instructor'], {}).get(day, []):
+                                        if start_time < existing_end and end_time > existing_start:
+                                            instructor_conflict = True
+                                            break
+                                    if instructor_conflict:
+                                        break
+                            if not instructor_conflict:
+                                assigned_classroom = classroom['classroom']
+                                assigned_time = (start_time, end_time)
+                                assigned_slot_index = slot_index
+                                break
                 if assigned_classroom:
                     break
 
@@ -311,26 +349,46 @@ def decode_chromosome(chromosome, courses_cleaned, possible_days, timeslots, pos
                             # Single day assignment
                             if all(not (start_time < existing_end and end_time > existing_start)
                                    for existing_start, existing_end in classroom_schedule[classroom['classroom']][assigned_days]):
-                                assigned_classroom = classroom['classroom']
-                                assigned_time = (start_time, end_time)
-                                assigned_slot_index = slot_index
-                                break
+                                # Check for instructor conflicts
+                                instructor_conflict = False
+                                if course['Instructor'] != 'TBD':
+                                    for existing_start, existing_end in instructor_schedule.get(course['Instructor'], {}).get(assigned_days, []):
+                                        if start_time < existing_end and end_time > existing_start:
+                                            instructor_conflict = True
+                                            break
+                                if not instructor_conflict:
+                                    assigned_classroom = classroom['classroom']
+                                    assigned_time = (start_time, end_time)
+                                    assigned_slot_index = slot_index
+                                    break
                         else:
                             # Multi-day assignment
                             if all(not (start_time < existing_end and end_time > existing_start)
                                    for day in assigned_days
                                    for existing_start, existing_end in classroom_schedule[classroom['classroom']][day]):
-                                assigned_classroom = classroom['classroom']
-                                assigned_time = (start_time, end_time)
-                                assigned_slot_index = slot_index
-                                break
+                                # Check for instructor conflicts
+                                instructor_conflict = False
+                                if course['Instructor'] != 'TBD':
+                                    for day in assigned_days:
+                                        for existing_start, existing_end in instructor_schedule.get(course['Instructor'], {}).get(day, []):
+                                            if start_time < existing_end and end_time > existing_start:
+                                                instructor_conflict = True
+                                                break
+                                        if instructor_conflict:
+                                            break
+                                if not instructor_conflict:
+                                    assigned_classroom = classroom['classroom']
+                                    assigned_time = (start_time, end_time)
+                                    assigned_slot_index = slot_index
+                                    break
                     if assigned_classroom:
                         break
                 
                 else:
-                    # If no slot is available, assign randomly (will be penalized in fitness function)
+                    # If no slot is available, assign to a random classroom and a time slot from 18:00 to 19:00
                     assigned_classroom = random.choice(suitable_classrooms)['classroom']
-                    assigned_time, assigned_slot_index = random.choice(available_slots)[:2], random.choice(available_slots)[2]
+                    assigned_time = ("18:00", "19:00")
+                    assigned_slot_index = None  # We're not using a predefined slot, so set this to None
 
         # Update schedules
         for day in assigned_days:
@@ -602,7 +660,7 @@ def on_generation(ga_instance):
         print(f'\rGeneration {ga_instance.generations_completed}: [{bar}] {progress:.1f}%', end='', flush=True)
 
 # Modified generate_schedule function
-def generate_schedule(courses_cleaned, semester, num_generations = 100):
+def generate_schedule(courses_cleaned, semester, num_generations = 20):
     regular_classrooms, lab_classrooms = load_classrooms('excel/classrooms.csv')
     fixed_courses, non_fixed_courses = separate_courses(courses_cleaned)
 
@@ -677,7 +735,7 @@ if __name__ == "__main__":
 
 def runner(gen_number):
     spring_courses_df, spring_courses = load_and_preprocess('excel/Spring_2024_Filtered_Corrected_Updated_v4.csv')
-    fall_courses_df, fall_courses = load_and_preprocess('excel/Fall_2023_Filtered_Corrected_Updated_v4.csv')
+    fall_courses_df, fall_courses = load_and_preprocess('excel/Fall_2023_(2231)_Filtered_Corrected_Updated_v4.csv')
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         spring_future = executor.submit(generate_schedule, spring_courses, 'spring', gen_number)
         fall_future = executor.submit(generate_schedule, fall_courses, 'fall', gen_number)

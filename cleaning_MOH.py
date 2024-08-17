@@ -1,85 +1,67 @@
 import pandas as pd
 
-# Load the uploaded Excel file
-file_path = 'excel/2023-2024 Plan for Dept Heads.xlsx'
-xls = pd.ExcelFile(file_path)
+def clean_excel_file(file_path, sheet_name):
+    # Load the Excel file
+    xls = pd.ExcelFile(file_path)
+    
+    # Load the specified sheet with header at the correct row
+    df = pd.read_excel(xls, sheet_name=sheet_name, header=2)
+    
+    # Drop columns starting with 'Unnamed:'
+    df = df.loc[:, ~df.columns.str.startswith('Unnamed:')]
+    
+    # Identify the columns to keep (second set of Days, Time Start, Time End)
+    columns_to_keep = ['Days', 'Time Start', 'Time End']
+    
+    # Remove the first set of Days, Time Start, Time End
+    df = df.drop(columns=columns_to_keep, errors='ignore')
+    
+    # Rename the columns to the proper names
+    df = df.rename(columns={
+        'Days.1': 'Days',
+        'Time Start.1': 'Time Start',
+        'Time End.1': 'Time End'
+    })
+    
+    # Rename 'Course Attribute' to 'Yr Level/Reqrmt' in the Spring 2024 sheet
+    if sheet_name == 'Spring 2024':
+        df = df.rename(columns={'Course Attribute': 'Yr Level/ Reqrmt'})
+    
+    # Drop any remaining duplicate columns
+    df = df.loc[:, ~df.columns.duplicated()]
+    
+    # Drop the specified columns
+    columns_to_drop = ['Crdt', 'Estimated NEED', 'Estimated ELIGIBLE', 'Zoom Links (for Hybrid courses and students granted exceptions to attend online ONLY)']
+    df = df.drop(columns=columns_to_drop, errors='ignore')
+    
+    # Remove leading and trailing white spaces from all string columns
+    df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+    
+    return df
 
-# Load the Fall 2023 and Spring 2024 tabs with header at the correct row
-df_fall_2023 = pd.read_excel(xls, sheet_name='Fall 2023 (2231)', header=2)
-df_spring_2024 = pd.read_excel(xls, sheet_name='Spring 2024', header=2)
+def filter_departments(df, departments):
+    def filter_departments_corrected(df, departments, class_col, subject_col, cat_col, sect_col, course_name_col):
+        # Initialize an empty DataFrame to store the filtered rows
+        filtered_df = pd.DataFrame(columns=df.columns)
+        add_row = False
 
-# Drop columns starting with 'Unnamed:'
-df_fall_2023 = df_fall_2023.loc[:, ~df_fall_2023.columns.str.startswith('Unnamed:')]
-df_spring_2024 = df_spring_2024.loc[:, ~df_spring_2024.columns.str.startswith('Unnamed:')]
+        for _, row in df.iterrows():
+            # Check if the row is a department header
+            if pd.isna(row[class_col]) and pd.isna(row[subject_col]) and pd.isna(row[cat_col]) and pd.isna(row[sect_col]):
+                if row[course_name_col] in departments:
+                    add_row = True
+                else:
+                    add_row = False
+            # Add rows that belong to the wanted departments
+            if add_row:
+                filtered_df = pd.concat([filtered_df, pd.DataFrame([row], columns=df.columns)], ignore_index=True)
 
-# Identify the columns to keep (second set of Days, Time Start, Time End)
-columns_to_keep = ['Days', 'Time Start', 'Time End']
+        return filtered_df
 
-# Remove the first set of Days, Time Start, Time End
-df_fall_2023 = df_fall_2023.drop(columns=columns_to_keep)
-df_spring_2024 = df_spring_2024.drop(columns=columns_to_keep)
+    filtered_df = filter_departments_corrected(df, departments, 'Class #', 'Subject', 'Cat#', 'Sect#', 'Course Name')
+    
+    return filtered_df.reset_index(drop=True)
 
-# Rename the columns to the proper names
-df_fall_2023 = df_fall_2023.rename(columns={
-    'Days.1': 'Days',
-    'Time Start.1': 'Time Start',
-    'Time End.1': 'Time End'
-})
-df_spring_2024 = df_spring_2024.rename(columns={
-    'Days.1': 'Days',
-    'Time Start.1': 'Time Start',
-    'Time End.1': 'Time End'
-})
-
-# Rename 'Course Attribute' to 'Yr Level/Reqrmt' in the Spring 2024 dataframe
-df_spring_2024 = df_spring_2024.rename(columns={'Course Attribute': 'Yr Level/ Reqrmt'})
-
-# Drop any remaining duplicate columns
-df_fall_2023 = df_fall_2023.loc[:, ~df_fall_2023.columns.duplicated()]
-df_spring_2024 = df_spring_2024.loc[:, ~df_spring_2024.columns.duplicated()]
-
-# Drop the specified columns
-columns_to_drop = ['Crdt', 'Estimated NEED', 'Estimated ELIGIBLE', 'Zoom Links (for Hybrid courses and students granted exceptions to attend online ONLY)']
-df_fall_2023 = df_fall_2023.drop(columns=columns_to_drop, errors='ignore')
-df_spring_2024 = df_spring_2024.drop(columns=columns_to_drop, errors='ignore')
-
-# Remove leading and trailing white spaces from all string columns
-df_fall_2023 = df_fall_2023.applymap(lambda x: x.strip() if isinstance(x, str) else x)
-df_spring_2024 = df_spring_2024.applymap(lambda x: x.strip() if isinstance(x, str) else x)
-
-# List of wanted departments
-wanted_departments = [
-    'COMPUTING', 'BS CIT', 'BS COMPUTING SECURITY', 'MATH/SCIENCE',
-]
-
-# Adjusted function to filter the rows based on department names and their courses
-def filter_departments_corrected(df, departments, class_col, subject_col, cat_col, sect_col, course_name_col):
-    # Initialize an empty DataFrame to store the filtered rows
-    filtered_df = pd.DataFrame(columns=df.columns)
-    add_row = False
-
-    for _, row in df.iterrows():
-        # Check if the row is a department header
-        if pd.isna(row[class_col]) and pd.isna(row[subject_col]) and pd.isna(row[cat_col]) and pd.isna(row[sect_col]):
-            if row[course_name_col] in departments:
-                add_row = True
-            else:
-                add_row = False
-        # Add rows that belong to the wanted departments
-        if add_row:
-            filtered_df = pd.concat([filtered_df, pd.DataFrame([row], columns=df.columns)], ignore_index=True)
-
-    return filtered_df
-
-# Apply the function to both dataframes with the corrected column names
-df_fall_2023_filtered_corrected = filter_departments_corrected(df_fall_2023, wanted_departments, 'Class #', 'Subject', 'Cat#', 'Sect#', 'Course Name')
-df_spring_2024_filtered_corrected = filter_departments_corrected(df_spring_2024, wanted_departments, 'Class #', 'Subject', 'Cat#', 'Sect#', 'Course Name')
-
-# Reset index of the filtered dataframes to ensure proper indexing
-df_fall_2023_filtered_corrected.reset_index(drop=True, inplace=True)
-df_spring_2024_filtered_corrected.reset_index(drop=True, inplace=True)
-
-# Remove rows with 'OL' in 'Time Start' or 'Time End' under MATH/SCIENCE
 def remove_ol_rows(df):
     math_science_idx = df[df['Course Name'] == 'MATH/SCIENCE'].index[0]
     df_math_science = df.loc[math_science_idx:]
@@ -89,10 +71,6 @@ def remove_ol_rows(df):
 
     return df
 
-df_fall_2023_filtered_corrected = remove_ol_rows(df_fall_2023_filtered_corrected)
-df_spring_2024_filtered_corrected = remove_ol_rows(df_spring_2024_filtered_corrected)
-
-# Fill missing Days, Time Start, or Time End values
 def fill_missing_values(df):
     for idx, row in df.iterrows():
         if pd.isna(row['Days']) or pd.isna(row['Time Start']) or pd.isna(row['Time End']):
@@ -107,10 +85,6 @@ def fill_missing_values(df):
                     df.at[idx, 'Time End'] = matching_rows['Time End'].dropna().values[0]
     return df
 
-df_fall_2023_filtered_corrected = fill_missing_values(df_fall_2023_filtered_corrected)
-df_spring_2024_filtered_corrected = fill_missing_values(df_spring_2024_filtered_corrected)
-
-# Fill '""""' values with the value from the row above, skipping department headers
 def fill_empty_values_with_above(df):
     # Identify department headers
     is_header = df.apply(lambda row: pd.isna(row['Class #']) and pd.isna(row['Subject']) and pd.isna(row['Cat#']) and pd.isna(row['Sect#']) and not pd.isna(row['Course Name']), axis=1)
@@ -129,21 +103,50 @@ def fill_empty_values_with_above(df):
     
     return df_combined
 
-# Apply fill_empty_values_with_above first, then forward fill
-df_fall_2023_filtered_corrected = fill_empty_values_with_above(df_fall_2023_filtered_corrected)
-df_spring_2024_filtered_corrected = fill_empty_values_with_above(df_spring_2024_filtered_corrected)
-
-# Remove 'hidden section' values
 def remove_hidden_section(df):
-    df = df.applymap(lambda x: "" if x == "hidden section" else x)
-    return df
+    return df.applymap(lambda x: "" if x == "hidden section" else x)
 
-df_fall_2023_filtered_corrected = remove_hidden_section(df_fall_2023_filtered_corrected)
-df_spring_2024_filtered_corrected = remove_hidden_section(df_spring_2024_filtered_corrected)
+def process_excel_file(file_path, sheet_name, wanted_departments):
+    # Clean the file
+    df = clean_excel_file(file_path, sheet_name)
+    
+    # Filter departments
+    df_filtered = filter_departments(df, wanted_departments)
+    
+    # Remove 'OL' rows for MATH/SCIENCE
+    df_filtered = remove_ol_rows(df_filtered)
+    
+    # Fill missing values
+    df_filtered = fill_missing_values(df_filtered)
+    
+    # Fill '""""' values with the value from the row above
+    df_filtered = fill_empty_values_with_above(df_filtered)
+    
+    # Remove 'hidden section' values
+    df_filtered = remove_hidden_section(df_filtered)
+    
+    return df_filtered
 
-# Save the updated filtered data to new CSV files
-csv_fall_2023_filtered_corrected_updated_v4 = 'excel/Fall_2023_Filtered_Corrected_Updated_v4.csv'
-csv_spring_2024_filtered_corrected_updated_v4 = 'excel/Spring_2024_Filtered_Corrected_Updated_v4.csv'
+def process_and_save_excel_files(file_path, output_paths, wanted_departments = ['COMPUTING', 'BS CIT', 'BS COMPUTING SECURITY', 'MATH/SCIENCE']):
+    df_fall_2023_cleaned = process_excel_file(file_path, 'Fall 2023 (2231)', wanted_departments)
+    df_spring_2024_cleaned = process_excel_file(file_path, 'Spring 2024', wanted_departments)
 
-df_fall_2023_filtered_corrected.to_csv(csv_fall_2023_filtered_corrected_updated_v4, index=False)
-df_spring_2024_filtered_corrected.to_csv(csv_spring_2024_filtered_corrected_updated_v4, index=False)
+    # Save the cleaned data
+    df_fall_2023_cleaned.to_csv(output_paths['fall'], index=False)
+    df_spring_2024_cleaned.to_csv(output_paths['spring'], index=False)
+
+output_paths = {
+        'fall': 'excel/Fall_2023_Filtered_Corrected_Updated_v4.csv',
+        'spring': 'excel/Spring_2024_Filtered_Corrected_Updated_v4.csv'
+    }
+
+if _name_ == "_main_":
+    # Usage example
+    file_path = 'excel/2023-2024 Plan for Dept Heads.xlsx'
+    wanted_departments = ['COMPUTING', 'BS CIT', 'BS COMPUTING SECURITY', 'MATH/SCIENCE']
+    output_paths = {
+        'fall': 'excel/Fall_2023_Filtered_Corrected_Updated_v4.csv',
+        'spring': 'excel/Spring_2024_Filtered_Corrected_Updated_v4.csv'
+    }
+
+    process_and_save_excel_files(file_path, output_paths, wanted_departments)
