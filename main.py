@@ -57,7 +57,7 @@ Options:
 2. Generate course schedule
 3. Display classroom visualizer
 4. Display instructor visualizer
-0. Exit
+5. Exit
 ''' + Color.END)
 
 def clean_excel_file():
@@ -87,7 +87,7 @@ def display_instructor_visualizer():
 
 while True:
     display_title_screen()
-    choice = colored_input("Enter your choice (0-4): ")
+    choice = colored_input("Enter your choice (1-5): ")
     if choice == '1':
         clean_excel_file()
     elif choice == '2':
@@ -96,7 +96,7 @@ while True:
         display_classroom_visualizer()
     elif choice == '4':
         display_instructor_visualizer()
-    elif choice == '0':
+    elif choice == '5':
         print(Color.MAGENTA + "Thank you for using the Course Scheduler. Goodbye!" + Color.END)
         break
     else:

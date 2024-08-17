@@ -7,8 +7,13 @@ def visualize_schedule(file_path):
     # Read the CSV file
     df = pd.read_csv(file_path)
     
+    conflicting_courses = []
+    
     # Convert time strings to datetime objects
-    def parse_time(time_str):
+    def parse_time(time_str, course):
+        if time_str == '00:00':
+            conflicting_courses.append(course)
+            return None
         try:
             return pd.to_datetime(time_str, format='%H:%M:%S').time()
         except ValueError:
@@ -17,11 +22,15 @@ def visualize_schedule(file_path):
             except ValueError:
                 return pd.to_datetime('19:00', format='%H:%M').time()
 
-    df['Time Start'] = df['Time Start'].apply(parse_time)
-    df['Time End'] = df['Time End'].apply(parse_time)
-    
     # Create a unique identifier for each class
     df['Class'] = df['Subject'].astype(str) + ' ' + df['Cat#'].astype(str) + ' ' + df['Sect#'].astype(str)
+
+    # Apply parse_time function
+    df['Time Start'] = df.apply(lambda row: parse_time(row['Time Start'], row['Class']), axis=1)
+    df['Time End'] = df.apply(lambda row: parse_time(row['Time End'], row['Class']), axis=1)
+    
+    # Remove rows with None values in Time Start or Time End
+    df = df.dropna(subset=['Time Start', 'Time End'])
     
     # Handle mixed data types in 'Room #' column
     df['Room #'] = df['Room #'].astype(str)
@@ -96,6 +105,12 @@ def visualize_schedule(file_path):
     
     plt.tight_layout()
     plt.show()
+    
+    # Print conflicting courses
+    if conflicting_courses:
+        print("Courses with start time 00:00 (not visualized):")
+        for course in conflicting_courses:
+            print(course)
 
 # Call the function with the path to your CSV files
 # visualize_schedule('./Excel/Best_Schedule_Fall.csv')
