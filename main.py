@@ -13,17 +13,18 @@ class CourseSchedulerGUI(tk.Tk):
         super().__init__()
         self.title("Course Scheduler")
         self.geometry("600x400")
+        self.configure(bg="#D0D3D4")
         self.center_window()
 
         self.create_widgets()
 
     def create_widgets(self):
         # Create frames for each section
-        self.main_menu_frame = tk.Frame(self)
-        self.cleaning_frame = tk.Frame(self)
-        self.schedule_frame = tk.Frame(self)
-        self.classroom_visualizer_frame = tk.Frame(self)
-        self.instructor_visualizer_frame = tk.Frame(self)
+        self.main_menu_frame = tk.Frame(self, bg="#D0D3D4")
+        self.cleaning_frame = tk.Frame(self, bg="#D0D3D4")
+        self.schedule_frame = tk.Frame(self, bg="#D0D3D4")
+        self.classroom_visualizer_frame = tk.Frame(self, bg="#D0D3D4")
+        self.instructor_visualizer_frame = tk.Frame(self, bg="#D0D3D4")
 
         # Initialize with main menu frame visible
         self.main_menu_frame.pack(fill='both', expand=1)
@@ -51,29 +52,32 @@ class CourseSchedulerGUI(tk.Tk):
         window.geometry('{}x{}+{}+{}'.format(width, height, x, y))
 
     def create_main_menu_widgets(self):
-        title_label = tk.Label(self.main_menu_frame, text="Course Scheduler", font=("Arial", 18, "bold"))
+        title_label = tk.Label(self.main_menu_frame, text="Course Scheduler", font=("Arial", 18, "bold"), bg="#D0D3D4")
         title_label.pack(pady=20)
 
-        btn_clean_excel = tk.Button(self.main_menu_frame, text="1. Clean Excel File", command=self.show_cleaning_frame)
+        button_width = 25  # Set a standard width for all buttons
+        button_height = 2  # Set a standard height for all buttons
+
+        btn_clean_excel = tk.Button(self.main_menu_frame, text="1. Clean Excel File", command=self.show_cleaning_frame, bg="#FFFFFF", width=button_width, height=button_height)
         btn_clean_excel.pack(pady=5)
 
-        btn_generate_schedule = tk.Button(self.main_menu_frame, text="2. Generate Course Schedule", command=self.show_schedule_frame)
+        btn_generate_schedule = tk.Button(self.main_menu_frame, text="2. Generate Course Schedule", command=self.show_schedule_frame, bg="#FFFFFF", width=button_width, height=button_height)
         btn_generate_schedule.pack(pady=5)
 
-        btn_classroom_visualizer = tk.Button(self.main_menu_frame, text="3. Display Classroom Visualizer", command=self.show_classroom_visualizer_frame)
+        btn_classroom_visualizer = tk.Button(self.main_menu_frame, text="3. Display Classroom Visualizer", command=self.show_classroom_visualizer_frame, bg="#FFFFFF", width=button_width, height=button_height)
         btn_classroom_visualizer.pack(pady=5)
 
-        btn_instructor_visualizer = tk.Button(self.main_menu_frame, text="4. Display Instructor Visualizer", command=self.show_instructor_visualizer_frame)
+        btn_instructor_visualizer = tk.Button(self.main_menu_frame, text="4. Display Instructor Visualizer", command=self.show_instructor_visualizer_frame, bg="#FFFFFF", width=button_width, height=button_height)
         btn_instructor_visualizer.pack(pady=5)
 
-        btn_exit = tk.Button(self.main_menu_frame, text="5. Exit", command=self.quit)
+        btn_exit = tk.Button(self.main_menu_frame, text="5. Exit", command=self.quit, bg="#FFFFFF", width=button_width, height=button_height)
         btn_exit.pack(pady=20)
 
     def create_cleaning_widgets(self):
-        file_label = tk.Label(self.cleaning_frame, text="Enter the path to your Excel file:")
+        file_label = tk.Label(self.cleaning_frame, text="Enter the path to your Excel file:", bg="#D0D3D4")
         file_label.pack(pady=5)
 
-        file_btn = tk.Button(self.cleaning_frame, text="Select Excel File", command=self.clean_excel_file)
+        file_btn = tk.Button(self.cleaning_frame, text="Select Excel File", command=self.clean_excel_file, bg="#FFFFFF")
         file_btn.pack(pady=5)
 
         # Using pack for consistency within the cleaning_frame
@@ -83,64 +87,64 @@ class CourseSchedulerGUI(tk.Tk):
         # Layout using grid for precise control
         self.schedule_frame.grid_columnconfigure(0, weight=1)
 
-        gen_label = tk.Label(self.schedule_frame, text="Enter the generation number:")
+        gen_label = tk.Label(self.schedule_frame, text="Enter the generation number:", bg="#D0D3D4")
         gen_label.grid(row=0, column=0, pady=5)
         self.gen_entry = tk.Entry(self.schedule_frame, width=30)
         self.gen_entry.grid(row=1, column=0, pady=5)
 
-        spring_btn = tk.Button(self.schedule_frame, text="Select Spring CSV File", command=self.select_spring_file)
+        spring_btn = tk.Button(self.schedule_frame, text="Select Spring CSV File", command=self.select_spring_file, bg="#FFFFFF")
         spring_btn.grid(row=2, column=0, pady=5)
 
-        self.spring_file_label = tk.Label(self.schedule_frame, text="No file selected")
+        self.spring_file_label = tk.Label(self.schedule_frame, text="No file selected", bg="#D0D3D4")
         self.spring_file_label.grid(row=3, column=0, pady=5)
 
-        fall_btn = tk.Button(self.schedule_frame, text="Select Fall CSV File", command=self.select_fall_file)
+        fall_btn = tk.Button(self.schedule_frame, text="Select Fall CSV File", command=self.select_fall_file, bg="#FFFFFF")
         fall_btn.grid(row=4, column=0, pady=5)
 
-        self.fall_file_label = tk.Label(self.schedule_frame, text="No file selected")
+        self.fall_file_label = tk.Label(self.schedule_frame, text="No file selected", bg="#D0D3D4")
         self.fall_file_label.grid(row=5, column=0, pady=5)
 
-        self.progress_label = tk.Label(self.schedule_frame, text="")
+        self.progress_label = tk.Label(self.schedule_frame, text="", bg="#D0D3D4")
         self.progress_label.grid(row=6, column=0, pady=10)
 
         self.progress_bar = ttk.Progressbar(self.schedule_frame, orient="horizontal", length=250, mode="determinate")
         self.progress_bar.grid(row=7, column=0, pady=(0, 20))  # Separate the progress bar from the OK button
 
-        self.ok_btn = tk.Button(self.schedule_frame, text="OK", command=self.start_generation)
+        self.ok_btn = tk.Button(self.schedule_frame, text="OK", command=self.start_generation, bg="#FFFFFF")
         self.ok_btn.grid(row=8, column=0, pady=10)  # Place the OK button under the progress bar
 
         self.back_btn = self.back_to_menu_btn(self.schedule_frame)
         self.back_btn.grid(row=9, column=0, pady=10)
 
     def create_classroom_visualizer_widgets(self):
-        semester_label = tk.Label(self.classroom_visualizer_frame, text="Enter the semester (spring/fall):")
+        semester_label = tk.Label(self.classroom_visualizer_frame, text="Enter the semester (spring/fall):", bg="#D0D3D4")
         semester_label.pack(pady=5)
         self.semester_entry = tk.Entry(self.classroom_visualizer_frame, width=30)
         self.semester_entry.pack(pady=5)
 
-        visualize_btn = tk.Button(self.classroom_visualizer_frame, text="Visualize", command=self.display_classroom_visualizer)
+        visualize_btn = tk.Button(self.classroom_visualizer_frame, text="Visualize", command=self.display_classroom_visualizer, bg="#FFFFFF")
         visualize_btn.pack(pady=20)
 
         self.back_to_menu_btn(self.classroom_visualizer_frame).pack(pady=5)
 
     def create_instructor_visualizer_widgets(self):
-        instructor_label = tk.Label(self.instructor_visualizer_frame, text="Enter the instructor name:")
+        instructor_label = tk.Label(self.instructor_visualizer_frame, text="Enter the instructor name:", bg="#D0D3D4")
         instructor_label.pack(pady=5)
         self.instructor_entry = tk.Entry(self.instructor_visualizer_frame, width=30)
         self.instructor_entry.pack(pady=5)
 
-        semester_label = tk.Label(self.instructor_visualizer_frame, text="Enter the semester (spring/fall):")
+        semester_label = tk.Label(self.instructor_visualizer_frame, text="Enter the semester (spring/fall):", bg="#D0D3D4")
         semester_label.pack(pady=5)
         self.instructor_semester_entry = tk.Entry(self.instructor_visualizer_frame, width=30)
         self.instructor_semester_entry.pack(pady=5)
 
-        visualize_btn = tk.Button(self.instructor_visualizer_frame, text="Visualize", command=self.display_instructor_visualizer)
+        visualize_btn = tk.Button(self.instructor_visualizer_frame, text="Visualize", command=self.display_instructor_visualizer, bg="#FFFFFF")
         visualize_btn.pack(pady=20)
 
         self.back_to_menu_btn(self.instructor_visualizer_frame).pack(pady=5)
 
     def back_to_menu_btn(self, frame):
-        return tk.Button(frame, text="Back to Main Menu", command=self.show_main_menu_frame)
+        return tk.Button(frame, text="Back to Main Menu", command=self.show_main_menu_frame, bg="#FFFFFF")
 
     def show_frame(self, frame):
         self.main_menu_frame.pack_forget()
@@ -204,7 +208,7 @@ class CourseSchedulerGUI(tk.Tk):
         select_window.geometry("300x300")
         self.center_popup(select_window)
 
-        tk.Label(select_window, text="Select a sheet name:").pack(pady=10)
+        tk.Label(select_window, text="Select a sheet name:", bg="#D0D3D4").pack(pady=10)
 
         # Create a frame to hold the Listbox and Scrollbar
         listbox_frame = tk.Frame(select_window)
@@ -223,7 +227,7 @@ class CourseSchedulerGUI(tk.Tk):
             sheet_listbox.insert(tk.END, name)
 
         # OK Button to confirm the selection
-        tk.Button(select_window, text="OK", command=on_select).pack(pady=10)
+        tk.Button(select_window, text="OK", command=on_select, bg="#FFFFFF").pack(pady=10)
 
         select_window.wait_window()
 
@@ -305,7 +309,7 @@ class CourseSchedulerGUI(tk.Tk):
         input_window.geometry("300x100")
         self.center_popup(input_window)
 
-        label = tk.Label(input_window, text=prompt)
+        label = tk.Label(input_window, text=prompt, bg="#D0D3D4")
         label.pack(pady=5)
 
         user_input = tk.StringVar()
@@ -317,7 +321,7 @@ class CourseSchedulerGUI(tk.Tk):
         def close_window():
             input_window.destroy()
 
-        submit_btn = tk.Button(input_window, text="Submit", command=close_window)
+        submit_btn = tk.Button(input_window, text="Submit", command=close_window, bg="#FFFFFF")
         submit_btn.pack(pady=5)
 
         input_window.wait_window()
