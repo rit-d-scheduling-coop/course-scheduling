@@ -106,11 +106,18 @@ def visualize_schedule(file_path):
     plt.tight_layout()
     plt.show()
     
-    # Print conflicting courses
+    # Display conflicting courses in a new window
     if conflicting_courses:
-        print("Courses with start time 00:00 (not visualized):")
-        for course in conflicting_courses:
-            print(course)
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.axis('off')
+        ax.text(0.5, 1, "Courses without an assigned classroom/timeslot:", 
+                ha='center', va='top', fontsize=12, fontweight='bold')
+        
+        course_list = "\n".join(conflicting_courses)
+        ax.text(0.5, 0.9, course_list, ha='center', va='top', fontsize=10)
+        
+        plt.tight_layout()
+        plt.show()
 
 # Call the function with the path to your CSV files
 # visualize_schedule('./Excel/Best_Schedule_Fall.csv')
