@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
+import openpyxl  # For reading .xlsx files
+import xlrd  # For reading .xls files
 
 import algo_v4_CURRENT as algo
 import cleaning_MOH_v2 as cleaning
@@ -168,10 +170,64 @@ class CourseSchedulerGUI(tk.Tk):
     def clean_excel_file(self):
         file_path = filedialog.askopenfilename(title="Select Excel File", filetypes=[("Excel files", "*.xlsx;*.xls")])
         if file_path:
-            sheet_name = self.get_input("Enter the name of the sheet:")
-            if sheet_name:
-                cleaning.process_and_save_excel_file(file_path, sheet_name)
-                messagebox.showinfo("Success", "Excel file cleaned successfully.")
+            sheet_names = self.get_sheet_names(file_path)
+            if sheet_names:
+                sheet_name = self.select_sheet_name(sheet_names)
+                if sheet_name:
+                    try:
+                        cleaning.process_and_save_excel_file(file_path, sheet_name)
+                        messagebox.showinfo("Success", f"Excel file cleaned successfully. Sheet: {sheet_name}")
+                    except Exception as e:
+                        messagebox.showerror("Error", f"Failed to clean the Excel file.\nError: {str(e)}")
+
+    def get_sheet_names(self, file_path):
+        if file_path.endswith('.xlsx'):
+            workbook = openpyxl.load_workbook(file_path, read_only=True)
+            return workbook.sheetnames
+        elif file_path.endswith('.xls'):
+            workbook = xlrd.open_workbook(file_path)
+            return workbook.sheet_names()
+        else:
+            messagebox.showerror("Error", "Unsupported file format.")
+            return None
+
+    def select_sheet_name(self, sheet_names):
+        sheet_name = tk.StringVar()
+
+        def on_select():
+            selected_sheet = sheet_listbox.get(tk.ACTIVE)
+            sheet_name.set(selected_sheet)
+            select_window.destroy()
+
+        select_window = tk.Toplevel(self)
+        select_window.title("Select Sheet Name")
+        select_window.geometry("300x300")
+        self.center_popup(select_window)
+
+        tk.Label(select_window, text="Select a sheet name:").pack(pady=10)
+
+        # Create a frame to hold the Listbox and Scrollbar
+        listbox_frame = tk.Frame(select_window)
+        listbox_frame.pack(pady=5, expand=True, fill=tk.BOTH)
+
+        sheet_listbox = tk.Listbox(listbox_frame, selectmode=tk.SINGLE)
+        sheet_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        scrollbar = tk.Scrollbar(listbox_frame)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        sheet_listbox.config(yscrollcommand=scrollbar.set)
+        scrollbar.config(command=sheet_listbox.yview)
+
+        for name in sheet_names:
+            sheet_listbox.insert(tk.END, name)
+
+        # OK Button to confirm the selection
+        tk.Button(select_window, text="OK", command=on_select).pack(pady=10)
+
+        select_window.wait_window()
+
+        return sheet_name.get()
 
     def select_spring_file(self):
         self.spring_file_path = filedialog.askopenfilename(title="Select Spring CSV File", filetypes=[("CSV files", "*.csv")])
