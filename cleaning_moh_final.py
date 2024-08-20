@@ -132,7 +132,7 @@ def process_and_save_excel_file(file_path, sheet_name, wanted_departments = ['CO
     df_cleaned = process_excel_file(file_path, sheet_name, wanted_departments)
 
     # Generate output path based on sheet name
-    output_path = f"excel/{sheet_name.replace(' ', '_')}_Filtered_Corrected_Updated_v4.csv"
+    output_path = f"excel/{sheet_name.replace(' ', '_')}_Filtered_Corrected.csv"
     # Save the cleaned data
     df_cleaned.to_csv(output_path, index=False)
 
@@ -141,11 +141,11 @@ if __name__ == "__main__":
     file_path = 'excel/2023-2024 Plan for Dept Heads.xlsx'
     wanted_departments = ['COMPUTING', 'BS CIT', 'BS COMPUTING SECURITY', 'MATH/SCIENCE']
     sheet_name = 'Fall 2023 (2231)'  # or 'Spring 2024'
-    output_path = 'excel/Fall_2023_Filtered_Corrected_Updated_v4.csv'
+    output_path = 'excel/Fall_2023_Filtered.csv'
 
     process_and_save_excel_file(file_path, sheet_name)
 
     sheet_name = 'Spring 2024'
-    output_path = 'excel/Spring_2024_Filtered_Corrected_Updated_v4.csv'
+    output_path = 'excel/Spring_2024_Filtered.csv'
 
     process_and_save_excel_file(file_path, sheet_name)
