@@ -2,7 +2,7 @@
 
 import os
 import algo_v4_CURRENT as algo
-import cleaning_v2 as cleaning
+import cleaning_MOH_v2 as cleaning
 import visualizer
 import instructor_visualizer
 import colorama
