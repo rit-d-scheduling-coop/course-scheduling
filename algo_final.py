@@ -717,8 +717,8 @@ def generate_schedule(courses_cleaned, semester, num_generations = 20):
 # Modify the last part of the script to use multithreading
 if __name__ == "__main__":
     # Load and preprocess the spring and fall course data
-    spring_courses_df, spring_courses = load_and_preprocess('excel/Spring_2024_Filtered_Corrected_Updated_v4.csv')
-    fall_courses_df, fall_courses = load_and_preprocess('excel/Fall_2023_Filtered_Corrected_Updated_v4.csv')
+    spring_courses_df, spring_courses = load_and_preprocess('excel/Spring_2024_Filtered.csv')
+    fall_courses_df, fall_courses = load_and_preprocess('excel/Fall_2023_Filtered.csv')
 
     # Use ThreadPoolExecutor to run the schedule generation concurrently
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:

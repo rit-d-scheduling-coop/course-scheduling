@@ -3,8 +3,8 @@ from tkinter import filedialog, messagebox, ttk
 import openpyxl  # For reading .xlsx files
 import xlrd  # For reading .xls files
 
-import algo_v4_CURRENT as algo
-import cleaning_MOH_v2 as cleaning
+import algo_final as algo
+import cleaning_moh_final as cleaning
 import visualizer
 import instructor_visualizer
 
