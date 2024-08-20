@@ -58,19 +58,19 @@ class CourseSchedulerGUI(tk.Tk):
         button_width = 25  # Set a standard width for all buttons
         button_height = 2  # Set a standard height for all buttons
 
-        btn_clean_excel = tk.Button(self.main_menu_frame, text="1. Clean Excel File", command=self.show_cleaning_frame, bg="#FFFFFF", width=button_width, height=button_height)
+        btn_clean_excel = tk.Button(self.main_menu_frame, text="Clean Excel File", command=self.show_cleaning_frame, bg="#FFFFFF", width=button_width, height=button_height)
         btn_clean_excel.pack(pady=5)
 
-        btn_generate_schedule = tk.Button(self.main_menu_frame, text="2. Generate Course Schedule", command=self.show_schedule_frame, bg="#FFFFFF", width=button_width, height=button_height)
+        btn_generate_schedule = tk.Button(self.main_menu_frame, text="Generate Course Schedule", command=self.show_schedule_frame, bg="#FFFFFF", width=button_width, height=button_height)
         btn_generate_schedule.pack(pady=5)
 
-        btn_classroom_visualizer = tk.Button(self.main_menu_frame, text="3. Display Classroom Visualizer", command=self.show_classroom_visualizer_frame, bg="#FFFFFF", width=button_width, height=button_height)
+        btn_classroom_visualizer = tk.Button(self.main_menu_frame, text="Display Classroom Visualizer", command=self.show_classroom_visualizer_frame, bg="#FFFFFF", width=button_width, height=button_height)
         btn_classroom_visualizer.pack(pady=5)
 
-        btn_instructor_visualizer = tk.Button(self.main_menu_frame, text="4. Display Instructor Visualizer", command=self.show_instructor_visualizer_frame, bg="#FFFFFF", width=button_width, height=button_height)
+        btn_instructor_visualizer = tk.Button(self.main_menu_frame, text="Display Instructor Visualizer", command=self.show_instructor_visualizer_frame, bg="#FFFFFF", width=button_width, height=button_height)
         btn_instructor_visualizer.pack(pady=5)
 
-        btn_exit = tk.Button(self.main_menu_frame, text="5. Exit", command=self.quit, bg="#FFFFFF", width=button_width, height=button_height)
+        btn_exit = tk.Button(self.main_menu_frame, text="Exit", command=self.quit, bg="#FFFFFF", width=button_width, height=button_height)
         btn_exit.pack(pady=20)
 
     def create_cleaning_widgets(self):
